@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Scence.h"
+#include "Scene.h"
 
 class CSampleKeyHandler: public CSceneKeyHandler
 {

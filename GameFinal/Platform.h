@@ -12,6 +12,8 @@ protected:
 	float cellWidth;
 	float cellHeight;
 	int spriteIdBegin, spriteIdMiddle, spriteIdEnd;
+	float ax;
+	float ay;
 
 public: 
 	CPlatform(float x, float y,
@@ -25,6 +27,7 @@ public:
 		this->spriteIdMiddle = sprite_id_middle;
 		this->spriteIdEnd = sprite_id_end;
 	}
+	//virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
 	void Render();
 	void Update(DWORD dt) {}
