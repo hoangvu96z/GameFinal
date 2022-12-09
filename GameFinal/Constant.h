@@ -1,0 +1,8 @@
+#pragma once
+#define BACKGROUND_COLOR D3DCOLOR_XRGB(0, 0, 0)
+#define SCREEN_WIDTH 272
+#define SCREEN_HEIGHT 256
+
+#define MAX_FRAME_RATE 144
+
+#define HUD_HEIGHT 0

@@ -33,3 +33,6 @@ goomba.txt
 
 #Door Portal 
 51	250	160	266	180	1
+
+[TILEMAP DATA]
+Resources\Tilemap\world1-1.txt

@@ -27,6 +27,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
+#define SCENE_SECTION_TILEMAP_DATA	3
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -189,6 +190,29 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
+void CPlayScene::_ParseSection_TILEMAP_DATA(string line)
+{
+	int ID, rowMap, columnMap, columnTile, rowTile, totalTiles;
+	LPCWSTR path = ToLPCWSTR(line);
+	ifstream f;
+
+	f.open(path);
+	f >> ID >> rowMap >> columnMap >> rowTile >> columnTile >> totalTiles;
+
+	int** TileMapData = new int* [rowMap];
+	for (int i = 0; i < rowMap; i++)
+	{
+		TileMapData[i] = new int[columnMap];
+		for (int j = 0; j < columnMap; j++)
+			f >> TileMapData[i][j];
+	}
+	f.close();
+
+	current_map = new CMap(ID, rowMap, columnMap, rowTile, columnTile, totalTiles);
+	current_map->ExtractTileFromTileSet();
+	current_map->SetTileMapData(TileMapData);
+}
+
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -224,6 +248,29 @@ void CPlayScene::LoadAssets(LPCWSTR assetFile)
 	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
 
+void CPlayScene::SetCam(float cx, float cy, DWORD dt)
+{
+	float sw, sh, mw, mh, mx, my;
+	CGame* game = CGame::GetInstance();
+	sw = game->GetScreenWidth();
+	sh = game->GetScreenHeight();
+	mw = current_map->GetMapWidth();
+	mh = current_map->GetMapHeight();
+	//Update camera to follow mario
+	cx -= sw / 2;
+	// CamX
+	if (cx <= 0)//Left Edge
+		cx = 0;
+	if (cx >= mw - sw)//Right Edge
+		cx = mw - sw;
+	//CamY
+	cy = mh - sh;
+	if (cy + sh >= mh)//Bottom Edge
+		cy = mh - sh;
+	game->SetCamPos(ceil(cx), ceil(cy));
+	current_map->SetCamPos(cx, cy);
+}
+
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
@@ -242,6 +289,9 @@ void CPlayScene::Load()
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
+		if (line == "[TILEMAP DATA]") {
+			section = SCENE_SECTION_TILEMAP_DATA; continue;
+		}
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
@@ -251,6 +301,7 @@ void CPlayScene::Load()
 		{ 
 			case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+			case SCENE_SECTION_TILEMAP_DATA: _ParseSection_TILEMAP_DATA(line); break;
 		}
 	}
 
@@ -295,6 +346,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
+	current_map->Render();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
@@ -323,6 +375,8 @@ void CPlayScene::Unload()
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
 
+	delete current_map;
+	current_map = nullptr;
 	objects.clear();
 	player = NULL;
 
