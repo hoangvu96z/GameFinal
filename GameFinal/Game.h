@@ -74,6 +74,7 @@ public:
 
 	void Draw(float x, float y, LPTEXTURE tex, int l, int t, int r, int b, float alpha = 1.0f, int sprite_width = 0, int sprite_height = 0)
 	{
+		D3DXVECTOR3 p(x - cam_x, y - cam_y, 0);
 		RECT rect;
 		rect.left = l;
 		rect.top = t;

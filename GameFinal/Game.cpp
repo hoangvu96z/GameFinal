@@ -27,6 +27,9 @@ void CGame::Init(HWND hWnd, HINSTANCE hInstance)
 	backBufferWidth = r.right + 1;
 	backBufferHeight = r.bottom + 1;
 
+	screen_height = r.bottom + 1;
+	screen_width = r.right + 1;
+
 	DebugOut(L"[INFO] Window's client area: width= %d, height= %d\n", r.right - 1, r.bottom - 1);
 
 	// Create & clear the DXGI_SWAP_CHAIN_DESC structure

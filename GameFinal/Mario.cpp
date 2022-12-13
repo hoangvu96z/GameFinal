@@ -250,7 +250,7 @@ void CMario::Render()
 
 	//RenderBoundingBox();
 	
-	DebugOutTitle(L"Coins: %d", coin);
+	DebugOutTitle(L"Coins: %d - Mario: %f - %f", coin, x, y);
 }
 
 void CMario::SetState(int state)

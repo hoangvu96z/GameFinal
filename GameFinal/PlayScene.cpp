@@ -256,17 +256,22 @@ void CPlayScene::SetCam(float cx, float cy, DWORD dt)
 	sh = game->GetScreenHeight();
 	mw = current_map->GetMapWidth();
 	mh = current_map->GetMapHeight();
+	DebugOut(L"[INFO] 1 Cx : %d ; Cy : %d \n", cx, cy);
+
 	//Update camera to follow mario
-	cx -= sw / 2;
-	// CamX
-	if (cx <= 0)//Left Edge
-		cx = 0;
-	if (cx >= mw - sw)//Right Edge
-		cx = mw - sw;
+	//cx -= sw / 2;
+	//// CamX
+	//if (cx <= 0)//Left Edge
+	//	cx = 0;
+	//if (cx >= mw - sw)//Right Edge
+	//	cx = mw - sw;
 	//CamY
 	cy = mh - sh;
 	if (cy + sh >= mh)//Bottom Edge
 		cy = mh - sh;
+	DebugOut(L"[INFO] 2 Cx : %d ; Cy : %d \n", cx, cy);
+	//DebugOut(L"[INFO] Cx : %d ; Cy : %d \n", cx, cy);
+
 	game->SetCamPos(ceil(cx), ceil(cy));
 	current_map->SetCamPos(cx, cy);
 }
@@ -339,7 +344,8 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cx < 0) cx = 0;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	//CGame::GetInstance()->SetCamPos(cx,cy);
+	SetCam(cx, cy);
 
 	PurgeDeletedObjects();
 }

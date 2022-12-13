@@ -13,7 +13,7 @@ goomba.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	180	10
+0	50	100
 
 #COIN
 4	100	120
@@ -23,16 +23,16 @@ goomba.txt
 
 
 #Platform
-5	100	180	16	15	32	51000	52000	53000
+5	0	400	16	15	32	51000	52000	53000
 
 #Moving Platform
 6	50	100	16	15	10	51001	52001	53001	20	10
 
 #Portal 
-50	200	160	216	180	1
+#50	200	160	216	180	1
 
 #Door Portal 
-51	250	160	266	180	1
+#51	250	160	266	180	1
 
 [TILEMAP DATA]
 Resources\Tilemap\world1-1.txt
