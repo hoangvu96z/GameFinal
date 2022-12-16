@@ -13,13 +13,11 @@ using namespace std;
 
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 #define BBOX_ALPHA 0.25f		// Bounding box transparency
+#define VIEWPORT_PUSHBACK	16
 
 class CGameObject
 {
 protected:
-
-	float x; 
-	float y;
 
 	float vx;
 	float vy;
@@ -28,9 +26,13 @@ protected:
 
 	int state;
 
-	bool isDeleted; 
 
 public: 
+
+	bool isDeleted;
+	float x;
+	float y;
+
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }

@@ -7,6 +7,7 @@
 #include "Mario.h"
 #include "Goomba.h"
 #include "Map.h"
+#include "Grid.h"
 //#include "Koopas.h"
 
 
@@ -16,6 +17,7 @@ protected:
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;
 	CMap* current_map = NULL;
+	Grid* grid;
 
 	vector<LPGAMEOBJECT> objects;
 
@@ -42,9 +44,17 @@ public:
 
 	void Clear();
 	void PurgeDeletedObjects();
+	void PushBack(CGameObject* obj)
+	{
+		Unit* unit = new Unit(grid, obj, obj->x, obj->y);
+	}
+	Grid* GetGrid() { return grid; }
 	CMap* GetMap() { return current_map; }
 
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
+	//grid
+	void GetObjectFromGrid();
+	void UpdateGrid();
 };
 
 typedef CPlayScene* LPPLAYSCENE;

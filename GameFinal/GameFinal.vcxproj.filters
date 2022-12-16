@@ -73,6 +73,7 @@
     <ClCompile Include="Map.cpp">
       <Filter>Frameworks</Filter>
     </ClCompile>
+    <ClCompile Include="Grid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -159,6 +160,7 @@
     <ClInclude Include="Constant.h">
       <Filter>Frameworks</Filter>
     </ClInclude>
+    <ClInclude Include="Grid.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">
