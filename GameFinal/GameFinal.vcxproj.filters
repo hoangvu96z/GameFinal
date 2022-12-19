@@ -74,6 +74,7 @@
       <Filter>Frameworks</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Koopas.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -161,6 +162,7 @@
       <Filter>Frameworks</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Koopas.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">
@@ -175,5 +177,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="mario-sample.txt" />
+    <Text Include="scenenew.txt" />
   </ItemGroup>
 </Project>

@@ -120,6 +120,9 @@ public:
 	int GetScreenWidth() { return screen_width; }
 	int GetScreenHeight() { return screen_height; }
 
+	float GetCamX() { return cam_x; }
+	float GetCamY() { return cam_y; }
+
 	~CGame();
 };
 typedef CGame* LPGAME;

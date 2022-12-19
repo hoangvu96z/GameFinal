@@ -8,6 +8,7 @@
 #include "Animations.h"
 #include "Sprites.h"
 #include "Collision.h"
+#include "Constant.h"
 
 using namespace std;
 
@@ -45,6 +46,28 @@ public:
 	void RenderBoundingBox();
 
 	CGameObject();
+
+	float GetWidth()
+	{
+		float left, top, right, bottom;
+		GetBoundingBox(left, top, right, bottom);
+		return right - left;
+	}
+
+	bool IsInViewPort()
+	{
+		CGame* game = CGame::GetInstance();
+		float camX, camY;
+
+		camX = game->GetCamX();
+		camY = game->GetCamY();
+
+		bool xInViewPort = x >= camX - GetWidth() && x < camX + game->GetScreenWidth();
+		bool yInViewPort = y >= camY - (SCREEN_HEIGHT - game->GetScreenHeight()) && y < camY + SCREEN_HEIGHT;
+
+		return xInViewPort && yInViewPort;
+	}
+
 	CGameObject(float x, float y) :CGameObject() { this->x = x; this->y = y; }
 
 
