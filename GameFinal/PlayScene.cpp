@@ -9,8 +9,8 @@
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
-#include "MovingPlatform.h"
-#include "DoorPortal.h"
+#include "ColorBox.h"
+#include "Camera.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -27,7 +27,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
-#define SCENE_SECTION_TILEMAP_DATA	3
+#define SCENE_SECTION_MAPS 3
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -90,6 +90,20 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	CAnimations::GetInstance()->Add(ani_id, ani);
 }
 
+void CPlayScene::_ParseSection_MAP(string line) {
+	vector<string> tokens = split(line);
+	if (tokens.size() < 6) return;
+	int ID = atoi(tokens[0].c_str());
+	wstring mapPath = ToWSTR(tokens[1]);
+	int Row = atoi(tokens[2].c_str());
+	int Column = atoi(tokens[3].c_str());
+	int tileSet = atoi(tokens[4].c_str());
+	int tileColumn = atoi(tokens[5].c_str());
+	int checkWM = atoi(tokens[6].c_str());
+
+	map = new Map(ID, mapPath.c_str(), Row, Column, tileSet, tileColumn);
+}
+
 /*
 	Parse a line in section [OBJECTS] 
 */
@@ -122,10 +136,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
-
 	case OBJECT_TYPE_PLATFORM:
 	{
-
+		
 		float cell_width = (float)atof(tokens[3].c_str());
 		float cell_height = (float)atof(tokens[4].c_str());
 		int length = atoi(tokens[5].c_str());
@@ -141,39 +154,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		break;
 	}
-	case OBJECT_TYPE_MOVING_PLATFORM:
-	{
-
-		float cell_width = (float)atof(tokens[3].c_str());
-		float cell_height = (float)atof(tokens[4].c_str());
-		int length = atoi(tokens[5].c_str());
-		int sprite_begin = atoi(tokens[6].c_str());
-		int sprite_middle = atoi(tokens[7].c_str());
-		int sprite_end = atoi(tokens[8].c_str());
-		int max_height = atoi(tokens[9].c_str());
-		int min_height = atoi(tokens[10].c_str());
-
-		obj = new MovingPlatform(
-			x, y,
-			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end,
-			max_height, min_height
-		);
-
-		break;
+	case OBJECT_TYPE_COLORBOX: {
+		float r = (float)atof(tokens[3].c_str());
+		float b = (float)atof(tokens[4].c_str());
+		obj = new ColorBox(x, y, r, b);
 	}
+							 break;
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = (float)atof(tokens[3].c_str());
 		float b = (float)atof(tokens[4].c_str());
 		int scene_id = atoi(tokens[5].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
-	}
-	case OBJECT_TYPE_DOOR_PORTAL: {
-		float r = (float)atof(tokens[3].c_str());
-		float b = (float)atof(tokens[4].c_str());
-		int scene_id = atoi(tokens[5].c_str());
-		obj = new DoorPortal(x, y, r, b, scene_id);
 	}
 	break;
 
@@ -188,29 +180,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 
 	objects.push_back(obj);
-}
-
-void CPlayScene::_ParseSection_TILEMAP_DATA(string line)
-{
-	int ID, rowMap, columnMap, columnTile, rowTile, totalTiles;
-	LPCWSTR path = ToLPCWSTR(line);
-	ifstream f;
-
-	f.open(path);
-	f >> ID >> rowMap >> columnMap >> rowTile >> columnTile >> totalTiles;
-
-	int** TileMapData = new int* [rowMap];
-	for (int i = 0; i < rowMap; i++)
-	{
-		TileMapData[i] = new int[columnMap];
-		for (int j = 0; j < columnMap; j++)
-			f >> TileMapData[i][j];
-	}
-	f.close();
-
-	current_map = new CMap(ID, rowMap, columnMap, rowTile, columnTile, totalTiles);
-	current_map->ExtractTileFromTileSet();
-	current_map->SetTileMapData(TileMapData);
 }
 
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
@@ -248,34 +217,6 @@ void CPlayScene::LoadAssets(LPCWSTR assetFile)
 	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
 
-void CPlayScene::SetCam(float cx, float cy, DWORD dt)
-{
-	float sw, sh, mw, mh, mx, my;
-	CGame* game = CGame::GetInstance();
-	sw = game->GetScreenWidth();
-	sh = game->GetScreenHeight();
-	mw = current_map->GetMapWidth();
-	mh = current_map->GetMapHeight();
-	DebugOut(L"[INFO] 1 Cx : %d ; Cy : %d \n", cx, cy);
-
-	//Update camera to follow mario
-	//cx -= sw / 2;
-	//// CamX
-	//if (cx <= 0)//Left Edge
-	//	cx = 0;
-	//if (cx >= mw - sw)//Right Edge
-	//	cx = mw - sw;
-	//CamY
-	cy = mh - sh;
-	if (cy + sh >= mh)//Bottom Edge
-		cy = mh - sh;
-	DebugOut(L"[INFO] 2 Cx : %d ; Cy : %d \n", cx, cy);
-	//DebugOut(L"[INFO] Cx : %d ; Cy : %d \n", cx, cy);
-
-	game->SetCamPos(ceil(cx), ceil(cy));
-	current_map->SetCamPos(cx, cy);
-}
-
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
@@ -294,9 +235,7 @@ void CPlayScene::Load()
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
-		if (line == "[TILEMAP DATA]") {
-			section = SCENE_SECTION_TILEMAP_DATA; continue;
-		}
+		if (line == "[MAP]") { section = SCENE_SECTION_MAPS; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
@@ -306,7 +245,7 @@ void CPlayScene::Load()
 		{ 
 			case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-			case SCENE_SECTION_TILEMAP_DATA: _ParseSection_TILEMAP_DATA(line); break;
+			case SCENE_SECTION_MAPS: _ParseSection_MAP(line); break;
 		}
 	}
 
@@ -344,15 +283,15 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cx < 0) cx = 0;
 
-	//CGame::GetInstance()->SetCamPos(cx,cy);
-	SetCam(cx, cy);
+	Camera::GetInstance()->SetCamPos(cx, 240);
+	/*CGame::GetInstance()->SetCamPos(cx, 0.0f);*/
 
 	PurgeDeletedObjects();
 }
 
 void CPlayScene::Render()
 {
-	current_map->Render();
+	map->DrawMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
@@ -381,8 +320,6 @@ void CPlayScene::Unload()
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
 
-	delete current_map;
-	current_map = nullptr;
 	objects.clear();
 	player = NULL;
 

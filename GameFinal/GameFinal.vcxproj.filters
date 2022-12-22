@@ -22,12 +22,6 @@
     <ClCompile Include="Portal.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="DoorPortal.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="MovingPlatform.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
@@ -73,8 +67,12 @@
     <ClCompile Include="Map.cpp">
       <Filter>Frameworks</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp" />
-    <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="ColorBox.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Frameworks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -86,16 +84,10 @@
     <ClInclude Include="Coin.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="DoorPortal.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Goomba.h">
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Mario.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="MovingPlatform.h">
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Platform.h">
@@ -161,8 +153,12 @@
     <ClInclude Include="Constant.h">
       <Filter>Frameworks</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h" />
-    <ClInclude Include="Koopas.h" />
+    <ClInclude Include="ColorBox.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Frameworks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">

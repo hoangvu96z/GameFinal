@@ -3,15 +3,14 @@
 mario.txt
 coin.txt
 cloud.txt
-brick.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 100 = Colorbox
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	120	10
+0	20	10
 
 #COIN
 4	100	120
@@ -20,16 +19,26 @@ brick.txt
 4	160	120
 4	180	120
 
-
-4	100	100
-4	120	100
-4	140	100
-4	160	100
-4	180	100
-
 #Platform
-5	100	180	16	15	32	20001	52000	20001
+5	0	180	16	15	320	51000	52000	53000
 
 #Portal 
-50	200	160	216	180	5
+#50	200	160	216	180	1
 
+#COLORBOX
+100	20	146	48	48
+100	256	146	48	48
+100	289	130	48	80
+100	432	146	80	48
+100	488	130	64	80
+100	536	114	64	112
+100	552	154	96	32
+100	1320	154	112	32
+100	1352	140	112	64
+100	1384	124	112	96
+100	1344	154	64	32
+100	2168	146	48	48
+100	2200	102	48	144
+
+[MAP]
+30	textures/Map1.txt	27	176	11	11	0

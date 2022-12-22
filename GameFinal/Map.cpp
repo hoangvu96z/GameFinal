@@ -1,66 +1,75 @@
-#include "Map.h"
-#include "Utils.h"
+#include"Map.h"
+#include "AssetIDs.h"
+#include "Camera.h"
 #include "debug.h"
-#include "Game.h"
-#include "Constant.h"
-CMap::CMap(int TileSetID, int TotalRowsOfMap, int TotalColumnsOfMap, int TotalRowsOfTileSet, int  TotalColumnsOfTileSet, int TotalTiles)
+Map::Map(int ID, LPCWSTR Filepath, int Rows, int Cols, int Tiles, int TileColumn)
 {
-	TileSet = CTextures::GetInstance()->Get(TileSetID);
-	this->TotalRowsOfMap = TotalRowsOfMap;
-	this->TotalColumnsOfMap = TotalColumnsOfMap;
-	this->TotalRowsOfTileSet = TotalRowsOfTileSet;
-	this->TotalColumnsOfTileSet = TotalColumnsOfTileSet;
-	this->TotalTiles = TotalTiles;
-	CamX = CamY = 0;
-	TileMap = NULL;
+	this->id = ID;
+	this->FilepathMap = Filepath;
+	this->rows = Rows;
+	this->collumns = Cols;
+	this->TileSetWidth = Tiles;
+
+
+	ReadMap();
+	Load();
+	//DrawMap();
 }
-
-CMap::~CMap()
-{
-}
-
-void CMap::Render()
-{
-	int FirstColumn = floor(CamX / TILE_WIDTH);
-	int LastColumn = ceil((CamX + CGame::GetInstance()->GetScreenWidth()) / TILE_WIDTH);
-	if (LastColumn >= TotalColumnsOfMap)
-		LastColumn = TotalColumnsOfMap - 1;
-	int d = 0;
-	for (int CurrentRow = 0; CurrentRow < TotalRowsOfMap; CurrentRow++)
-		for (int CurrentColumn = FirstColumn; CurrentColumn <= LastColumn; CurrentColumn++)
-		{
-			int index = TileMap[CurrentRow][CurrentColumn] - 1;
-			if (index < TotalTiles)
-				Tiles.at(index)->Draw(CurrentColumn * TILE_WIDTH, CurrentRow * TILE_HEIGHT - HUD_HEIGHT);
-		}
-}
-
-void CMap::SetTileMapData(int** TileMapData)
-{
-	TileMap = TileMapData;
-}
-
-
-void CMap::ExtractTileFromTileSet()
-{
-	for (int TileNum = 0; TileNum < TotalTiles; TileNum++)
+void Map::Load() {
+	std::ifstream f;
+	f.open(FilepathMap);
+	for (int i = 0; i < rows; i++)
 	{
-		int left = TileNum % TotalColumnsOfTileSet * TILE_WIDTH;
-		int top = TileNum / TotalColumnsOfTileSet * TILE_HEIGHT;
-		int right = left + TILE_WIDTH;
-		int bottom = top + TILE_HEIGHT;
-		DebugOut(L"[DETAILS]	left %d top %d right %d bottom %d\n", left, top, right, bottom);
-		LPSPRITE NewTile = new CSprite(TileNum, left, top, right, bottom, TileSet); // get tile from tileset
-		this->Tiles.push_back(NewTile);
+		for (int j = 0; j < collumns; j++)
+		{
+			f >> TileMapID[i][j];
+		}
 	}
 }
 
-int CMap::GetMapWidth()
+void Map::ReadMap()
 {
-	return TotalColumnsOfMap * TILE_WIDTH;
-}
+	CTextures* texture = CTextures::GetInstance();
+	LPTEXTURE texMap = texture->Get(id);
+	int id_sprite = 1;
+	for (UINT i = 0; i < TileSetWidth; i++)
+	{
+		for (UINT j = 0; j < TileSetWidth; j++)
+		{
+			int id_Sprites = id + id_sprite;
+			CSprites::GetInstance()->Add(id_Sprites, FrameWidth * j, FrameHeight * i, FrameWidth * (j + 1), FrameHeight * (i + 1), texMap);
+			id_sprite = id_sprite + 1;
+		}
+	}
 
-int CMap::GetMapHeight()
+
+}
+void Map::DrawMap()
 {
-	return TotalRowsOfMap * TILE_HEIGHT;
+	CSprites* sprites = CSprites::GetInstance();
+	int firstcol = (int)Camera::GetInstance()->GetCamPosX() /8 ;
+	
+	if (firstcol < 0) { firstcol = 0; }
+	int lastcol = firstcol + 20;
+	for (UINT i = 0; i < rows; i++)
+		for (UINT j = firstcol; j < lastcol; j++)
+		{
+			
+			RECT r;
+			UINT x = (TileMapID[i][j] - 1) % TileSetWidth;// nums column in Map1-1
+			UINT y; // nums row in Map 1-1
+			if (TileMapID[i][j] % TileSetWidth == 0)
+			{
+				y = floor((TileMapID[i][j] - 1) / TileSetWidth);
+			}
+			else
+			{
+				y = floor(TileMapID[i][j] / TileSetWidth);
+			}
+			r.left = x * FrameWidth;
+			r.top = y * FrameHeight;
+			r.right = r.left + FrameWidth;
+			r.bottom = r.top + FrameHeight;
+			CGame::GetInstance()->Draw((j * FrameWidth), (i * FrameHeight) - 238, CTextures::GetInstance()->Get(id), r.left, r.top, r.right, r.bottom);
+		}
 }

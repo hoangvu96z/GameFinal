@@ -7,9 +7,10 @@
 #include "Goomba.h"
 #include "Coin.h"
 #include "Portal.h"
+#include "ColorBox.h"
+#include "Platform.h"
 
 #include "Collision.h"
-#include "DoorPortal.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -36,27 +37,33 @@ void CMario::OnNoCollision(DWORD dt)
 	y += vy * dt;
 }
 
-void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWith(LPCOLLISIONEVENT e )
 {
-	if (e->ny != 0 && e->obj->IsBlocking())
-	{
-		vy = 0;
-		if (e->ny < 0) isOnPlatform = true;
-	}
-	else 
+ 
+
 	if (e->nx != 0 && e->obj->IsBlocking())
 	{
 		vx = 0;
 	}
+	else
+		if (dynamic_cast<CPlatform*>(e->obj))
+			OnCollisionWithPlatform(e);
+		else if (dynamic_cast<CGoomba*>(e->obj))
+			OnCollisionWithGoomba(e);
+		else if (dynamic_cast<CCoin*>(e->obj))
+			OnCollisionWithCoin(e);
+		else if (dynamic_cast<CPortal*>(e->obj))
+			OnCollisionWithPortal(e);
+		else if (dynamic_cast<ColorBox*>(e->obj))
+			OnCollisionWithColorBox(e);
+		
 
-	if (dynamic_cast<CGoomba*>(e->obj))
-		OnCollisionWithGoomba(e);
-	else if (dynamic_cast<CCoin*>(e->obj))
-		OnCollisionWithCoin(e);
-	else if (dynamic_cast<CPortal*>(e->obj))
-		OnCollisionWithPortal(e);
-	else if (dynamic_cast<DoorPortal*>(e->obj))
-		OnCollisionWithDoorPortal(e);
+}
+
+void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e) {
+	if (e->ny < 0 && e->obj->IsBlocking()) {
+		isOnPlatform = true;
+	}
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -93,9 +100,12 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	}
 }
 
+
+
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	e->obj->Delete();
+	DebugOut(L"con chó này\n");
 	coin++;
 }
 
@@ -105,12 +115,22 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
 
-void CMario::OnCollisionWithDoorPortal(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithColorBox(LPCOLLISIONEVENT e )
 {
-	DoorPortal* p = (DoorPortal*)e->obj;
-	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
-}
+	ColorBox* cl = dynamic_cast<ColorBox*>(e->obj);
+	if (e->ny < 0) {
 
+		this->isOnPlatform = true;
+
+	}
+
+	if (e->nx != 0) {
+		
+	}
+
+	
+	
+}
 //
 // Get animation ID for small Mario
 //
@@ -248,9 +268,9 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 	
-	DebugOutTitle(L"Coins: %d - Mario: %f - %f", coin, x, y);
+	DebugOutTitle(L"Coins: %d", coin);
 }
 
 void CMario::SetState(int state)

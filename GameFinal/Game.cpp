@@ -27,9 +27,6 @@ void CGame::Init(HWND hWnd, HINSTANCE hInstance)
 	backBufferWidth = r.right + 1;
 	backBufferHeight = r.bottom + 1;
 
-	screen_height = r.bottom + 1;
-	screen_width = r.right + 1;
-
 	DebugOut(L"[INFO] Window's client area: width= %d, height= %d\n", r.right - 1, r.bottom - 1);
 
 	// Create & clear the DXGI_SWAP_CHAIN_DESC structure
@@ -170,12 +167,12 @@ void CGame::SetPointSamplerState()
 	NOTE: This function is very inefficient because it has to convert
 	from texture to sprite every time we need to draw it
 */
-void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha, int sprite_width, int sprite_height)
+void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha)
 {
 	if (tex == NULL) return;
 
-	int spriteWidth = sprite_width;
-	int spriteHeight = sprite_height;
+	int spriteWidth = 0;
+	int spriteHeight = 0;
 
 	D3DX10_SPRITE sprite;
 
@@ -192,16 +189,16 @@ void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha, int s
 		sprite.TexSize.x = 1.0f;
 		sprite.TexSize.y = 1.0f;
 
-		if (spriteWidth==0) spriteWidth = tex->getWidth();
-		if (spriteHeight==0) spriteHeight = tex->getHeight();
+		spriteWidth = tex->getWidth();
+		spriteHeight = tex->getHeight();
 	}
 	else
 	{
 		sprite.TexCoord.x = rect->left / (float)tex->getWidth();
 		sprite.TexCoord.y = rect->top / (float)tex->getHeight();
 
-		if (spriteWidth == 0) spriteWidth = (rect->right - rect->left + 1);
-		if (spriteHeight == 0) spriteHeight = (rect->bottom - rect->top + 1);
+		spriteWidth = (rect->right - rect->left );
+		spriteHeight = (rect->bottom - rect->top);
 
 		sprite.TexSize.x = spriteWidth / (float)tex->getWidth();
 		sprite.TexSize.y = spriteHeight / (float)tex->getHeight();

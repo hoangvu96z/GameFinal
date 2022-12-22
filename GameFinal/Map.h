@@ -1,28 +1,32 @@
 #pragma once
-#include <d3d10.h>
 #include"Textures.h"
+#include "Game.h"
 #include "Sprites.h"
 #include "Utils.h"
+#include <fstream>
+#include <iostream>
 
-#define TILE_WIDTH 16
-#define TILE_HEIGHT 16
-class CMap
+#define FrameHeight 16
+#define FrameWidth	16
+#define MAX	300
+
+class Map
 {
-	int TotalRowsOfMap, TotalColumnsOfMap;
-	int TotalRowsOfTileSet, TotalColumnsOfTileSet;
-	int TotalTiles;	//total tiles of tile set
-	LPTEXTURE TileSet; //sceneX_bank.png
-	vector<LPSPRITE> Tiles;
-	int** TileMap;
-	float CamX, CamY;
-public:
-	CMap(int TileSetID, int TotalRowsOfMap, int TotalColumnsOfMap, int TotalRowsOfTileSet, int  TotalColumnsOfTileSet, int TotalTiles);
-	~CMap();
-	void Render();
-	void SetTileMapData(int** TileMapData);
-	void ExtractTileFromTileSet();
-	void SetCamPos(float x, float y) { CamX = x; CamY = y; }
-	int GetMapWidth();
-	int GetMapHeight();
-};
+	LPCWSTR FilepathMap;
+	int id;
+	int collumns;
+	int rows;
+	int TileSetWidth;
+	int TileSetHeight;
+	int Frameheight;
+	int Framewidth;
+	int TileMapID[MAX][MAX];
 
+public:
+	Map(int ID, LPCWSTR Filepath, int Rows, int Cols, int Tiles, int TileColumn);
+	void ReadMap();
+	void DrawMap();
+	void Load();
+	int GetMapWidth() { return collumns * TileSetWidth; }
+	~Map();
+};

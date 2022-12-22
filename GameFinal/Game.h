@@ -59,9 +59,6 @@ class CGame
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
 
-	int screen_width;
-	int screen_height;
-
 public:
 	// Init DirectX, Sprite Handler
 	void Init(HWND hWnd, HINSTANCE hInstance);
@@ -70,17 +67,16 @@ public:
 	// Draw a portion or ALL the texture at position (x,y) on the screen. (x,y) is at the CENTER of the image
 	// rect : if NULL, the whole texture will be drawn
 	//        if NOT NULL, only draw that portion of the texture 
-	void Draw(float x, float y, LPTEXTURE tex, RECT* rect = NULL, float alpha = 1.0f, int sprite_width = 0, int sprite_height = 0);
+	void Draw(float x, float y, LPTEXTURE tex, RECT* rect = NULL, float alpha = 1.0f);
 
-	void Draw(float x, float y, LPTEXTURE tex, int l, int t, int r, int b, float alpha = 1.0f, int sprite_width = 0, int sprite_height = 0)
+	void Draw(float x, float y, LPTEXTURE tex, int l, int t, int r, int b, float alpha = 1.0f)
 	{
-		D3DXVECTOR3 p(x - cam_x, y - cam_y, 0);
 		RECT rect;
 		rect.left = l;
 		rect.top = t;
 		rect.right = r;
 		rect.bottom = b;
-		this->Draw(x, y, tex, &rect, alpha, sprite_width, sprite_height);
+		this->Draw(x, y, tex, &rect, alpha);
 	}
 
 	LPTEXTURE LoadTexture(LPCWSTR texturePath);
@@ -117,11 +113,6 @@ public:
 
 	void _ParseSection_TEXTURES(string line);
 
-	int GetScreenWidth() { return screen_width; }
-	int GetScreenHeight() { return screen_height; }
-
-	float GetCamX() { return cam_x; }
-	float GetCamY() { return cam_y; }
 
 	~CGame();
 };

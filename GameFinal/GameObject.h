@@ -8,17 +8,20 @@
 #include "Animations.h"
 #include "Sprites.h"
 #include "Collision.h"
-#include "Constant.h"
 
 using namespace std;
 
-#define ID_TEX_BBOX -100		// special texture to draw object bounding box
-#define BBOX_ALPHA 0.25f		// Bounding box transparency
-#define VIEWPORT_PUSHBACK	16
+#define ID_TEX_BBOX -100	
+#define BBOX 0.25f
+// special texture to draw object bounding box
+
 
 class CGameObject
 {
 protected:
+
+	float x; 
+	float y;
 
 	float vx;
 	float vy;
@@ -27,13 +30,13 @@ protected:
 
 	int state;
 
+	bool isDeleted; 
+	int width;
+	
 
 public: 
-
-	bool isDeleted;
-	float x;
-	float y;
-
+	int type;
+	int num;
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
@@ -42,32 +45,11 @@ public:
 	int GetState() { return this->state; }
 	virtual void Delete() { isDeleted = true;  }
 	bool IsDeleted() { return isDeleted; }
+	int getType() { return type; }
 
 	void RenderBoundingBox();
 
 	CGameObject();
-
-	float GetWidth()
-	{
-		float left, top, right, bottom;
-		GetBoundingBox(left, top, right, bottom);
-		return right - left;
-	}
-
-	bool IsInViewPort()
-	{
-		CGame* game = CGame::GetInstance();
-		float camX, camY;
-
-		camX = game->GetCamX();
-		camY = game->GetCamY();
-
-		bool xInViewPort = x >= camX - GetWidth() && x < camX + game->GetScreenWidth();
-		bool yInViewPort = y >= camY - (SCREEN_HEIGHT - game->GetScreenHeight()) && y < camY + SCREEN_HEIGHT;
-
-		return xInViewPort && yInViewPort;
-	}
-
 	CGameObject(float x, float y) :CGameObject() { this->x = x; this->y = y; }
 
 
