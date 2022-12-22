@@ -47,17 +47,19 @@ void Map::ReadMap()
 void Map::DrawMap()
 {
 	CSprites* sprites = CSprites::GetInstance();
-	int firstcol = (int)Camera::GetInstance()->GetCamPosX() /8 ;
-	
+	int firstcol = (int)Camera::GetInstance()->GetCamPosX() / 8;
+
 	if (firstcol < 0) { firstcol = 0; }
 	int lastcol = firstcol + 20;
+	DebugOut(L"firstcol: %d \n", firstcol);
+	DebugOut(L"Lastcol: %d \n", lastcol);
 	for (UINT i = 0; i < rows; i++)
-		for (UINT j = firstcol; j < lastcol; j++)
+		for (UINT j = 0; j < collumns; j++)
 		{
-			
+
 			RECT r;
-			UINT x = (TileMapID[i][j] - 1) % TileSetWidth;// nums column in Map1-1
-			UINT y; // nums row in Map 1-1
+			UINT x = (TileMapID[i][j] - 1) % TileSetWidth;// nums column in Map1-1  0
+			UINT y; // nums row in Map 1-1 0
 			if (TileMapID[i][j] % TileSetWidth == 0)
 			{
 				y = floor((TileMapID[i][j] - 1) / TileSetWidth);
@@ -66,8 +68,8 @@ void Map::DrawMap()
 			{
 				y = floor(TileMapID[i][j] / TileSetWidth);
 			}
-			r.left = x * FrameWidth;
-			r.top = y * FrameHeight;
+			r.left = x * FrameWidth; // 0
+			r.top = y * FrameHeight; // 0
 			r.right = r.left + FrameWidth;
 			r.bottom = r.top + FrameHeight;
 			CGame::GetInstance()->Draw((j * FrameWidth), (i * FrameHeight) - 238, CTextures::GetInstance()->Get(id), r.left, r.top, r.right, r.bottom);

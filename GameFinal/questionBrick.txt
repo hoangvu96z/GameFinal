@@ -1,0 +1,11 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#Having Items
+60001	157	188	173	204	40
+60002	176	188	192	204	40
+60003	196	188	212	204	40
+60004	215	188	231	204	40
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+100000	60001	100	60002	100	60003	100	60004	100

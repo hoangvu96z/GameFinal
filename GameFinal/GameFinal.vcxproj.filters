@@ -73,6 +73,7 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Frameworks</Filter>
     </ClCompile>
+    <ClCompile Include="QuestionBrick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -159,6 +160,7 @@
     <ClInclude Include="Camera.h">
       <Filter>Frameworks</Filter>
     </ClInclude>
+    <ClInclude Include="QuestionBrick.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">

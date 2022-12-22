@@ -11,6 +11,7 @@
 #include "Platform.h"
 #include "ColorBox.h"
 #include "Camera.h"
+#include "QuestionBrick.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -136,6 +137,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+	case OBJECT_TYPE_QUESTIONBRICK: obj = new CQuestionBrick(x, y); break;
 	case OBJECT_TYPE_PLATFORM:
 	{
 		
@@ -283,15 +285,15 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cx < 0) cx = 0;
 
-	Camera::GetInstance()->SetCamPos(cx, 240);
-	/*CGame::GetInstance()->SetCamPos(cx, 0.0f);*/
+	/*Camera::GetInstance()->SetCamPos(cx, 240);*/
+	CGame::GetInstance()->SetCamPos(cx, 0.0f);
 
 	PurgeDeletedObjects();
 }
 
 void CPlayScene::Render()
 {
-	map->DrawMap();
+	//map->DrawMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
