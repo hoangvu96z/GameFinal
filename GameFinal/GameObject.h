@@ -61,14 +61,16 @@ public:
 	virtual void OnNoCollision(DWORD dt) {};
 
 	// When collision with an object has been detected (triggered by CCollision::Process)
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt) {};
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e) {};
 
 	// Is this object blocking other object? If YES, collision framework will automatically push the other object
 	virtual int IsBlocking() { return 1; }
 
-	virtual int IsBlockingOnTop() { return 1; }
+	virtual void DirectBlocking(int& l, int& t, int& r, int& b) { l = 1; t = 1; r = 1; b = 1; } //four direct
 
-	virtual int IsBlockingOnSide() { return 1; }
+	//virtual int IsBlockingOnTop() { return 1; } two direct
+
+	//virtual int IsBlockingOnSide() { return 1; }
 
 
 

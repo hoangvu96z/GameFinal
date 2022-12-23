@@ -12,6 +12,12 @@
 #include "ColorBox.h"
 #include "Camera.h"
 #include "QuestionBrick.h"
+#include "Mushroom.h"
+#include "Koopas.h"
+#include "Pipe.h"
+#include "KoopasFly.h"
+#include "GoombaRed.h"
+
 
 #include "SampleKeyEventHandler.h"
 
@@ -124,20 +130,42 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
-		if (player!=NULL) 
+		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
+		obj = new CMario(x, y);
+		player = (CMario*)obj;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
-	case OBJECT_TYPE_QUESTIONBRICK: obj = new CQuestionBrick(x, y); break;
+	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
+	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(x, y); break;
+	case OBJECT_TYPE_KOOPASFLY: obj = new CKoopasFly(x, y); break;
+	case OBJECT_TYPE_REDGOOMBA: obj = new CGoombaRed(x, y); break;
+	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
+	case OBJECT_TYPE_COIN: { 
+		obj = new CCoin(x, y); 
+		coin.push_back(dynamic_cast<CCoin*>(obj));
+		break; 
+	}
+
+	case OBJECT_TYPE_MUSHROOM: {
+		obj = new CMushroom(x, y);
+		mr.push_back(dynamic_cast<CMushroom*>(obj));
+		break;
+	}
+
+	case OBJECT_TYPE_QUESTIONBRICK:
+	{
+		obj = new CQuestionBrick(x, y); 
+		qb.push_back(dynamic_cast<CQuestionBrick*>(obj));
+		break;
+
+	}
+	
+
 	case OBJECT_TYPE_PLATFORM:
 	{
 		
@@ -162,6 +190,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new ColorBox(x, y, r, b);
 	}
 							 break;
+	case OBJECT_TYPE_PIPE: {
+		float k = (float)atof(tokens[3].c_str());
+		float h = (float)atof(tokens[4].c_str());
+		obj = new CPipe(x, y, k, h);
+	}
+	break;
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = (float)atof(tokens[3].c_str());
@@ -252,6 +286,17 @@ void CPlayScene::Load()
 	}
 
 	f.close();
+	for (size_t i = 0; i < mr.size(); i++)
+	{
+		qb[i]->SetItem(mr[i]);
+	}
+	for (size_t i = 0; i < 1; i++)
+	{
+		qb[i]->SetItemC(coin[i]);
+	}
+	qb = vector<CQuestionBrick*>();
+	mr = vector<CMushroom*>();
+	coin = vector<CCoin*>();
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
@@ -283,7 +328,11 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
 
+	//if (cx > map->GetMapWidth() - game->GetBackBufferWidth()) cx = float(map->GetMapWidth() - game->GetBackBufferWidth());
+	//if (cy > map->GetMapHeight() - game->GetBackBufferHeight() - 8) cy = float(map->GetMapHeight() - game->GetBackBufferHeight() - 8);
+
 	if (cx < 0) cx = 0;
+	if (cy < 0) cy = 0;
 
 	/*Camera::GetInstance()->SetCamPos(cx, 240);*/
 	CGame::GetInstance()->SetCamPos(cx, 0.0f);

@@ -5,18 +5,28 @@ coin.txt
 cloud.txt
 questionBrick.txt
 brick.txt
+mushroom.txt
+goomba.txt
+koopas.txt
+koopasFly.txt
+goombaRed.txt
 #
+
+
 [OBJECTS]
 # type	x	y	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 100 = Colorbox, 200 = Qbrick
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4 = coin, 6 = mushroom, 7 = koopas , 8 = KoopasFly, 9 = RedGoomba, 100 = Colorbox, 200 = Qbrick, 
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
 0	20	10
 
 #COIN
-4	160	120
-4	176	120
+4	416	84
+4	160	96
+4	176	96
+
+
 #Platform
 5	0	180	16	16	39	51000	52000	53000
 5	623	172	16	32	29	51000	52000	53000
@@ -24,6 +34,8 @@ brick.txt
 5	1535	180	16	16	5	51000	52000	53000
 5	1663	180	16	16	36	51000	52000	53000
 5	2255	180	16	16	35	51000	52000	53000
+
+
 
 
 #Portal 
@@ -42,11 +54,31 @@ brick.txt
 100	2159	148	48	48
 100	2191	100	48	144
 
+
+#Mushroom
+6	160	118
+6	176	118
+#6	416	84
+
+#Koopas
+7	400	10
+#Koopas Fly
+#8	220	10
+#Goomba
+2	600	10
+#RED GOOM
+9	800	10
+
+# PIPE
+300	361	148	32	48
+
 #QuestionBrick
-200	160	120
-200	175	120
+200	160	118
+200	176	118
+200	416	84
 
 #Brick
 1 100 120
+
 [MAP]
 30	textures/Map1.txt	27	176	11	11	0

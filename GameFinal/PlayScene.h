@@ -7,6 +7,8 @@
 #include "Mario.h"
 #include "Goomba.h"
 #include "Map.h"
+#include "Mushroom.h"
+#include "QuestionBrick.h"
 
 //#include "Koopas.h"
 
@@ -19,6 +21,10 @@ protected:
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;					
 	Map* map;
+	vector<CMushroom*> mr;
+	vector<CQuestionBrick*> qb;
+	vector<CCoin*> coin;
+
 	vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_SPRITES(string line);
@@ -48,4 +54,3 @@ public:
 };
 
 typedef CPlayScene* LPPLAYSCENE;
-

@@ -10,11 +10,18 @@
 #define COIN_BBOX_WIDTH 10
 #define COIN_BBOX_HEIGHT 16
 
+#define COIN_STATE_APPEAR 100
+#define COIN_STATE_DISAPPEAR 200
+
+#define TIME_COIN_APPEAR 1000
 class CCoin : public CGameObject {
 public:
-	CCoin(float x, float y) : CGameObject(x, y) {}
+	int firstY;
+	int timeAppear = GetTickCount64();
+	CCoin(float x, float y);
 	void Render();
-	void Update(DWORD dt) {}
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
+	virtual void SetState(int state);
 };

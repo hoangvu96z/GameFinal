@@ -1,11 +1,52 @@
 #include "Coin.h"
+#include "debug.h"
+
+CCoin::CCoin(float x, float y) :CGameObject(x, y)
+{
+	firstY = y;
+}
 
 void CCoin::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
+
 	animations->Get(ID_ANI_COIN)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
+}
+
+void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
+	y += vy * dt;
+	if (state == COIN_STATE_APPEAR)
+	{
+		if (y < firstY - 35) {
+			vy = 0.1;
+
+			if (GetTickCount64() - timeAppear >= TIME_COIN_APPEAR)
+			{
+				SetState(COIN_STATE_DISAPPEAR);
+				timeAppear = 0;
+				DebugOut(L"game: %f\n", GetTickCount64());
+			}
+
+		}
+	}
+	CGameObject::Update(dt, coObjects);
+}
+
+void CCoin::SetState(int state) {
+	CGameObject::SetState(state);
+	switch (state)
+	{
+	case COIN_STATE_APPEAR:
+		vy -= 0.1;
+		break;
+	case COIN_STATE_DISAPPEAR:
+		isDeleted = true;
+		break;
+	default:
+		break;
+	}
 }
 
 void CCoin::GetBoundingBox(float& l, float& t, float& r, float& b)

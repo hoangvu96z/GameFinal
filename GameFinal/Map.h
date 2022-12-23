@@ -18,8 +18,6 @@ class Map
 	int rows;
 	int TileSetWidth;
 	int TileSetHeight;
-	int Frameheight;
-	int Framewidth;
 	int TileMapID[MAX][MAX];
 
 public:
@@ -28,5 +26,6 @@ public:
 	void DrawMap();
 	void Load();
 	int GetMapWidth() { return collumns * TileSetWidth; }
+	int GetMapHeight() { return rows * TileSetWidth; }
 	~Map();
 };

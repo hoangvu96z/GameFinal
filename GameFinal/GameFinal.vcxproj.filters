@@ -73,7 +73,24 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Frameworks</Filter>
     </ClCompile>
-    <ClCompile Include="QuestionBrick.cpp" />
+    <ClCompile Include="GoombaRed.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Koopas.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="KoopasFly.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestionBrick.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -160,7 +177,24 @@
     <ClInclude Include="Camera.h">
       <Filter>Frameworks</Filter>
     </ClInclude>
-    <ClInclude Include="QuestionBrick.h" />
+    <ClInclude Include="GoombaRed.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopas.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="KoopasFly.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBrick.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">
@@ -174,7 +208,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="mario-sample.txt" />
-    <Text Include="scenenew.txt" />
+    <Text Include="mario-sample.txt">
+      <Filter>Objects</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

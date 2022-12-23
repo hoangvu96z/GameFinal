@@ -4,15 +4,32 @@
 #include "Animation.h"
 #include "Animations.h"
 
+#include "Coin.h"
+#include "Mushroom.h"
+
 #define ID_ANI_QBRICK 100000
-#define QBRICK_WIDTH 16
+#define ID_ANI_EMP	100001
 #define QBRICK_BBOX_WIDTH 16
 #define QBRICK_BBOX_HEIGHT 16
 
-class CQuestionBrick : public CGameObject {
+#define QUESTIONBRICK_STATE_COLISION 100
+#define QUESTIONBRICK_STATE_EMP	200
+
+#define MAX_HEIGHT	5
+class CQuestionBrick : public CGameObject
+{
 public:
-	CQuestionBrick(float x, float y) : CGameObject(x, y) {}
+	CCoin* coin;
+	CMushroom* mus = NULL;
+	BOOLEAN CheckBrickCollision = false;
+	float First_y;
+	CQuestionBrick(float x, float y);
 	void Render();
-	void Update(DWORD dt) {}
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+	virtual void SetState(int state);
+
+
+	void SetItem(CMushroom* mr);
+	void SetItemC(CCoin* co);
 };
