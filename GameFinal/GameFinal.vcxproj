@@ -37,6 +37,7 @@
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="KoopasFly.h" />
+    <ClInclude Include="KoopasObject.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mushroom.h" />
@@ -69,6 +70,7 @@
     <ClCompile Include="GoombaRed.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="KoopasFly.cpp" />
+    <ClCompile Include="KoopasObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mario.cpp" />

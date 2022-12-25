@@ -8,8 +8,9 @@ CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = KOOPAS_GRAVITY;
-	SetState(KOOPAS_STATE_WALKING_RIGHT);
+	SetState(KOOPAS_STATE_WALKING_LEFT);
 	isCollision = false;
+	koo = new KoopasObject(x, y);
 }
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -38,6 +39,7 @@ void CKoopas::OnNoCollision(DWORD dt)
 
 void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+
 	if (state != KOOPAS_STATE_SHELL_MOVING)
 	{
 		if (!e->obj->IsBlocking()) return;
@@ -49,7 +51,6 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 		else if (e->nx != 0)
 		{
 			vx = -vx;
-
 		}
 	}
 	else if (state == KOOPAS_STATE_SHELL_MOVING) {
@@ -106,14 +107,46 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
+	if (state == KOOPAS_STATE_WALKING_RIGHT || state == KOOPAS_STATE_WALKING_LEFT)
+	{
+		if (vx > 0) {
+			koo->SetPosition(x + KOOPAS_BBOX_WIDTH, y);
+		}
+		else
+		{
+			koo->SetPosition(x - KOOPAS_BBOX_WIDTH, y);
+		}
+		koo->Update(dt, coObjects);
+		koo->GetPosition(objX, objY);
+		if (objY >= y + 1) {
+			vx = -vx;
+		}
+		
+	}
+	else if (state == KOOPAS_STATE_SHELL_MOVING) {
+		
+	}
 
+	
 	if ((state == KOOPAS_STATE_SHELL) && GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT )
 	{
 		SetState(KOOPAS_STATE_WALKING_RIGHT);
 		ReturnLife();
 	}
 
+	if ((state == KOOPAS_STATE_SHELL_MOVING) && GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT)
+	{
+		if (vx > 0)
+		{
+			SetState(KOOPAS_STATE_WALKING_RIGHT);
+		}
+		else {
+			SetState(KOOPAS_STATE_WALKING_LEFT);
+		}
+		ReturnLife();
+	}
 	CGameObject::Update(dt, coObjects);
+	
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -133,6 +166,7 @@ void CKoopas::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	//koo->Render();
 	RenderBoundingBox();
 }
 
@@ -145,8 +179,6 @@ void CKoopas::SetState(int state)
 		y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_SHELL) / 2;
 		die_start = GetTickCount64();
 		vx = 0;
-		vy = 0;
-		ay = 0;
 		break;
 	case KOOPAS_STATE_WALKING_RIGHT:
 		vx = KOOPAS_WALKING_SPEED;
@@ -157,7 +189,7 @@ void CKoopas::SetState(int state)
 		nx = -1;
 		break;
 	case KOOPAS_STATE_SHELL_MOVING:
-		vx = KOOPAS_SHELL_SPEED;
+		vx = KOOPAS_SHELL_SPEED * nx;
 		break;
 	}
 }

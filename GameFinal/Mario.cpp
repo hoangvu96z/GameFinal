@@ -13,6 +13,7 @@
 #include "Koopas.h"
 #include "KoopasFly.h"
 #include "GoombaRed.h"
+#include "Pipe.h"
 
 #include "Collision.h"
 
@@ -135,10 +136,9 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	if (e->ny > 0)
 	{
 		coins->SetState(COIN_STATE_APPEAR);
-		
 		coin++;
 	}
-	//e->obj->Delete();
+	
 	
 }
 
@@ -234,6 +234,7 @@ void CMario::OnCollisionWithKoopasFly(LPCOLLISIONEVENT e) {
 
 void CMario::OnCollisionWithRedGoomba(LPCOLLISIONEVENT e) {
 	CGoombaRed* rgb = dynamic_cast<CGoombaRed*>(e->obj);
+
 	if (e->ny < 0)
 	{
 		if (rgb->GetState() != REDGOOMBA_STATE_DIE)
@@ -464,6 +465,7 @@ void CMario::SetState(int state)
 			state = MARIO_STATE_IDLE;
 			isSitting = true;
 			vx = 0; vy = 0.0f;
+			ax = 0;
 			y += MARIO_SIT_HEIGHT_ADJUST;
 		}
 		break;

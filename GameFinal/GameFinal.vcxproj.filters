@@ -91,6 +91,7 @@
     <ClCompile Include="QuestionBrick.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="KoopasObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -195,6 +196,7 @@
     <ClInclude Include="QuestionBrick.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="KoopasObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">

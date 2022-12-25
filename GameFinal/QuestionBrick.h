@@ -19,7 +19,7 @@
 class CQuestionBrick : public CGameObject
 {
 public:
-	CCoin* coin;
+	CCoin* coin = NULL;
 	CMushroom* mus = NULL;
 	BOOLEAN CheckBrickCollision = false;
 	float First_y;
