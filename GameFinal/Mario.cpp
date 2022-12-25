@@ -31,6 +31,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
+	if (state == MARIO_STATE_KICK && GetTickCount64() - timeKick > 5000) {
+		isKicking = false;
+		
+	}
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -81,7 +85,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e )
 	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
-		if (goomba->GetState() != GOOMBA_STATE_DIE)
+		if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState()!= GOOMBA_STATE_DIE_BY_ATTACKING)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -200,33 +204,49 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 		if (e->nx != 0)
 		{
 			kp->SetState(KOOPAS_STATE_SHELL_MOVING);
-			if (vx > 0)
+			if (vx != 0)
 			{
-				kp->SetSpeed(KOOPAS_SHELL_SPEED * 1, 0);
+				kp->SetSpeed(KOOPAS_SHELL_SPEED * nx, 0);
 			}
-			else
-				kp->SetSpeed(KOOPAS_SHELL_SPEED * -1, 0);
+			
 
 		}
 	}
+
 
 }
 
 void CMario::OnCollisionWithKoopasFly(LPCOLLISIONEVENT e) {
 	CKoopasFly* kpF = dynamic_cast<CKoopasFly*>(e->obj);
-	if (untouchable == 0)
-	{
-		if (kpF->GetState() != KOOPAS_STATE_SHELL)
+	if (e->ny < 0) {
+		if (kpF->GetState() != KOOPASFLY_STATE_SHELL)
 		{
-			if (level > MARIO_LEVEL_SMALL)
+			kpF->SetState(KOOPASFLY_STATE_SHELL);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+
+		}
+		else
+		{
+			kpF->SetState(KOOPAS_STATE_SHELL_MOVING);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+	}
+	else // hit by 
+	{
+		if (untouchable == 0)
+		{
+			if (kpF->GetState() != KOOPASFLY_STATE_SHELL)
 			{
-				level = MARIO_LEVEL_SMALL;
-				StartUntouchable();
-			}
-			else
-			{
-				DebugOut(L">>> Mario DIE >>> \n");
-				SetState(MARIO_STATE_DIE);
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
 			}
 		}
 	}
@@ -316,6 +336,7 @@ int CMario::GetAniIdSmall()
 					aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
 				else if (ax == MARIO_ACCEL_WALK_X)
 					aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
+
 			}
 			else // vx < 0
 			{
@@ -378,6 +399,8 @@ int CMario::GetAniIdBig()
 					aniId = ID_ANI_MARIO_RUNNING_RIGHT;
 				else if (ax == MARIO_ACCEL_WALK_X)
 					aniId = ID_ANI_MARIO_WALKING_RIGHT;
+				else if (isKicking == true)
+					aniId = ID_ANI_MARIO_KICK_RIGHT;
 			}
 			else // vx < 0
 			{
@@ -387,6 +410,8 @@ int CMario::GetAniIdBig()
 					aniId = ID_ANI_MARIO_RUNNING_LEFT;
 				else if (ax == -MARIO_ACCEL_WALK_X)
 					aniId = ID_ANI_MARIO_WALKING_LEFT;
+				else if (isKicking == true)
+					aniId = ID_ANI_MARIO_KICK_LEFT;
 			}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
@@ -488,6 +513,11 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
+		break;
+	case MARIO_STATE_KICK:
+		isKicking = true;
+		timeKick = GetTickCount64();
+		DebugOut(L"HAHA");
 		break;
 	}
 

@@ -34,9 +34,7 @@ void CQuestionBrick::SetState(int state) {
 			{
 				mus->SetState(MUSHROOM_STATE_APPEAR);
 			}
-			else if (coin != NULL) {
-				coin->SetState(COIN_STATE_APPEAR);
-			}
+		
 			break;
 
 		}
@@ -50,7 +48,7 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	{
 		if (state == QUESTIONBRICK_STATE_COLISION) {
 			if (y < First_y - MAX_HEIGHT) {
-				vy = 0.03;
+				vy = BRICK_GODOWN;
 				SetState(QUESTIONBRICK_STATE_EMP);
 			}
 		}

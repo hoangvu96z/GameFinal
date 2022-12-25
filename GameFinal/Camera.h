@@ -23,29 +23,11 @@ public:
 	void SetCamSpeed()
 
 	{
-		if (Mariovy < 0 && cam_y >= 0)
-			cam_vy = Mariovy;
-		else {
-			if (cam_y <= 0)
-				cam_y = 0;
-			cam_vy = Mariovy*0.7;
-		}
-		if (cam_vy > 0)
-		{
-			if (cam_y >= 240)
-			{
-				IsFollowingMario = false;
-				cam_vy = 0;
-				cam_y = 240;
-			}
-		}
+		
 	}
 	bool IsInCam(float objX, float objY)
 	{
-		if (objX < cam_x || objX - cam_x>SCREEN_WIDTH || objY < cam_y)
-			return false;
-		else
-			return true;
+	
 	}
 	void SetCamPos(float x, float y) {
 		cam_x = x;

@@ -5,19 +5,23 @@
 #define KOOPAS_SHELL_SPEED 0.2f
 
 #define KOOPAS_BBOX_WIDTH 16
-#define KOOPAS_BBOX_HEIGHT 28
+#define KOOPAS_BBOX_HEIGHT 27
 #define KOOPAS_BBOX_HEIGHT_SHELL 16
 
-#define KOOPAS_DIE_TIMEOUT 10000
+#define KOOPAS_DIE_TIMEOUT	8000
+#define KOOPAS_RETURN_LIFE 2000
 
 #define KOOPAS_STATE_WALKING_LEFT 100
 #define KOOPAS_STATE_WALKING_RIGHT 200
 #define KOOPAS_STATE_SHELL 300
 #define KOOPAS_STATE_SHELL_MOVING 400
+#define	KOOPAS_STATE_REBORN	500
 
 #define ID_ANI_KOOPAS_WALKING_LEFT 7000
 #define ID_ANI_KOOPAS_WALKING_RIGHT 7001
 #define ID_ANI_KOOPAS_SHELL 7002
+#define ID_ANI_KOOPAS_SHELL_MOVING 7003
+#define ID_ANI_KOOPAS_SHELL_RETURN	7004
 class CKoopas : public CGameObject
 {
 protected:
@@ -25,7 +29,10 @@ protected:
 	float ay;
 	int Direct;
 	bool isCollision;
+	int TimeCollision;
+	ULONGLONG timeReturn;
 	ULONGLONG die_start;
+	ULONGLONG shell_start;
 	float objX;
 	float objY;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -33,6 +40,7 @@ protected:
 	virtual void Render();
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithRedGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithQB(LPCOLLISIONEVENT e);
 	virtual int IsCollidable() { return 1; };
 
 	virtual int IsBlocking() { return 0; }
@@ -42,8 +50,8 @@ protected:
 
 
 	void ReturnLife();
-	
-		
+
+
 
 public:
 	KoopasObject* koo;

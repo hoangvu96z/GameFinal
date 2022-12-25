@@ -14,6 +14,8 @@
 #define COIN_STATE_DISAPPEAR 200
 
 #define TIME_COIN_APPEAR 1000
+#define COIN_BOUNCING	0.1
+#define MAX_Y	35
 class CCoin : public CGameObject {
 public:
 	int firstY;

@@ -16,7 +16,8 @@
 #define QUESTIONBRICK_STATE_EMP	200
 
 #define MAX_HEIGHT	5
-class CQuestionBrick : public CGameObject
+#define BRICK_GODOWN 0.03f
+class CQuestionBrick : public CGameObject 
 {
 public:
 	CCoin* coin = NULL;

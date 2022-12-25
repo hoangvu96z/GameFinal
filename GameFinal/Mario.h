@@ -12,7 +12,7 @@
 #define MARIO_ACCEL_WALK_X	0.0005f
 #define MARIO_ACCEL_RUN_X	0.0007f
 
-#define MARIO_JUMP_SPEED_Y		0.5f
+#define MARIO_JUMP_SPEED_Y		0.6f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
 
 #define MARIO_GRAVITY			0.002f
@@ -32,6 +32,7 @@
 
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
+#define MARIO_STATE_KICK	700
 
 
 #pragma region ANIMATION_ID
@@ -56,6 +57,9 @@
 
 #define ID_ANI_MARIO_BRACE_RIGHT 1000
 #define ID_ANI_MARIO_BRACE_LEFT 1001
+
+#define ID_ANI_MARIO_KICK_RIGHT	1701
+#define ID_ANI_MARIO_KICK_LEFT	1700
 
 #define ID_ANI_MARIO_DIE 999
 
@@ -107,10 +111,12 @@ class CMario : public CGameObject
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
-
+	
 	int level; 
 	int untouchable; 
+	bool isKicking;
 	ULONGLONG untouchable_start;
+	ULONGLONG timeKick;
 	BOOLEAN isOnPlatform;
 	int coin; 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
@@ -130,6 +136,7 @@ public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;
+		isKicking = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
@@ -139,6 +146,7 @@ public:
 		untouchable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
+		type = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

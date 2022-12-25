@@ -7,7 +7,7 @@ CKoopasFly::CKoopasFly(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = KOOPASFLY_GRAVITY;
-	SetState(KOOPASFLY_STATE_JUMPFLY_RIGHT);
+	SetState(KOOPASFLY_STATE_JUMPFLY);
 	isCollision = false;
 }
 
@@ -41,11 +41,6 @@ void CKoopasFly::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CKoopasFly*>(e->obj)) return;
 
 
-	if (e->ny < 0)
-	{
-		vy -= KOOPASFLY_DEFLECT_JUMP_SPEED;
-	}
-
 	if (e->ny != 0)
 	{
 		vy = 0;
@@ -55,6 +50,14 @@ void CKoopasFly::OnCollisionWith(LPCOLLISIONEVENT e)
 		vx = -vx;
 
 	}
+	//
+	/*if (state == KOOPASFLY_STATE_JUMPFLY)
+	{
+		if (e->ny < 0) {
+			vy -= KOOPASFLY_DEFLECT_JUMP_SPEED;
+		}
+	}*/
+
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
@@ -86,7 +89,7 @@ void CKoopasFly::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if ((state == KOOPASFLY_STATE_SHELL) && GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT)
 	{
-		SetState(KOOPASFLY_STATE_WALKING_RIGHT);
+		SetState(KOOPASFLY_STATE_JUMPFLY);
 		ReturnLife();
 	}
 
@@ -104,7 +107,7 @@ void CKoopasFly::Render()
 	else
 		aniId = ID_ANI_KOOPASFLY_JUMPFLY_LEFT;
 
-	if (state == KOOPASFLY_STATE_SHELL || state == KOOPASFLY_STATE_SHELL_MOVING)
+	if (state == KOOPASFLY_STATE_SHELL)
 	{
 		aniId = ID_ANI_KOOPASFLY_SHELL;
 	}
@@ -123,22 +126,14 @@ void CKoopasFly::SetState(int state)
 		die_start = GetTickCount64();
 		vx = 0;
 		vy = 0;
-		ay = 0;
 		break;
-	case KOOPASFLY_STATE_JUMPFLY_RIGHT:
-		vx = KOOPASFLY_WALKING_SPEED;
-		
-		nx = 1;
-		break;
-	case KOOPASFLY_STATE_JUMPFLY_LEFT:
-		vx = -KOOPASFLY_WALKING_SPEED;
-		nx = -1;
+	case KOOPASFLY_STATE_JUMPFLY:
+		vx = KOOPASFLY_WALKING_SPEED * nx;
 		break;
 	case KOOPASFLY_STATE_SHELL_MOVING:
-		vx = KOOPASFLY_SHELL_SPEED;
-		nx = 1;
-		DebugOut(L"nx: %d\n", Direct);
+		//vx = KOOPASFLY_SHELL_SPEED;
 		break;
+
 	}
 }
 

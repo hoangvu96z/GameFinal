@@ -1,5 +1,6 @@
 #include "Mushroom.h"
 #include "Platform.h"
+#include "Pipe.h"
 CMushroom::CMushroom(float x, float y) : CGameObject(x, y)
 {
 	firstY = y;
@@ -66,7 +67,7 @@ void CMushroom::SetState(int state) {
 		vy = 0;
 		break;
 	case MUSHROOM_STATE_MOVING:
-		vx = 0.05;
+		vx = MUSHROOM_WALKING_SPEED;
 		break;
 	default:
 		break;

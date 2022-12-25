@@ -16,7 +16,7 @@ Map::Map(int ID, LPCWSTR Filepath, int Rows, int Cols, int Tiles, int TileColumn
 	//DrawMap();
 }
 void Map::Load() {
-	std::ifstream f;
+	ifstream f;
 	f.open(FilepathMap);
 	for (int i = 0; i < rows; i++)
 	{
@@ -47,8 +47,8 @@ void Map::ReadMap()
 void Map::DrawMap()
 {
 	CSprites* sprites = CSprites::GetInstance();
-	int firstcol = (int)Camera::GetInstance()->GetCamPosX() / 8;
-
+	int firstcol = (int)Camera::GetInstance()->GetCamPosX() /8 ;
+	
 	if (firstcol < 0) { firstcol = 0; }
 	int lastcol = firstcol + 20;
 	DebugOut(L"firstcol: %d \n", firstcol);
@@ -56,7 +56,7 @@ void Map::DrawMap()
 	for (UINT i = 0; i < rows; i++)
 		for (UINT j = 0; j < collumns; j++)
 		{
-
+			
 			RECT r;
 			UINT x = (TileMapID[i][j] - 1) % TileSetWidth;// nums column in Map1-1  0
 			UINT y; // nums row in Map 1-1 0
