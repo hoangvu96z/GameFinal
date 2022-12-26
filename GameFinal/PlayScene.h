@@ -14,7 +14,7 @@
 
 #define SCREEN_WIDTH_SCENE	2450
 
-
+#define ScreenH 16
 class CPlayScene: public CScene
 {
 protected: 

@@ -1,13 +1,13 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #WALK
-31001	4	12	20	29	10
-31002	23	12	40	29	10
+31001	4	13	21	29	10
+31002	23	13	41	29	10
 
 #DIE
-32001	43	18	61	29	10
+32001	43	19	62	29	10
 #Die Impact
-33001	78	9	95	26	18
+33001	80	12	97	28	18
 
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...

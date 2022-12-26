@@ -11,7 +11,8 @@ koopas.txt
 koopasFly.txt
 goombaRed.txt
 #
-
+[MAP]
+30	map1.txt	27	176	11	11	0
 
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -88,7 +89,7 @@ goombaRed.txt
 #Koopas
 7	550	332
 #Koopas Fly
-#8	200	368
+8	700	368
 #Goomba
 2	400	368
 #RED GOOM
@@ -113,6 +114,3 @@ goombaRed.txt
 
 #Brick
 1 100 120
-
-[MAP]
-30	textures/Map1.txt	27	176	11	11	0

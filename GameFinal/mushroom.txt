@@ -1,7 +1,7 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #Mushroom
-62001	300	188	315	205	20
+62001	300	189	316	205	20
 
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...

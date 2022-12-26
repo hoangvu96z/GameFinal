@@ -17,6 +17,8 @@
 #define MUSHROOM_GRAVITY 0.002f
 #define MUSHROOM_WALKING_SPEED 0.05f
 #define MUSHROOM_DEFLECT 0.007f
+
+#define INGROWTH 16
 class CMushroom : public CGameObject {
 public:
 	int firstY;
@@ -33,4 +35,5 @@ public:
 	virtual int IsCollidable() { return 1; };// 
 	virtual int IsBlocking() { return 0; }
 	virtual void SetState(int state);
+	void SetDirect(int nx) { this->nx = nx; };
 };

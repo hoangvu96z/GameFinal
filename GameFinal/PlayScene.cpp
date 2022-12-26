@@ -106,7 +106,6 @@ void CPlayScene::_ParseSection_MAP(string line) {
 	int Column = atoi(tokens[3].c_str());
 	int tileSet = atoi(tokens[4].c_str());
 	int tileColumn = atoi(tokens[5].c_str());
-	int checkWM = atoi(tokens[6].c_str());
 
 	map = new Map(ID, mapPath.c_str(), Row, Column, tileSet, tileColumn);
 }
@@ -336,14 +335,10 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() / 2;
 
-	/*if (cx > map->GetMapWidth() - game->GetBackBufferWidth()) cx = float(map->GetMapWidth() - game->GetBackBufferWidth());
-	if (cy > map->GetMapHeight() - game->GetBackBufferHeight() - 8) cy = float(map->GetMapHeight() - game->GetBackBufferHeight() - 8);*/
-
 	if (cx < 0) cx = 0;
 	if (cy < 0) cy = 0;
 
-	/*Camera::GetInstance()->SetCamPos(cx, 240);*/
-	CGame::GetInstance()->SetCamPos(cx, cy);
+	CGame::GetInstance()->SetCamPos(cx, cy - ScreenH);
 
 	PurgeDeletedObjects();
 }

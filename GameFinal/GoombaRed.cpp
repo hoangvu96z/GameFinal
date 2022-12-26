@@ -63,12 +63,7 @@ void CGoombaRed::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
-	else if (dynamic_cast<CMario*>(e->obj)) {
-			if (e->ny > 0) {
-				SetState(REDGOOMBA_STATE_WALKING);
-			}
-	}
-
+	
 	if (state == REDGOOMBA_STATE_WING_JUMPFLY)
 	{
 		if (e->ny < 0) {

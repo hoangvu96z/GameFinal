@@ -1,6 +1,7 @@
 #include "Mushroom.h"
 #include "Platform.h"
 #include "Pipe.h"
+#include "debug.h"
 CMushroom::CMushroom(float x, float y) : CGameObject(x, y)
 {
 	firstY = y;
@@ -11,7 +12,7 @@ CMushroom::CMushroom(float x, float y) : CGameObject(x, y)
 void CMushroom::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	if (state == MUSHROOM_STATE_APPEAR || state == MUSHROOM_STATE_MOVING)
+	if (state != MUSHROOM_STATE_COLLISION)
 	{
 		animations->Get(ID_ANI_MUSHROOM)->Render(x, y);
 	}
@@ -22,7 +23,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	
 	if (state == MUSHROOM_STATE_APPEAR) {
 		y -= MUSHROOM_DEFLECT * dt ;
-		if (y < firstY - 16) {
+		if (y < firstY - INGROWTH) {
 			SetState(MUSHROOM_STATE_MOVING);
 		}
 
@@ -67,7 +68,7 @@ void CMushroom::SetState(int state) {
 		vy = 0;
 		break;
 	case MUSHROOM_STATE_MOVING:
-		vx = MUSHROOM_WALKING_SPEED;
+		vx = MUSHROOM_WALKING_SPEED * nx;	
 		break;
 	default:
 		break;
@@ -75,6 +76,7 @@ void CMushroom::SetState(int state) {
 }
 void CMushroom::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
+	
 	l = x - MUSHROOM_BBOX_WIDTH / 2;
 	t = y - MUSHROOM_BBOX_HEIGHT / 2;
 	r = l + MUSHROOM_BBOX_WIDTH;

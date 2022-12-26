@@ -6,7 +6,7 @@
 #define KOOPASFLY_DEFLECT_JUMP_SPEED 0.4f
 
 #define KOOPASFLY_BBOX_WIDTH 16
-#define KOOPASFLY_BBOX_HEIGHT 26
+#define KOOPASFLY_BBOX_HEIGHT 27
 #define KOOPASFLY_BBOX_HEIGHT_SHELL 16
 
 #define KOOPAS_DIE_TIMEOUT 10000
@@ -48,6 +48,7 @@ protected:
 
 
 public:
+	float objX, objY;
 	CKoopasFly(float x, float y);
 	virtual void SetState(int state);
 	void setNX(int direct) { Direct = direct; };
