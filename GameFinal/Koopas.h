@@ -10,9 +10,9 @@
 
 #define KOOPAS_DIE_TIMEOUT	8000
 #define KOOPAS_RETURN_LIFE 2000
+#define KOOPAS_TIME_COLLISION 100
 
-#define KOOPAS_STATE_WALKING_LEFT 100
-#define KOOPAS_STATE_WALKING_RIGHT 200
+#define KOOPAS_STATE_WALKING 200
 #define KOOPAS_STATE_SHELL 300
 #define KOOPAS_STATE_SHELL_MOVING 400
 #define	KOOPAS_STATE_REBORN	500
@@ -27,6 +27,7 @@ class CKoopas : public CGameObject
 protected:
 	float ax;
 	float ay;
+	int nx;
 	int Direct;
 	bool isCollision;
 	int TimeCollision;

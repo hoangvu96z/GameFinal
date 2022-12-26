@@ -16,7 +16,7 @@ void CKoopasFly::GetBoundingBox(float& left, float& top, float& right, float& bo
 	if (state == KOOPASFLY_STATE_SHELL || state == KOOPASFLY_STATE_SHELL_MOVING)
 	{
 		left = x - KOOPASFLY_BBOX_WIDTH / 2;
-		top = y - KOOPASFLY_BBOX_HEIGHT_SHELL / 2;
+		top = y - (KOOPASFLY_BBOX_HEIGHT_SHELL + 1) / 2;
 		right = left + KOOPASFLY_BBOX_WIDTH;
 		bottom = top + KOOPASFLY_BBOX_HEIGHT_SHELL;
 	}
@@ -50,7 +50,7 @@ void CKoopasFly::OnCollisionWith(LPCOLLISIONEVENT e)
 		vx = -vx;
 
 	}
-	//
+
 	/*if (state == KOOPASFLY_STATE_JUMPFLY)
 	{
 		if (e->ny < 0) {
@@ -84,13 +84,11 @@ void CKoopasFly::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-	
-	
+
 
 	if ((state == KOOPASFLY_STATE_SHELL) && GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT)
 	{
-		SetState(KOOPASFLY_STATE_JUMPFLY);
-		ReturnLife();
+		SetState(KOOPASFLY_STATE_WALKING);
 	}
 
 	CGameObject::Update(dt, coObjects);
@@ -102,15 +100,36 @@ void CKoopasFly::Render()
 {
 	int aniId = ID_ANI_KOOPASFLY_JUMPFLY_RIGHT;
 	if (vx > 0) {
-		aniId = ID_ANI_KOOPASFLY_JUMPFLY_RIGHT;
+		if (state == KOOPASFLY_STATE_JUMPFLY)
+		{
+			aniId = ID_ANI_KOOPASFLY_JUMPFLY_RIGHT;
+		}
+		else if (state == KOOPASFLY_STATE_WALKING)
+		{
+			aniId = ID_ANI_KOOPASFLY_WALKING_RIGHT;
+		}
+		else {
+			aniId = ID_ANI_KOOPASFLY_SHELL_MOVING_RIGHT;
+		}
 	}
 	else
-		aniId = ID_ANI_KOOPASFLY_JUMPFLY_LEFT;
+		if (state == KOOPASFLY_STATE_JUMPFLY)
+		{
+			aniId = ID_ANI_KOOPASFLY_JUMPFLY_LEFT;
+		}
+		else if (state == KOOPASFLY_STATE_WALKING)
+		{
+			aniId = ID_ANI_KOOPASFLY_WALKING_LEFT;
+		}
+		else {
+			aniId = ID_ANI_KOOPASFLY_SHELL_MOVING_LEFT;
+		}
 
 	if (state == KOOPASFLY_STATE_SHELL)
 	{
 		aniId = ID_ANI_KOOPASFLY_SHELL;
 	}
+
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
@@ -125,13 +144,12 @@ void CKoopasFly::SetState(int state)
 		y += (KOOPASFLY_BBOX_HEIGHT - KOOPASFLY_BBOX_HEIGHT_SHELL) / 2;
 		die_start = GetTickCount64();
 		vx = 0;
-		vy = 0;
 		break;
 	case KOOPASFLY_STATE_JUMPFLY:
-		vx = KOOPASFLY_WALKING_SPEED * nx;
+		vx = -KOOPASFLY_WALKING_SPEED;
 		break;
 	case KOOPASFLY_STATE_SHELL_MOVING:
-		//vx = KOOPASFLY_SHELL_SPEED;
+		vx = KOOPASFLY_SHELL_SPEED;
 		break;
 
 	}
@@ -140,9 +158,9 @@ void CKoopasFly::SetState(int state)
 void CKoopasFly::ReturnLife()
 {
 	die_start = 0;
-	if (state == KOOPASFLY_STATE_WALKING_RIGHT || state == KOOPASFLY_STATE_WALKING_LEFT)
+	if (state == KOOPASFLY_STATE_JUMPFLY)
 	{
-		y -= (KOOPASFLY_BBOX_HEIGHT - KOOPASFLY_BBOX_HEIGHT_SHELL) / 2;
+		y -= (KOOPASFLY_BBOX_HEIGHT - KOOPASFLY_BBOX_HEIGHT_SHELL + 2) / 2;
 	}
 
 }

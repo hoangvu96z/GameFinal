@@ -117,7 +117,7 @@ class CMario : public CGameObject
 	bool isKicking;
 	ULONGLONG untouchable_start;
 	ULONGLONG timeKick;
-	BOOLEAN isOnPlatform;
+	
 	int coin; 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -133,6 +133,7 @@ class CMario : public CGameObject
 	int GetAniIdSmall();
 
 public:
+	BOOLEAN isOnPlatform;
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;

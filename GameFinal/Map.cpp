@@ -57,9 +57,9 @@ void Map::ReadMap()
 	CTextures* texture = CTextures::GetInstance();
 	LPTEXTURE texMap = texture->Get(id);
 	int id_sprite = 0;
-	for (int i = 0; i < TileSetWidth; i++)
+	for (int i = 0; i <= TileSetWidth; i++)
 	{
-		for (int j = 0; j < TileSetHeight; j++)
+		for (int j = 0; j <= TileSetHeight; j++)
 		{
 			RECT r;
 			r.left = (id_sprite %  TileSetWidth) * FrameWidth ;
@@ -86,14 +86,10 @@ void Map::DrawMap()
 	for (UINT i = firstY; i < firstY + heightScr ; i++)
 		for (UINT j = firstX; j < firstX + widthScr; j++)
 		{
-			int sprite = TileMapID[i][j];
 			float x, y;
 			x = FrameHeight * j;
 			y = FrameWidth * i - 16;
-			if (TileMapID[i][j] !=-1)
-			{
-				CSprites::GetInstance()->Get(sprite)->Draw(x, y);
-			}
+			CSprites::GetInstance()->Get(TileMapID[i][j])->Draw(x, y);
 		}
 }
 

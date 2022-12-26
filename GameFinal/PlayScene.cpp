@@ -17,7 +17,7 @@
 #include "Pipe.h"
 #include "KoopasFly.h"
 #include "GoombaRed.h"
-
+#include "Warpipe.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -148,6 +148,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_KOOPASFLY: obj = new CKoopasFly(x, y); break;
 	case OBJECT_TYPE_REDGOOMBA: obj = new CGoombaRed(x, y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
+	case OBJECT_TYPE_WARPIPE: obj = new CWarpipe(x, y); break;
 	case OBJECT_TYPE_COIN: { 
 		obj = new CCoin(x, y); 
 		coin.push_back(dynamic_cast<CCoin*>(obj));
@@ -199,8 +200,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float cell_width = (float)atof(tokens[3].c_str());
 		float cell_height = (float)atof(tokens[4].c_str());
 		int length = atoi(tokens[5].c_str());
+		int sprite_id_1 = atoi(tokens[6].c_str());
+		int sprite_id_2 = atoi(tokens[7].c_str());
+		int sprite_id_3 = atoi(tokens[8].c_str());
+		int sprite_id_4 = atoi(tokens[9].c_str());
 		obj = new CPipe(x, y, cell_width * length, cell_height,
-			cell_width, cell_height, length);
+			cell_width, cell_height, length, sprite_id_1, sprite_id_2, sprite_id_3, sprite_id_4);
 		break;
 	}
 	case OBJECT_TYPE_PORTAL:
@@ -337,6 +342,13 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cx < 0) cx = 0;
 	if (cy < 0) cy = 0;
+	if (cx > map->GetMapWidth() - game->GetBackBufferWidth() - ScreenH) {
+		cx = float(map->GetMapWidth() - game->GetBackBufferWidth()- ScreenH);
+	}
+	if (cy > map->GetMapHeight() - game->GetBackBufferHeight())
+	{
+		cy = float(map->GetMapHeight() - game->GetBackBufferHeight());
+	}
 
 	CGame::GetInstance()->SetCamPos(cx, cy - ScreenH);
 
@@ -345,9 +357,10 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	//map->DrawMap();
+	map->DrawMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
+	
 }
 
 /*

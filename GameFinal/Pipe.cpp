@@ -1,10 +1,27 @@
 #include "Pipe.h"
 #include "Textures.h"
 
+#define HEIGHTPIPE 16
+#define WIDTHPIPE 16
 
 void CPipe::Render()
 {
-	RenderBoundingBox();
+	if (this->length <= 0) return;
+	float xx = x;
+	float yy = y;
+	int heightPipe = (this->height / HEIGHTPIPE);
+	CSprites* s = CSprites::GetInstance();
+
+	s->Get(this->sprites_id_1)->Draw(xx, y);
+	s->Get(this->sprites_id_2)->Draw(xx + WIDTHPIPE, y);
+	for (int i = 1; i < heightPipe; i++)
+	{
+		yy += HEIGHTPIPE;
+		s->Get(this->sprites_id_3)->Draw(xx, yy);
+		s->Get(this->sprites_id_4)->Draw(xx + WIDTHPIPE, yy);
+		
+	}
+	//RenderBoundingBox();
 }
 
 void CPipe::GetBoundingBox(float& left, float& top, float& right, float& bottom) {
@@ -22,7 +39,7 @@ void CPipe::RenderBoundingBox() {
 	D3DXVECTOR3 p(x, y, 0);
 	RECT rect;
 
-	LPTEXTURE bbox = CTextures::GetInstance()->Get(ID_TEX_BBOX);
+	LPTEXTURE bbox = CTextures::GetInstance()->Get(ID_TEX_PIPE);
 
 	float l, t, r, b;
 

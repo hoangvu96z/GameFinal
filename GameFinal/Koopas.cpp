@@ -1,6 +1,7 @@
 #include "Koopas.h"
 #include "Goomba.h"
 #include "GoombaRed.h"
+#include "Mushroom.h"
 #include "debug.h"
 #include "Collision.h"
 #include "QuestionBrick.h"
@@ -9,14 +10,14 @@ CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = KOOPAS_GRAVITY;
-	SetState(KOOPAS_STATE_WALKING_LEFT);
+	SetState(KOOPAS_STATE_WALKING);
 	isCollision = false;
 	koo = new KoopasObject(x, y);
 }
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == KOOPAS_STATE_WALKING_RIGHT || state== KOOPAS_STATE_WALKING_LEFT)
+	if (state == KOOPAS_STATE_WALKING)
 	{
 		left = x - KOOPAS_BBOX_WIDTH / 2;
 		top = y - KOOPAS_BBOX_HEIGHT / 2;
@@ -127,7 +128,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-	if (state == KOOPAS_STATE_WALKING_RIGHT || state == KOOPAS_STATE_WALKING_LEFT)
+	if (state == KOOPAS_STATE_WALKING)
 	{
 		if (vx > 0) {
 			koo->SetPosition(x + KOOPAS_BBOX_WIDTH, y);
@@ -156,16 +157,11 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (GetTickCount64() - shell_start > KOOPAS_DIE_TIMEOUT)
 		{
-			if (vx > 0)
-			{
-				SetState(KOOPAS_STATE_WALKING_RIGHT);
-			}
-			else {
-				SetState(KOOPAS_STATE_WALKING_LEFT);
-			}
+			SetState(KOOPAS_STATE_WALKING);
+
 			ReturnLife();
 		}
-		else if (GetTickCount64() - TimeCollision > 100)
+		else if (GetTickCount64() - TimeCollision > KOOPAS_TIME_COLLISION)
 		{
 			isCollision = false;
 		}
@@ -211,16 +207,11 @@ void CKoopas::SetState(int state)
 		die_start = GetTickCount64();
 		vx = 0;
 		break;
-	case KOOPAS_STATE_WALKING_RIGHT:
-		vx = KOOPAS_WALKING_SPEED;
-		nx = 1;
-		break;
-	case KOOPAS_STATE_WALKING_LEFT:
-		vx = -KOOPAS_WALKING_SPEED;
-		nx = -1;
+	case KOOPAS_STATE_WALKING:
+		vx = KOOPAS_WALKING_SPEED ;
 		break;
 	case KOOPAS_STATE_SHELL_MOVING:
-		vx = KOOPAS_SHELL_SPEED * nx;
+		vx = KOOPAS_SHELL_SPEED;
 		shell_start = GetTickCount64();
 		break;
 	case KOOPAS_STATE_REBORN:
@@ -232,10 +223,10 @@ void CKoopas::SetState(int state)
 void CKoopas::ReturnLife()
 {
 	die_start = 0;
-	SetState(KOOPAS_STATE_WALKING_RIGHT);
-	if (state == KOOPAS_STATE_WALKING_RIGHT || state == KOOPAS_STATE_WALKING_LEFT)
+	SetState(KOOPAS_STATE_WALKING);
+	if (state == KOOPAS_STATE_WALKING)
 	{
-		y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_SHELL) / 2;
+		y -= ((KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_SHELL) / 2);
 	}
 	
 }

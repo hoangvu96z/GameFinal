@@ -92,6 +92,7 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="KoopasObject.cpp" />
+    <ClCompile Include="WarPipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -197,6 +198,7 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="KoopasObject.h" />
+    <ClInclude Include="WarPipe.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">

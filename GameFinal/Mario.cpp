@@ -30,11 +30,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-
-	if (state == MARIO_STATE_KICK && GetTickCount64() - timeKick > 5000) {
-		isKicking = false;
-		
-	}
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -78,14 +73,14 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithRedGoomba(e);
 }
 
-void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e )
+void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 
 	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
-		if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState()!= GOOMBA_STATE_DIE_BY_ATTACKING)
+		if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState() != GOOMBA_STATE_DIE_BY_ATTACKING)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -129,7 +124,7 @@ void CMario::OnCollisionWithQB(LPCOLLISIONEVENT e) {
 		{
 			brick->SetState(QUESTIONBRICK_STATE_COLISION);
 		}
-		
+
 	}
 }
 
@@ -142,8 +137,8 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 		coins->SetState(COIN_STATE_APPEAR);
 		coin++;
 	}
-	
-	
+
+
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -165,6 +160,7 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e) {
 
 	}
 }
+
 void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 	CKoopas* kp = dynamic_cast<CKoopas*>(e->obj);
 	if (e->ny < 0) {
@@ -172,7 +168,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 		{
 			kp->SetState(KOOPAS_STATE_SHELL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
-			
+
 		}
 		else
 		{
@@ -199,7 +195,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 			}
 		}
 	}
-	
+
 	if (kp->GetState() == KOOPAS_STATE_SHELL)
 	{
 		if (e->nx != 0)
@@ -209,7 +205,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 			{
 				kp->SetSpeed(KOOPAS_SHELL_SPEED * nx, 0);
 			}
-			
+
 
 		}
 	}
@@ -220,19 +216,30 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 void CMario::OnCollisionWithKoopasFly(LPCOLLISIONEVENT e) {
 	CKoopasFly* kpF = dynamic_cast<CKoopasFly*>(e->obj);
 	if (e->ny < 0) {
-		if (kpF->GetState() != KOOPASFLY_STATE_SHELL)
+		if (kpF->GetState() == KOOPASFLY_STATE_JUMPFLY)
 		{
-			kpF->SetState(KOOPASFLY_STATE_SHELL);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-
+			if (kpF->GetState() != KOOPASFLY_STATE_SHELL)
+			{
+				kpF->SetState(KOOPASFLY_STATE_WALKING);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
 		}
-		else
+		else if (kpF->GetState() == KOOPASFLY_STATE_WALKING)
 		{
-			kpF->SetState(KOOPAS_STATE_SHELL_MOVING);
+			if (kpF->GetState() != KOOPASFLY_STATE_SHELL)
+			{
+				kpF->SetState(KOOPASFLY_STATE_SHELL);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+
+			}
+		}
+		else {
+			kpF->SetState(KOOPASFLY_STATE_SHELL_MOVING);
+			kpF->SetSpeed(KOOPASFLY_SHELL_SPEED * nx, 0);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
-	else // hit by 
+	else
 	{
 		if (untouchable == 0)
 		{
@@ -249,6 +256,19 @@ void CMario::OnCollisionWithKoopasFly(LPCOLLISIONEVENT e) {
 					SetState(MARIO_STATE_DIE);
 				}
 			}
+		}
+	}
+
+	if (e->nx != 0)
+	{
+		if (kpF->GetState() == KOOPASFLY_STATE_SHELL) {
+			kpF->SetState(KOOPASFLY_STATE_SHELL_MOVING);
+			if (vx != 0)
+			{
+				kpF->SetSpeed(KOOPASFLY_SHELL_SPEED * nx, 0);
+			}
+
+
 		}
 	}
 }
@@ -269,7 +289,7 @@ void CMario::OnCollisionWithRedGoomba(LPCOLLISIONEVENT e) {
 			{
 				rgb->SetState(REDGOOMBA_STATE_DIE);
 			}
-			
+
 		}
 	}
 	else // hit by Goomba
