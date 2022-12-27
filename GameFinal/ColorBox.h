@@ -18,7 +18,7 @@ public:
 	}
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void RenderBoundingBox();
-	virtual int GetWidth() { return width; };
+	virtual float GetWidth() { return width; };
 	virtual void Render();
 	virtual int IsCollidable() { return 1; };
 	//virtual int IsBlockingOnSide(){ return 0; };

@@ -86,7 +86,7 @@ void CKoopasFly::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vx += ax * dt;
 
 
-	if ((state == KOOPASFLY_STATE_SHELL) && GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT)
+	if ((state == KOOPASFLY_STATE_SHELL) && GetTickCount64() - die_start > KOOPASFLY_DIE_TIMEOUT)
 	{
 		SetState(KOOPASFLY_STATE_WALKING);
 	}

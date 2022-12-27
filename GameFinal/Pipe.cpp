@@ -9,7 +9,7 @@ void CPipe::Render()
 	if (this->length <= 0) return;
 	float xx = x;
 	float yy = y;
-	int heightPipe = (this->height / HEIGHTPIPE);
+	int heightPipe = (int)(this->height / HEIGHTPIPE);
 	CSprites* s = CSprites::GetInstance();
 
 	s->Get(this->sprites_id_1)->Draw(xx, y);

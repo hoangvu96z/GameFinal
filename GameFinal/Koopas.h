@@ -30,7 +30,7 @@ protected:
 	int nx;
 	int Direct;
 	bool isCollision;
-	int TimeCollision;
+	ULONGLONG TimeCollision;
 	ULONGLONG timeReturn;
 	ULONGLONG die_start;
 	ULONGLONG shell_start;

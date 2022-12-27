@@ -2,10 +2,10 @@
 #include "GameObject.h"
 
 
-#define ID_ANI_FirePlant_LEFT 10000
-#define ID_ANI_FirePlant_RIGHT	10001
-#define ID_ANI_FirePlant_UP_LEFT	10002
-#define ID_ANI_FirePlant_UP_RIGHT	10003
+#define ID_ANI_FirePlant_LEFT 10001
+#define ID_ANI_FirePlant_RIGHT	10002
+#define ID_ANI_FirePlant_UP_LEFT	10003
+#define ID_ANI_FirePlant_UP_RIGHT	10004
 
 #define FirePlant_BBOX_WIDTH 16
 #define FirePlant_BBOX_HEIGHT 32

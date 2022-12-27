@@ -19,7 +19,7 @@
 class CCoin : public CGameObject {
 public:
 	int firstY;
-	int timeAppear = GetTickCount64();
+	ULONGLONG timeAppear = GetTickCount64();
 	CCoin(float x, float y);
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

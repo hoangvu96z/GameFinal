@@ -1,28 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Coin.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Goomba.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Mario.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Portal.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
@@ -67,57 +46,63 @@
     <ClCompile Include="Map.cpp">
       <Filter>Frameworks</Filter>
     </ClCompile>
-    <ClCompile Include="ColorBox.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Frameworks</Filter>
     </ClCompile>
-    <ClCompile Include="GoombaRed.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Objects\Static Object</Filter>
     </ClCompile>
-    <ClCompile Include="Koopas.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="KoopasFly.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Mushroom.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Pipe.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="QuestionBrick.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="ColorBox.cpp">
+      <Filter>Objects\Static Object</Filter>
     </ClCompile>
     <ClCompile Include="FirePlant.cpp">
-      <Filter>Objects</Filter>
+      <Filter>Objects\Enermies</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Frameworks\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Goomba.cpp">
+      <Filter>Objects\Enermies</Filter>
+    </ClCompile>
+    <ClCompile Include="GoombaRed.cpp">
+      <Filter>Objects\Enermies</Filter>
+    </ClCompile>
+    <ClCompile Include="Koopas.cpp">
+      <Filter>Objects\Enermies</Filter>
+    </ClCompile>
+    <ClCompile Include="KoopasFly.cpp">
+      <Filter>Objects\Enermies</Filter>
     </ClCompile>
     <ClCompile Include="KoopasObject.cpp">
-      <Filter>Objects</Filter>
+      <Filter>Objects\Enermies</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Objects\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>Objects\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Objects\Static Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>Objects\Static Object</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestionBrick.cpp">
+      <Filter>Objects\Static Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>Objects\Static Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Frameworks\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
       <Filter>Frameworks</Filter>
     </ClInclude>
-    <ClInclude Include="Brick.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Coin.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Goomba.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Mario.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Portal.h">
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
@@ -177,35 +162,50 @@
     <ClInclude Include="Constant.h">
       <Filter>Frameworks</Filter>
     </ClInclude>
-    <ClInclude Include="ColorBox.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Frameworks</Filter>
     </ClInclude>
-    <ClInclude Include="GoombaRed.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Brick.h">
+      <Filter>Objects\Static Object</Filter>
     </ClInclude>
-    <ClInclude Include="Koopas.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="KoopasFly.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Mushroom.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Pipe.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="QuestionBrick.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="ColorBox.h">
+      <Filter>Objects\Static Object</Filter>
     </ClInclude>
     <ClInclude Include="FirePlant.h">
-      <Filter>Objects</Filter>
+      <Filter>Objects\Enermies</Filter>
+    </ClInclude>
+    <ClInclude Include="Goomba.h">
+      <Filter>Objects\Enermies</Filter>
+    </ClInclude>
+    <ClInclude Include="GoombaRed.h">
+      <Filter>Objects\Enermies</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopas.h">
+      <Filter>Objects\Enermies</Filter>
+    </ClInclude>
+    <ClInclude Include="KoopasFly.h">
+      <Filter>Objects\Enermies</Filter>
     </ClInclude>
     <ClInclude Include="KoopasObject.h">
-      <Filter>Objects</Filter>
+      <Filter>Objects\Enermies</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Objects\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
+      <Filter>Objects\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Objects\Static Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Objects\Static Object</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBrick.h">
+      <Filter>Objects\Static Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>Objects\Static Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +217,15 @@
     </Filter>
     <Filter Include="Frameworks\Base">
       <UniqueIdentifier>{1522b8fd-814b-4a7f-aad1-e8fa15e45ced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Items">
+      <UniqueIdentifier>{a552b553-434e-4538-8017-cb16d2c5b41e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Enermies">
+      <UniqueIdentifier>{bfdf028e-cd3b-4417-9da2-1299d5b80255}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Static Object">
+      <UniqueIdentifier>{7b81e1ae-3c8d-4bef-a78e-f4ca182aa6d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
