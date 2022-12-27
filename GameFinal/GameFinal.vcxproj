@@ -54,7 +54,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="WarPipe.h" />
+    <ClInclude Include="FirePlant.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
@@ -88,7 +88,7 @@
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="WarPipe.cpp" />
+    <ClCompile Include="FirePlant.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="mario-sample.txt" />

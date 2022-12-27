@@ -8,6 +8,7 @@
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
+#define MARIO_RUNNING_MAXSPEED	0.5f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
 #define MARIO_ACCEL_RUN_X	0.0007f
@@ -18,6 +19,8 @@
 #define MARIO_GRAVITY			0.002f
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
+
+#define MARIO_WIDTH_COLLISION 2 // define variable to scale range between small and big width
 
 #define MARIO_STATE_DIE				-10
 #define MARIO_STATE_IDLE			0
@@ -82,6 +85,34 @@
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1600
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1601
 
+
+// RACOON MARIO
+#define ID_ANI_MARIO_RACOON_IDLE_RIGHT 1800
+#define ID_ANI_MARIO_RACOON_IDLE_LEFT 1801
+
+#define ID_ANI_MARIO_RACOON_WALKING_RIGHT 1802
+#define ID_ANI_MARIO_RACOON_WALKING_LEFT 1803
+
+#define ID_ANI_MARIO_RACOON_RUNNING_RIGHT 1804
+#define ID_ANI_MARIO_RACOON_RUNNING_LEFT 1805
+
+#define ID_ANI_MARIO_RACOON_JUMP_WALK_RIGHT 1806
+#define ID_ANI_MARIO_RACOON_JUMP_WALK_LEFT 1807
+
+#define ID_ANI_MARIO_RACOON_JUMP_RUN_RIGHT 1808
+#define ID_ANI_MARIO_RACOON_JUMP_RUN_LEFT 1809
+
+#define ID_ANI_MARIO_RACOON_SIT_RIGHT 1810
+#define ID_ANI_MARIO_RACOON_SIT_LEFT 1811
+
+#define ID_ANI_MARIO_RACOON_BRACE_RIGHT 1812
+#define ID_ANI_MARIO_RACOON_BRACE_LEFT 1813
+
+#define ID_ANI_MARIO_RACOON_FALLING_RIGHT 1814
+#define ID_ANI_MARIO_RACOON_FALLING_LEFT 1815
+
+#define ID_ANI_MARIO_RACOON_JUMP_RUN_FALLING_RIGHT 1816
+#define ID_ANI_MARIO_RACOON_JUMP_RUN_FALLING_LEFT 1817
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -91,11 +122,15 @@
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
+#define MARIO_LEVEL_RACOON	3
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
+#define MARIO_RACOON_BBOX_WIDTH	18
+#define MARIO_RACOON_BBOX_HEIGHT 24
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
+#define MARIO_RACOON_SITTING_BBOX_WIDTH  20
 
 #define MARIO_SIT_HEIGHT_ADJUST ((MARIO_BIG_BBOX_HEIGHT-MARIO_BIG_SITTING_BBOX_HEIGHT)/2)
 
@@ -110,8 +145,9 @@ class CMario : public CGameObject
 	BOOLEAN isSitting;
 	float maxVx;
 	float ax;				// acceleration on x 
-	float ay;				// acceleration on y 
-	
+	float ay;		// acceleration on y 
+	static CMario* __instance;
+
 	int level; 
 	int untouchable; 
 	bool isKicking;
@@ -131,9 +167,12 @@ class CMario : public CGameObject
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
+	int GetAniIDRacoon();
 
 public:
 	BOOLEAN isOnPlatform;
+	static CMario* GetInstance();
+	static void SetInstance(CMario* p);
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;
@@ -142,7 +181,7 @@ public:
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
 
-		level = MARIO_LEVEL_BIG;
+		level = MARIO_LEVEL_RACOON;
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
@@ -159,7 +198,8 @@ public:
 	}
 
 	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable==0); }
-
+	float GetPositionX() { return x; };
+	float GetPositionY() { return y; };
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
@@ -167,4 +207,5 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	
 };

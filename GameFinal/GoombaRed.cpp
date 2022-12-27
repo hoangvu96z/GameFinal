@@ -10,7 +10,6 @@ CGoombaRed::CGoombaRed(float x, float y) :CGameObject(x, y)
 	timeWalking = 0;
 	timeFly = 0;
 	SetState(REDGOOMBA_STATE_WING_WALKING);
-	vx = -REDGOOMBA_WALKING_SPEED;
 }
 
 void CGoombaRed::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -63,7 +62,7 @@ void CGoombaRed::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
-	
+
 	if (state == REDGOOMBA_STATE_WING_JUMPFLY)
 	{
 		if (e->ny < 0) {
@@ -82,6 +81,14 @@ void CGoombaRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
+	float Mario_X = CMario::GetInstance()->GetPositionX();
+	if (x > Mario_X) {
+		nx = -1;
+	}
+	else
+		nx = 1;
+
+
 	if (state != REDGOOMBA_STATE_WALKING)
 	{
 		if (state == REDGOOMBA_STATE_WING_WALKING && (GetTickCount64() - timeWalking > TIMEWALKING))
@@ -147,6 +154,7 @@ void CGoombaRed::SetState(int state)
 	{
 	case REDGOOMBA_STATE_WING_WALKING:
 		timeWalking = GetTickCount64();
+		vx = REDGOOMBA_WALKING_SPEED * nx;
 		break;
 	case REDGOOMBA_STATE_WING_JUMPFLY:
 		timeJump = GetTickCount64();	
@@ -162,6 +170,7 @@ void CGoombaRed::SetState(int state)
 		ay = 0;
 		break;
 	case REDGOOMBA_STATE_WALKING:
+		vx = REDGOOMBA_WALKING_SPEED * nx;
 		break;
 	}
 }

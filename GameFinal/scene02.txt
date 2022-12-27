@@ -10,7 +10,7 @@ goomba.txt
 koopas.txt
 koopasFly.txt
 goombaRed.txt
-warpipe.txt
+fireplant.txt
 pipe.txt
 #
 [MAP]
@@ -22,7 +22,7 @@ pipe.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	20	10
+0	2350	10
 
 #COIN
 4	224	288
@@ -97,7 +97,7 @@ pipe.txt
 2	400	368
 2	200	368
 #RED GOOM
-9	530	368
+9	2350	368
 
 #Warpipe
 10	360	330

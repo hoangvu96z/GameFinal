@@ -17,7 +17,7 @@
 #include "Pipe.h"
 #include "KoopasFly.h"
 #include "GoombaRed.h"
-#include "Warpipe.h"
+#include "FirePlant.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -136,7 +136,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new CMario(x, y);
 		player = (CMario*)obj;
-
+		CMario::SetInstance((CMario*)obj);
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
@@ -148,7 +148,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_KOOPASFLY: obj = new CKoopasFly(x, y); break;
 	case OBJECT_TYPE_REDGOOMBA: obj = new CGoombaRed(x, y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
-	case OBJECT_TYPE_WARPIPE: obj = new CWarpipe(x, y); break;
+	case OBJECT_TYPE_FIREPLANT: obj = new CFirePlant(x, y); break;
 	case OBJECT_TYPE_COIN: { 
 		obj = new CCoin(x, y); 
 		coin.push_back(dynamic_cast<CCoin*>(obj));

@@ -2,7 +2,7 @@
 
 KoopasObject::KoopasObject(float x, float y) : CGameObject(x, y) {
 
-}
+}	
 void KoopasObject::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 		left = x - KOOPAS_OBJECT_BBOX_WIDTH / 2;
