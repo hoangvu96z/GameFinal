@@ -14,6 +14,7 @@
 #include "KoopasFly.h"
 #include "GoombaRed.h"
 #include "Pipe.h"
+#include "FirePlant.h"
 
 #include "Collision.h"
 
@@ -87,6 +88,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopasFly(e);
 	else if (dynamic_cast<CGoombaRed*>(e->obj))
 		OnCollisionWithRedGoomba(e);
+	else if (dynamic_cast<CFirePlant*>(e->obj))
+		OnCollisionWithPlant(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e )
@@ -148,10 +151,10 @@ void CMario::OnCollisionWithQB(LPCOLLISIONEVENT e) {
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	CCoin* coins = dynamic_cast<CCoin*>(e->obj);
-	if (e->ny > 0)
+	if (coins->GetState() == COIN_STATE_APPEAR)
 	{
-		coins->SetState(COIN_STATE_APPEAR);
 		coin++;
+		e->obj->Delete();
 	}
 	
 	
@@ -165,13 +168,19 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e) {
 	CMushroom* mr = dynamic_cast<CMushroom*>(e->obj);
-	if (mr->GetState() != MUSHROOM_STATE_COLLISION)
+	if (mr->GetState() == MUSHROOM_STATE_MOVING)
 	{
-		mr->SetDirect(nx);
 		e->obj->Delete();
 		if (level == MARIO_LEVEL_SMALL)
 		{
 			SetLevel(MARIO_LEVEL_BIG);
+		}
+		else
+		{
+			if (level < MARIO_LEVEL_RACOON)
+			{
+				level++;
+			}
 		}
 
 	}
@@ -317,6 +326,30 @@ void CMario::OnCollisionWithRedGoomba(LPCOLLISIONEVENT e) {
 				if (level > MARIO_LEVEL_SMALL)
 				{
 					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+			}
+		}
+	}
+}
+
+void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
+{
+	CFirePlant* plant = dynamic_cast<CFirePlant*>(e->obj);
+	if (e->nx != 0 || e->ny > 0)
+	{
+		if (untouchable == 0)
+		{
+			if (plant->GetState() != FirePlant_STATE_INPIPE)
+			{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level--;
 					StartUntouchable();
 				}
 				else
