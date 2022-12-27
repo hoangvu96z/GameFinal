@@ -18,16 +18,17 @@ pipe.txt
 
 [OBJECTS]
 # type	x	y	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4 = coin, 6 = mushroom, 7 = koopas , 8 = KoopasFly, 9 = RedGoomba, 100 = Colorbox, 200 = Qbrick, 
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4 = coin, 6 = item , 8 = KoopasFly, 9 = RedGoomba, 100 = Colorbox, 200 = Qbrick, 
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	2350	10
+0	2310	10
 
 #COIN
-4	224	288
-4	240	288
+#4	224	288
+#4	240	288
 #4	416	304
+
 
 
 
@@ -83,21 +84,26 @@ pipe.txt
 100	2144	352	16	48	3
 100	2176	256	16	144	3
 
-#Mushroom
-6	176	336
-6	192	336
-#6	416	304
+#item
+6	176	336	1
+6	192	336	1
 
+6	224	288	0
+6	240	288	0
+
+6	416	304	0
+6	656	368	0
+6	704	336	0
 #Koopas
-7	176	304
-7	700	352
+3	500	304
+#3	700	352
 #Koopas Fly
 #8	300	370
 #Goomba
 2	400	368
 2	200	368
 #RED GOOM
-9	2350	368
+9	700	336
 
 #Warpipe
 10	360	330

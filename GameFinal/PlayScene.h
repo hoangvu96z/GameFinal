@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 #include "Game.h"
 #include "Textures.h"
 #include "Scene.h"
@@ -9,6 +11,8 @@
 #include "Map.h"
 #include "Mushroom.h"
 #include "QuestionBrick.h"
+#include "Item.h"
+
 
 //#include "Koopas.h"
 
@@ -21,10 +25,8 @@ protected:
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;					
 	Map* map;
-	vector<CMushroom*> mr;
+	vector<Item*> items;
 	vector<CQuestionBrick*> qb;
-	vector<CCoin*> coin;
-
 	vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_SPRITES(string line);

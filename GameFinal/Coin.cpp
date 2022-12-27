@@ -1,9 +1,6 @@
 #include "Coin.h"
 #include "debug.h"
-CCoin::CCoin(float x, float y) :CGameObject(x, y)
-{
-	firstY = y;
-}
+
 void CCoin::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -18,14 +15,13 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	y += vy * dt;
 	if (state == COIN_STATE_APPEAR)
 	{
-		if (y < firstY - MAX_Y) {
-			vy = COIN_BOUNCING;
+		if (y < first_y - MAX_Y) {
+			y = COIN_BOUNCING ;
 			
 			if (GetTickCount64() - timeAppear >= TIME_COIN_APPEAR)
 			{
 				SetState(COIN_STATE_DISAPPEAR);
 				timeAppear = 0;
-				DebugOut(L"game: %f\n", GetTickCount64());
 			}
 			
 		}
@@ -38,7 +34,7 @@ void CCoin::SetState(int state) {
 	switch (state)
 	{
 	case COIN_STATE_APPEAR:
-		vy -= 0.1;
+		vy -= COIN_BOUNCING;
 		break;
 	case COIN_STATE_DISAPPEAR:
 		isDeleted = true;

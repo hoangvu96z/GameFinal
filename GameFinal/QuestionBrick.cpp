@@ -24,17 +24,15 @@ void CQuestionBrick::SetState(int state) {
 		switch (state)
 		{
 		case QUESTIONBRICK_STATE_COLISION:
-			vy -= 0.03;
+			vy -= BRICK_GODOWN;
 			break;
 		case QUESTIONBRICK_STATE_EMP:
 			vy = 0;
 			y = First_y;
-			CheckBrickCollision = true;
-			if (mus != NULL)
-			{
-				mus->SetState(MUSHROOM_STATE_APPEAR);
+			CheckBrickCollision = true;		
+			if (item->GetItemType() == ItemType::Mushroom) {
+				item->setDirectItem(nx);
 			}
-		
 			break;
 
 		}
@@ -47,9 +45,25 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	if (CheckBrickCollision == false)
 	{
 		if (state == QUESTIONBRICK_STATE_COLISION) {
-			if (y < First_y - MAX_HEIGHT) {
-				vy = BRICK_GODOWN;
-				SetState(QUESTIONBRICK_STATE_EMP);
+			switch (item->GetItemType())
+			{
+			case ItemType::Coin:
+			{
+				item->setDirectItem(0);
+				if (y < First_y - MAX_HEIGHT) {
+					vy = BRICK_GODOWN;
+					SetState(QUESTIONBRICK_STATE_EMP);
+				}
+				break;
+			}
+			case ItemType::Mushroom:
+			{
+				if (y < First_y - MAX_HEIGHT) {
+					vy = BRICK_GODOWN;
+					SetState(QUESTIONBRICK_STATE_EMP);
+				}
+				break;
+			}
 			}
 		}
 	}
@@ -64,10 +78,11 @@ void CQuestionBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = t + QBRICK_BBOX_HEIGHT;
 }
 
-void CQuestionBrick::SetItem(CMushroom* mr) {
-	mus = mr;
+void CQuestionBrick::setItem(Item* i)
+{
+	item = i;
 }
-
-void CQuestionBrick::SetItemC(CCoin* co) {
-	coin = co;
+Item* CQuestionBrick::getItem()
+{
+	return item;
 }

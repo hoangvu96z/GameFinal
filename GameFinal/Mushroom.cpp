@@ -2,13 +2,15 @@
 #include "Platform.h"
 #include "Pipe.h"
 #include "debug.h"
-CMushroom::CMushroom(float x, float y) : CGameObject(x, y)
-{
-	firstY = y;
+
+CMushroom::CMushroom(float x, float y): Item(x, y, 0) {
+	item = ItemType::Mushroom;
+	first_y = y;
 	ax = 0;
 	ay = MUSHROOM_GRAVITY;
 	SetState(MUSHROOM_STATE_COLLISION);
 }
+
 void CMushroom::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -23,7 +25,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	
 	if (state == MUSHROOM_STATE_APPEAR) {
 		y -= MUSHROOM_DEFLECT * dt ;
-		if (y < firstY - INGROWTH) {
+		if (y < first_y - INGROWTH) {
 			SetState(MUSHROOM_STATE_MOVING);
 		}
 
@@ -45,7 +47,6 @@ void CMushroom::OnNoCollision(DWORD dt) {
 
 void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e) {
 	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CMushroom*>(e->obj)) return;
 
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
@@ -81,4 +82,10 @@ void CMushroom::GetBoundingBox(float& l, float& t, float& r, float& b)
 	t = y - MUSHROOM_BBOX_HEIGHT / 2;
 	r = l + MUSHROOM_BBOX_WIDTH;
 	b = t + MUSHROOM_BBOX_HEIGHT;
+}
+
+void CMushroom::setDirectItem(int nx)
+{
+	this->nx = nx;
+	SetState(MUSHROOM_STATE_APPEAR);
 }

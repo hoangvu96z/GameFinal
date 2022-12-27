@@ -20,6 +20,13 @@
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
+#define  MARIO_FALLING_SLOWDOWN_SPEED 0.02f
+
+#define MARIO_POWER_TIME_STACK 200
+
+#define MARIO_MAX_POWER	6
+
+
 #define MARIO_WIDTH_COLLISION 2 // define variable to scale range between small and big width
 
 #define MARIO_STATE_DIE				-10
@@ -36,6 +43,7 @@
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 #define MARIO_STATE_KICK	700
+#define MARIO_STATE_FALLING_SLOWDOWN 800 
 
 
 #pragma region ANIMATION_ID
@@ -113,6 +121,9 @@
 
 #define ID_ANI_MARIO_RACOON_JUMP_RUN_FALLING_RIGHT 1816
 #define ID_ANI_MARIO_RACOON_JUMP_RUN_FALLING_LEFT 1817
+
+#define ID_ANI_MARIO_RACOON_FALLING_SLOWDOWN_RIGHT 1818
+#define ID_ANI_MARIO_RACOON_FALLING_SLOWDOWN_LEFT 1819
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -143,16 +154,19 @@
 class CMario : public CGameObject
 {
 	BOOLEAN isSitting;
+	bool isFalling;
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;		// acceleration on y 
 	static CMario* __instance;
-
+	int powerStack;
 	int level; 
 	int untouchable; 
 	bool isKicking;
 	ULONGLONG untouchable_start;
 	ULONGLONG timeKick;
+	ULONGLONG timeStack;
+	ULONGLONG timeFalling;
 	
 	int coin; 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
@@ -181,13 +195,14 @@ public:
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
-
 		level = MARIO_LEVEL_RACOON;
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
 		type = 0;
+		timeStack = timeFalling = powerStack = 0;
+		
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -206,6 +221,12 @@ public:
 
 	void SetLevel(int l);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+
+	void IncreasePower();
+
+	void DecreasePower();
+
+	void SetPower();// power will set if mario brace
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	

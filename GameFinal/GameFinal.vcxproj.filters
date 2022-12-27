@@ -207,6 +207,9 @@
     <ClInclude Include="Portal.h">
       <Filter>Objects\Static Object</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Frameworks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">

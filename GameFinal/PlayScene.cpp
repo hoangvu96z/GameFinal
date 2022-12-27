@@ -12,12 +12,12 @@
 #include "ColorBox.h"
 #include "Camera.h"
 #include "QuestionBrick.h"
-#include "Mushroom.h"
 #include "Koopas.h"
 #include "Pipe.h"
 #include "KoopasFly.h"
 #include "GoombaRed.h"
 #include "FirePlant.h"
+#include "Mushroom.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -149,27 +149,29 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_REDGOOMBA: obj = new CGoombaRed(x, y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
 	case OBJECT_TYPE_FIREPLANT: obj = new CFirePlant(x, y); break;
-	case OBJECT_TYPE_COIN: { 
-		obj = new CCoin(x, y); 
-		coin.push_back(dynamic_cast<CCoin*>(obj));
-		break; 
-	}
-
-	case OBJECT_TYPE_MUSHROOM: {
-		obj = new CMushroom(x, y);
-		mr.push_back(dynamic_cast<CMushroom*>(obj));
-		break;
-	}
-
 	case OBJECT_TYPE_QUESTIONBRICK:
 	{
 		obj = new CQuestionBrick(x, y); 
 		qb.push_back(dynamic_cast<CQuestionBrick*>(obj));
 		break;
-
 	}
-	
-
+	case OBJECT_TYPE_ITEM:
+	{
+		int typeitem = atoi(tokens[3].c_str());
+		switch (typeitem)
+		{
+		case ItemType::Coin:
+			obj = new CCoin(x, y);
+			break;
+		case ItemType::Mushroom:
+			obj = new CMushroom(x, y);
+			break;
+		default: 
+			break;
+		}
+		items.push_back(dynamic_cast<Item*>(obj));
+		break;
+	}
 	case OBJECT_TYPE_PLATFORM:
 	{
 		
@@ -298,17 +300,12 @@ void CPlayScene::Load()
 	}
 
 	f.close();
-	for (size_t i = 0; i < mr.size(); i++)
-	{
-		qb[i]->SetItem(mr[i]);
-	}
-	for (size_t i = 0; i < coin.size(); i++)
-	{
-		qb[i]->SetItemC(coin[i]);
+	for (size_t i = 0; i < qb.size(); i++) {
+		qb[i]->setItem(items[i]);
 	}
 	qb = vector<CQuestionBrick*>();
-	mr = vector<CMushroom*>();
-	coin = vector<CCoin*>();
+	items = vector<Item*>();
+
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
