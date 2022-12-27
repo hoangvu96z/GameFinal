@@ -3,6 +3,8 @@
 
 #define GOOMBA_GRAVITY 0.002f
 #define GOOMBA_WALKING_SPEED 0.05f
+#define GOOMBA_REFLECT_BY_ATTACKING_SPEED 0.07f
+#define GOOMBA_DEFLECT_SPEED_Y	0.1f
 
 
 #define GOOMBA_BBOX_WIDTH 16
@@ -23,13 +25,13 @@
 class CGoomba : public CGameObject
 {
 protected:
-	float ax;				
-	float ay; 
+	float ax;
+	float ay;
 
 	ULONGLONG die_start;
 
-	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
 	virtual int IsCollidable() { return 1; };
@@ -38,7 +40,7 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
-public: 	
+public:
 	CGoomba(float x, float y);
 	virtual void SetState(int state);
 };

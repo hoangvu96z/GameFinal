@@ -97,6 +97,7 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Frameworks\Base</Filter>
     </ClCompile>
+    <ClCompile Include="Tail.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -210,6 +211,7 @@
     <ClInclude Include="Item.h">
       <Filter>Frameworks</Filter>
     </ClInclude>
+    <ClInclude Include="Tail.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">

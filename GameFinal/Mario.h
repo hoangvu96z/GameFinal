@@ -3,7 +3,7 @@
 
 #include "Animation.h"
 #include "Animations.h"
-
+#include "Tail.h"
 #include "debug.h"
 
 #define MARIO_WALKING_SPEED		0.1f
@@ -23,6 +23,10 @@
 #define  MARIO_FALLING_SLOWDOWN_SPEED 0.02f
 
 #define MARIO_POWER_TIME_STACK 200
+
+#define MARIO_TIME_SHOWING_FLYING 2000
+
+#define MARIO_TIME_ATTACKING 240
 
 #define MARIO_MAX_POWER	6
 
@@ -44,6 +48,8 @@
 #define MARIO_STATE_SIT_RELEASE		601
 #define MARIO_STATE_KICK	700
 #define MARIO_STATE_FALLING_SLOWDOWN 800 
+#define MARIO_STATE_FLYING	900
+#define MARIO_STATE_ATTACK 1000
 
 
 #pragma region ANIMATION_ID
@@ -124,6 +130,9 @@
 
 #define ID_ANI_MARIO_RACOON_FALLING_SLOWDOWN_RIGHT 1818
 #define ID_ANI_MARIO_RACOON_FALLING_SLOWDOWN_LEFT 1819
+
+#define ID_ANI_MARIO_RACOO_ATTACKING_RIGHT 1820
+#define ID_ANI_MARIO_RACOON_ATTACKING_LEFT 1821
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -137,11 +146,11 @@
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
-#define MARIO_RACOON_BBOX_WIDTH	18
+#define MARIO_RACOON_BBOX_WIDTH	14
 #define MARIO_RACOON_BBOX_HEIGHT 24
-#define MARIO_BIG_SITTING_BBOX_WIDTH  14
+#define MARIO_BIG_SITTING_BBOX_WIDTH  13
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
-#define MARIO_RACOON_SITTING_BBOX_WIDTH  20
+#define MARIO_RACOON_SITTING_BBOX_WIDTH  13
 
 #define MARIO_SIT_HEIGHT_ADJUST ((MARIO_BIG_BBOX_HEIGHT-MARIO_BIG_SITTING_BBOX_HEIGHT)/2)
 
@@ -159,7 +168,7 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;		// acceleration on y 
 	static CMario* __instance;
-	int powerStack;
+
 	int level; 
 	int untouchable; 
 	bool isKicking;
@@ -167,6 +176,8 @@ class CMario : public CGameObject
 	ULONGLONG timeKick;
 	ULONGLONG timeStack;
 	ULONGLONG timeFalling;
+	ULONGLONG timeFlying;
+	ULONGLONG timeAttacking;
 	
 	int coin; 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
@@ -185,13 +196,17 @@ class CMario : public CGameObject
 	int GetAniIDRacoon();
 
 public:
+	bool isFlying;
+	bool isAttacking;
+	int powerStack;
 	BOOLEAN isOnPlatform;
+	CTail* tail;
 	static CMario* GetInstance();
 	static void SetInstance(CMario* p);
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;
-		isKicking = false;
+		isKicking = isAttacking = isFlying = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
@@ -199,9 +214,10 @@ public:
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
+		tail = new CTail(x, y);
 		coin = 0;
 		type = 0;
-		timeStack = timeFalling = powerStack = 0;
+		timeStack = timeAttacking = timeFlying = timeFalling = powerStack = 0;
 		
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -226,7 +242,11 @@ public:
 
 	void DecreasePower();
 
-	void SetPower();// power will set if mario brace
+	void SetPower();
+
+	int Direct() { return this->nx; }
+
+	bool CheckIsOnPlatForm() { return isOnPlatform; }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	
