@@ -21,7 +21,8 @@ pipe.txt
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4 = coin, 6 = item , 8 = KoopasFly, 9 = RedGoomba, 100 = Colorbox, 200 = Qbrick, 
 # See OBJECT_TYPE constants in AssetIDs.h
 
-
+# MARIO
+0	444	10
 
 #item
 6	176	336	0
@@ -66,8 +67,7 @@ pipe.txt
 300	2256	96	16	192	2	11000	12000	13000	14000
 300	2320	368	16	32	2	11000	12000	13000	14000
 
-# MARIO
-0	1344	10
+
 
 
 

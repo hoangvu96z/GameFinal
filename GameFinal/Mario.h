@@ -6,6 +6,7 @@
 #include "Tail.h"
 #include "debug.h"
 
+
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
 #define MARIO_RUNNING_MAXSPEED	0.5f
@@ -52,6 +53,8 @@
 #define MARIO_STATE_FALLING_SLOWDOWN 800 
 #define MARIO_STATE_FLYING	900
 #define MARIO_STATE_ATTACK 1000
+#define MARIO_STATE_HOLDING	1100
+#define MARIO_STATE_RELEASE_HOLDING	1200
 
 
 #pragma region ANIMATION_ID
@@ -210,12 +213,13 @@ public:
 	int powerStack;
 	CTail* tail;
 	BOOLEAN isOnPlatform;
+	bool isHoldKoopas;
 	static CMario* GetInstance();
 	static void SetInstance(CMario* p);
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;
-		isKicking = isAttacking = isFlying = false;
+		isKicking = isAttacking = isFlying = isHoldKoopas = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 

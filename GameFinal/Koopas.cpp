@@ -5,7 +5,7 @@
 #include "debug.h"
 #include "Collision.h"
 #include "QuestionBrick.h"
-#include "Mario.h"
+
 
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
@@ -14,6 +14,7 @@ CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 	SetState(KOOPAS_STATE_WALKING);
 	isCollision = false;
 	koo = new KoopasObject(x, y);
+	isHold = false;
 }
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -52,7 +53,7 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 		{
 			vy = 0;
 		}
-		else if (e->nx != 0)
+		else if (e->nx != 0 && e->obj->IsBlocking())
 		{
 			vx = -vx;
 		}
@@ -132,27 +133,30 @@ void CKoopas::OnCollisionWithQB(LPCOLLISIONEVENT e) {
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"state: %d \n", state);
-	vy += ay * dt;
-	vx += ax * dt;
-	if (state == KOOPAS_STATE_WALKING)
+	//DebugOut(L"state: %d \n", state);
+	if (!isHold)
 	{
-		if (vx > 0) {
-			koo->SetPosition(x + KOOPAS_BBOX_WIDTH, y);
-		}
-		else
+		vy += ay * dt;
+		vx += ax * dt;
+		if (state == KOOPAS_STATE_WALKING)
 		{
-			koo->SetPosition(x - KOOPAS_BBOX_WIDTH, y);
+			if (vx > 0) {
+				koo->SetPosition(x + KOOPAS_BBOX_WIDTH, y);
+			}
+			else
+			{
+				koo->SetPosition(x - KOOPAS_BBOX_WIDTH, y);
+			}
+			koo->Update(dt, coObjects);
+			koo->GetPosition(objX, objY);
+			if (objY >= y + 1) {
+				vx = -vx;
+			}
+
 		}
-		koo->Update(dt, coObjects);
-		koo->GetPosition(objX, objY);
-		if (objY >= y + 1) {
-			vx = -vx;
-		}
-		
 	}
-	
-	if ((state == KOOPAS_STATE_SHELL) && GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT )
+
+	if ((state == KOOPAS_STATE_SHELL) && GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT)
 	{
 		SetState(KOOPAS_STATE_REBORN);
 	}
@@ -169,7 +173,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else if (GetTickCount64() - TimeCollision > KOOPAS_TIME_COLLISION)
 		{
-			isCollision = false;
+			isCollision = false;			
 		}
 	}
 
@@ -182,8 +186,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		ReturnLife();
 	}
 	CGameObject::Update(dt, coObjects);
-	
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+	
 }
 
 
@@ -229,7 +233,6 @@ void CKoopas::SetState(int state)
 	switch (state)
 	{
 	case KOOPAS_STATE_SHELL:
-		y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_SHELL) / 2;
 		die_start = GetTickCount64();
 		vx = 0;
 		break;
@@ -247,7 +250,7 @@ void CKoopas::SetState(int state)
 		y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_SHELL) / 2;
 		die_start = GetTickCount64();
 		vx = 0;
-		vy = -0.4f;
+		vy = -0.5f;
 		break;
 	case KOOPAS_STATE_SHELL_UP_MOVING:
 		vx = KOOPAS_SHELL_SPEED * nx;

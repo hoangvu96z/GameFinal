@@ -20,6 +20,7 @@
 #include "Collision.h"
 
 CMario* CMario::__instance = NULL;
+CKoopas* koopas;
 
 CMario* CMario::GetInstance()
 {
@@ -61,13 +62,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 	}
-	DebugOut(L"state: %d\n", state);
-	if (isFlying == true)
-	{
-		DebugOut(L"true\n");
-	}
-	else
-		DebugOut(L"false\n");
+	//DebugOut(L"state: %d\n", state);
+	//if (isFlying == true)
+	//{
+	//	DebugOut(L"true\n");
+	//}
+	//else
+	//	DebugOut(L"false\n");
 	if (powerStack == MARIO_MAX_POWER)
 	{
 		//SetState(MARIO_STATE_FLYING);
@@ -88,6 +89,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			isKicking = false;
 		}
+	}
+
+	if (isHoldKoopas)
+	{
+		if (nx >= 0)
+		{
+			koopas->SetPosition(x + MARIO_RACOON_BBOX_WIDTH , y);
+		}
+		else
+			koopas->SetPosition(x - MARIO_RACOON_BBOX_WIDTH, y);
+
+		if (koopas->GetState() == KOOPAS_STATE_WALKING) {
+			SetState(MARIO_STATE_RELEASE_HOLDING);
+		}
+
 	}
 
 	// reset untouchable timer if untouchable time has passed
@@ -269,9 +285,14 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 			
 		}
+		else if (kp->GetState() == KOOPAS_STATE_SHELL_MOVING)
+		{
+			kp->SetState(KOOPAS_STATE_SHELL);
+		}
 		else
 		{
 			kp->SetState(KOOPAS_STATE_SHELL_MOVING);
+			kp->nx = nx;
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
@@ -298,20 +319,33 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 
 	if (e->nx != 0)
 	{
-		switch (kp->GetState())
+		if (abs(ax) == MARIO_ACCEL_WALK_X)
 		{
-		case KOOPAS_STATE_SHELL:
-			SetState(MARIO_STATE_KICK);
-			kp->nx = nx;
-			kp->SetState(KOOPAS_STATE_SHELL_MOVING);
-			break;
-		case KOOPAS_STATE_SHELL_UP:
-			SetState(MARIO_STATE_KICK);
-			kp->nx = nx;
-			kp->SetState(KOOPAS_STATE_SHELL_UP_MOVING);
-			break;
-		default:
-			break;
+			switch (kp->GetState())
+			{
+			case KOOPAS_STATE_SHELL:
+				SetState(MARIO_STATE_KICK);
+				kp->nx = nx;
+				kp->SetState(KOOPAS_STATE_SHELL_MOVING);
+				break;
+			case KOOPAS_STATE_SHELL_UP:
+				SetState(MARIO_STATE_KICK);
+				kp->nx = nx;
+				kp->SetState(KOOPAS_STATE_SHELL_UP_MOVING);
+				break;
+			default:
+				break;
+			}
+		}
+		else if (abs(ax) == MARIO_ACCEL_RUN_X )
+		{
+			switch (kp->GetState())
+			{
+			case KOOPAS_STATE_SHELL:
+				koopas = dynamic_cast<CKoopas*>(e->obj);
+				SetState(MARIO_STATE_HOLDING);
+				break;
+			}
 		}
 	}
 
@@ -824,12 +858,26 @@ void CMario::SetState(int state)
 		}
 		break;
 	case MARIO_STATE_ATTACK:
-		if (level == MARIO_LEVEL_RACOON)
+		if (level == MARIO_LEVEL_RACOON && !isSitting)
 		{
 			vx = 0;
 			isAttacking = true;
 			timeAttacking = GetTickCount64();
 		}
+		break;
+	case MARIO_STATE_HOLDING:
+		isHoldKoopas = true;
+		koopas->SetSpeed(0, 0);
+		koopas->ay = 0;
+		koopas->isHold = true;
+		break;
+	case MARIO_STATE_RELEASE_HOLDING:
+		isHoldKoopas = false;
+		SetState(MARIO_STATE_KICK);
+		koopas->nx = nx;
+		koopas->ay = KOOPAS_GRAVITY;
+		koopas->isHold = false;
+		koopas->SetState(KOOPAS_STATE_SHELL_MOVING);
 		break;
 	}
 
@@ -866,10 +914,12 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		}
 		else
 		{
-			left = x - MARIO_RACOON_BBOX_WIDTH / 2;
+			left = x - (MARIO_RACOON_BBOX_WIDTH / 2);
 			top = y - MARIO_RACOON_BBOX_HEIGHT / 2;
 			right = left + MARIO_RACOON_BBOX_WIDTH ;
 			bottom = top + MARIO_RACOON_BBOX_HEIGHT;
+		
+
 		}
 	}
 	else

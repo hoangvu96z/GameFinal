@@ -37,7 +37,6 @@ class CKoopas : public CGameObject
 {
 protected:
 	float ax;
-	float ay;
 	int Direct;
 	ULONGLONG TimeCollision;
 	ULONGLONG timeReturn;
@@ -70,4 +69,6 @@ public:
 	void SetDirect(int n) { this->nx = n; }
 	bool isCollision;
 	int nx;
+	float ay;
+	bool isHold;
 };
