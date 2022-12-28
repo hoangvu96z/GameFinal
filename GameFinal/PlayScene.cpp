@@ -19,6 +19,7 @@
 #include "FirePlant.h"
 #include "Mushroom.h"
 #include "Tail.h"
+#include "BrokenEffect.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -157,11 +158,25 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_KOOPASFLY: obj = new CKoopasFly(x, y); break;
 	case OBJECT_TYPE_REDGOOMBA: obj = new CGoombaRed(x, y); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
+	case OBJECT_TYPE_BRICK:
+	{
+		obj = new CBrick(x, y); 
+		CBrick* cb = dynamic_cast<CBrick*>(obj);
+		BrokenEffect* br1 = new BrokenEffect(x, y , -1);
+		br1->SetPosition(x, y);
+		objects.push_back(br1);
+		cb->b1 = br1;
+		BrokenEffect* br2 = new BrokenEffect(x, y, 1);
+		br2->SetPosition(x, y);
+		objects.push_back(br2);
+		cb->b2 = br2;
+		break;
+	}
 	case OBJECT_TYPE_FIREPLANT: obj = new CFirePlant(x, y); break;
 	case OBJECT_TYPE_QUESTIONBRICK:
 	{
-		obj = new CQuestionBrick(x, y); 
+		int Type = atoi(tokens[3].c_str());
+		obj = new CQuestionBrick(x, y, Type); 
 		qb.push_back(dynamic_cast<CQuestionBrick*>(obj));
 		break;
 	}

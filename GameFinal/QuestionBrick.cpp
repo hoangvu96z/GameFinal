@@ -1,18 +1,36 @@
 #include "QuestionBrick.h"
-CQuestionBrick::CQuestionBrick(float x, float y) : CGameObject(x, y)
+#include "Brick.h"
+#include "debug.h"
+CQuestionBrick::CQuestionBrick(float x, float y, int type) : CGameObject(x, y)
 {
 	First_y = y;
+	typeQB = type;
 }
 void CQuestionBrick::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	if (CheckBrickCollision == false)
+	if (typeQB != 1)
 	{
-		animations->Get(ID_ANI_QBRICK)->Render(x, y);
+		if (CheckBrickCollision == false)
+		{
+			animations->Get(ID_ANI_QBRICK)->Render(x, y);
+		}
+		else
+		{
+			animations->Get(ID_ANI_EMP)->Render(x, y);
+		}
 	}
 	else
 	{
-		animations->Get(ID_ANI_EMP)->Render(x, y);
+		if (CheckBrickCollision == false)
+		{
+			animations->Get(ID_ANI_BRICK)->Render(x, y);
+		}
+		else
+		{
+			animations->Get(ID_ANI_EMP)->Render(x, y);
+		}
+		
 	}
 	RenderBoundingBox();
 }

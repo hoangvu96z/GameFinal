@@ -20,5 +20,6 @@ public:
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithQB(LPCOLLISIONEVENT e);
+	void OnCollisionWithB(LPCOLLISIONEVENT e);
 	void SetDirect(int n) { this->nx = n; }
 };

@@ -22,7 +22,8 @@ public:
 	BOOLEAN CheckBrickCollision = false;
 	Item* item = NULL;
 	float First_y;
-	CQuestionBrick(float x, float y);
+	int typeQB;
+	CQuestionBrick(float x, float y, int type);
 	void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);

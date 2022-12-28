@@ -1,0 +1,33 @@
+#pragma once
+
+#include "GameObject.h"
+#include "Animation.h"
+#include "Animations.h"
+#define BROKEN_EFFECT_GRAVITY 0.002f
+
+#define BROKEN_BBOX_WIDTH	8
+#define BROKEN_BBOX_HEIGHT	8
+
+#define TIME_BROKEN_EFFECT	3000
+
+#define BROKEN_EFFECT_STATE_HIDDEN	100
+#define BROKEN_EFFECT_STATE_APPEAR	200
+#define BROKEN_EFFECT_STATE_DELETE	300
+
+#define ID_ANI_BROKEN_EFFECT	200000
+class BrokenEffect: public CGameObject
+{
+public:
+	float first_y;
+	float ay;
+	int nx;
+	ULONGLONG timeEffect;
+	BrokenEffect(float x, float y, int direct) : CGameObject(x, y) { SetState(BROKEN_EFFECT_STATE_HIDDEN);  first_y = y; nx = direct; ay = BROKEN_EFFECT_GRAVITY; };
+	void Render();
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void OnNoCollision(DWORD dt);
+	void SetState(int state);
+	int IsBlocking() { return 0; }
+	~BrokenEffect() {};
+};

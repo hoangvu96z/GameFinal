@@ -15,6 +15,7 @@
 #include "GoombaRed.h"
 #include "Pipe.h"
 #include "FirePlant.h"
+#include "Brick.h"
 
 
 #include "Collision.h"
@@ -179,6 +180,20 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithRedGoomba(e);
 	else if (dynamic_cast<CFirePlant*>(e->obj))
 		OnCollisionWithPlant(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithB(e);
+}
+
+void CMario::OnCollisionWithB(LPCOLLISIONEVENT e)
+{
+	CBrick* cb = dynamic_cast<CBrick*>(e->obj);
+	if (isAttacking && e->nx != 0)
+	{
+		if (cb->GetState() != BRICK_STATE_BROKEN)
+		{
+			cb->SetState(BRICK_STATE_BROKEN);
+		}
+	}
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e )

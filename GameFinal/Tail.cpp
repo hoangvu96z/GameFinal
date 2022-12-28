@@ -4,6 +4,7 @@
 #include "QuestionBrick.h"
 #include "Koopas.h"
 #include "Mario.h"
+#include "Brick.h"
 #include "debug.h"
 
 void CTail::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -28,7 +29,8 @@ void CTail::OnCollisionWith(LPCOLLISIONEVENT e) {
 		OnCollisionWithQB(e);
 	else if (dynamic_cast<CKoopas*>(e->obj))
 		OnCollisionWithKoopas(e);
-	
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithB(e);
 
 }
 
@@ -66,6 +68,13 @@ void CTail::OnCollisionWithQB(LPCOLLISIONEVENT e)
 	
 }
 
+void CTail::OnCollisionWithB(LPCOLLISIONEVENT e)
+{
+	CBrick* qb = dynamic_cast<CBrick*>(e->obj);
+	qb->SetState(BRICK_STATE_BROKEN);
+
+
+}
 void CTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	

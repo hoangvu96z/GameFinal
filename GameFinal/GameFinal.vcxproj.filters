@@ -97,7 +97,10 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Frameworks\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Tail.cpp" />
+    <ClCompile Include="Tail.cpp">
+      <Filter>Objects\Static Object</Filter>
+    </ClCompile>
+    <ClCompile Include="BrokenEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -211,7 +214,10 @@
     <ClInclude Include="Item.h">
       <Filter>Frameworks</Filter>
     </ClInclude>
-    <ClInclude Include="Tail.h" />
+    <ClInclude Include="Tail.h">
+      <Filter>Objects\Static Object</Filter>
+    </ClInclude>
+    <ClInclude Include="BrokenEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">
@@ -231,6 +237,9 @@
     </Filter>
     <Filter Include="Objects\Static Object">
       <UniqueIdentifier>{7b81e1ae-3c8d-4bef-a78e-f4ca182aa6d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Effects">
+      <UniqueIdentifier>{b2470081-b36d-4435-bb75-0e4d84b76c03}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
