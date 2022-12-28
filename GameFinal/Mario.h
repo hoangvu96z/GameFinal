@@ -24,7 +24,7 @@
 
 #define MARIO_POWER_TIME_STACK 200
 
-#define MARIO_TIME_SHOWING_FLYING 2000
+#define MARIO_TIME_SHOWING_FLYING 3000
 
 #define MARIO_TIME_ATTACKING 240
 
@@ -138,6 +138,9 @@
 
 #define ID_ANI_MARIO_RACOON_KICK_RIGHT 1822
 #define ID_ANI_MARIO_RACOON_KICK_LEFT 1823
+
+#define ID_ANI_MARIO_RACOON_FLYING_RIGHT 1824
+#define ID_ANI_MARIO_RACOON_FLYING_LEFT 1825
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -249,6 +252,8 @@ public:
 	void DecreasePower();
 
 	void SetPower();
+
+	float GetAX() { return ax; }
 
 	int Direct() { return this->nx; }
 

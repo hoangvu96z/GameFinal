@@ -45,7 +45,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (powerStack > 0)
 		{
-			DecreasePower();
+			if (!isFlying)
+			{
+				DecreasePower();
+			}
 		}
 
 	}
@@ -58,13 +61,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 	}
-	/*DebugOut(L"state: %d\n", state);
-	if (isAttacking == true)
+	DebugOut(L"state: %d\n", state);
+	if (isFlying == true)
 	{
 		DebugOut(L"true\n");
 	}
 	else
-		DebugOut(L"false\n");*/
+		DebugOut(L"false\n");
 	if (powerStack == MARIO_MAX_POWER)
 	{
 		//SetState(MARIO_STATE_FLYING);
@@ -570,7 +573,16 @@ int CMario::GetAniIDRacoon() {
 	int aniId = -1;
 	if (!isOnPlatform)
 	{
-		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		if (isFlying)
+		{
+			if (nx >= 0)
+			{
+				aniId = ID_ANI_MARIO_RACOON_FLYING_RIGHT;
+			}
+			else
+				aniId = ID_ANI_MARIO_RACOON_FLYING_LEFT;
+		}
+		else if (abs(ax) == MARIO_ACCEL_RUN_X)
 		{
 			if (vy > 0)
 			{
@@ -803,9 +815,12 @@ void CMario::SetState(int state)
 	case MARIO_STATE_FLYING:
 		if (level == MARIO_LEVEL_RACOON) {
 			ay = 0;
-			vy = -0.04f;
-			timeFlying = GetTickCount64();
-			isFlying = true;
+			vy = -0.1f;
+			if (!isFlying)
+			{
+				timeFlying = GetTickCount64();
+				isFlying = true;
+			}
 		}
 		break;
 	case MARIO_STATE_ATTACK:
