@@ -55,6 +55,7 @@
 #define MARIO_STATE_ATTACK 1000
 #define MARIO_STATE_HOLDING	1100
 #define MARIO_STATE_RELEASE_HOLDING	1200
+#define MARIO_STATE_RELEASE_HOLDING_A 1300
 
 
 #pragma region ANIMATION_ID
@@ -144,6 +145,15 @@
 
 #define ID_ANI_MARIO_RACOON_FLYING_RIGHT 1824
 #define ID_ANI_MARIO_RACOON_FLYING_LEFT 1825
+
+#define ID_ANI_MARIO_RACOON_HOLDING_WALKING_RIGHT 1826
+#define ID_ANI_MARIO_RACOON_HOLDING_WALKING_LEFT 1827
+
+#define ID_ANI_MARIO_RACOON_HOLDING_IDLE_RIGHT 1828
+#define ID_ANI_MARIO_RACOON_HOLDING_IDLE_LEFT 1829
+
+#define ID_ANI_MARIO_RACOON_HOLDING_JUMP_RIGHT 1830
+#define ID_ANI_MARIO_RACOON_HOLDING_JUMP_LEFT 1831
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -262,6 +272,8 @@ public:
 	int Direct() { return this->nx; }
 
 	bool CheckIsOnPlatForm() { return isOnPlatform; }
+
+	void SetKoopas();
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	

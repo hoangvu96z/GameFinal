@@ -67,6 +67,16 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
 		break;
+	case DIK_A:
+		if (mario->isHoldKoopas)
+		{
+			mario->SetState(MARIO_STATE_RELEASE_HOLDING);
+		}
+		else if (mario->powerStack > 0 && !mario->isFlying)
+		{
+			mario->DecreasePower();
+		}
+		break;
 	}
 }
 
