@@ -5,6 +5,7 @@
 #include "debug.h"
 #include "Collision.h"
 #include "QuestionBrick.h"
+#include "Mario.h"
 
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
@@ -42,7 +43,8 @@ void CKoopas::OnNoCollision(DWORD dt)
 void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	CGoomba* gb = dynamic_cast<CGoomba*>(e->obj);
-	if (state != KOOPAS_STATE_SHELL_MOVING)
+
+	if (state != KOOPAS_STATE_SHELL_MOVING && state != KOOPAS_STATE_SHELL_UP_MOVING)
 	{
 		if (!e->obj->IsBlocking()) return;
 		if (dynamic_cast<CKoopas*>(e->obj)) return;
@@ -55,7 +57,9 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 			vx = -vx;
 		}
 	}
-	else if (state == KOOPAS_STATE_SHELL_MOVING) {
+	
+	if (state == KOOPAS_STATE_SHELL_MOVING || state == KOOPAS_STATE_SHELL_UP_MOVING) {
+		
 		if (dynamic_cast<CGoomba*>(e->obj))
 			OnCollisionWithGoomba(e);
 		else if (dynamic_cast<CGoombaRed*>(e->obj))
@@ -71,11 +75,13 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 			vx = -vx;
 		}
 	}
+	
+	
 }
 
 void CKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	CGoomba* gb = dynamic_cast<CGoomba*>(e->obj);
-	if (state == KOOPAS_STATE_SHELL_MOVING)
+	if (state == KOOPAS_STATE_SHELL_MOVING || state == KOOPAS_STATE_SHELL_UP_MOVING)
 	{
 		if (e->nx != 0)
 		{
@@ -102,7 +108,7 @@ void CKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 
 void CKoopas::OnCollisionWithRedGoomba(LPCOLLISIONEVENT e) {
 	CGoombaRed* rgb = dynamic_cast<CGoombaRed*>(e->obj);
-	if (state == KOOPAS_STATE_SHELL_MOVING)
+	if (state == KOOPAS_STATE_SHELL_MOVING || state == KOOPAS_STATE_SHELL_UP_MOVING)
 	{
 		if (e->nx != 0)
 		{
@@ -126,6 +132,7 @@ void CKoopas::OnCollisionWithQB(LPCOLLISIONEVENT e) {
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	DebugOut(L"state: %d \n", state);
 	vy += ay * dt;
 	vx += ax * dt;
 	if (state == KOOPAS_STATE_WALKING)
@@ -153,18 +160,26 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		ReturnLife();
 	}
-	else if (state == KOOPAS_STATE_SHELL_MOVING)
+	else if (state == KOOPAS_STATE_SHELL_MOVING || state == KOOPAS_STATE_SHELL_UP_MOVING)
 	{
 		if (GetTickCount64() - shell_start > KOOPAS_DIE_TIMEOUT)
 		{
 			SetState(KOOPAS_STATE_WALKING);
-
 			ReturnLife();
 		}
 		else if (GetTickCount64() - TimeCollision > KOOPAS_TIME_COLLISION)
 		{
 			isCollision = false;
 		}
+	}
+
+	if ((state == KOOPAS_STATE_SHELL_UP) && GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT)
+	{
+		SetState(KOOPAS_STATE_REBORN_UP);
+	}
+	else if (state == KOOPAS_STATE_REBORN_UP && GetTickCount64() - timeReturn > KOOPAS_RETURN_LIFE)
+	{
+		ReturnLife();
 	}
 	CGameObject::Update(dt, coObjects);
 	
@@ -183,14 +198,25 @@ void CKoopas::Render()
 
 	if (state == KOOPAS_STATE_SHELL)
 	{
-		aniId = ID_ANI_KOOPAS_SHELL;
+			aniId = ID_ANI_KOOPAS_SHELL;
+	}
+	else if (state == KOOPAS_STATE_SHELL_UP)
+	{
+		aniId = ID_ANI_KOOPAS_SHELL_UP;
 	}
 	else if (state == KOOPAS_STATE_SHELL_MOVING)
 	{
 		aniId = ID_ANI_KOOPAS_SHELL_MOVING;
 	}
+	else if (state == KOOPAS_STATE_SHELL_UP_MOVING)
+	{
+		aniId = ID_ANI_KOOPAS_SHELL_UP_MOVING;
+	}
 	else if (state == KOOPAS_STATE_REBORN) {
 		aniId = ID_ANI_KOOPAS_SHELL_RETURN;
+	}
+	else if (state == KOOPAS_STATE_REBORN_UP) {
+		aniId = ID_ANI_KOOPAS_SHELL_UP_RETURN;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -208,14 +234,24 @@ void CKoopas::SetState(int state)
 		vx = 0;
 		break;
 	case KOOPAS_STATE_WALKING:
-		vx = KOOPAS_WALKING_SPEED ;
+		vx = KOOPAS_WALKING_SPEED;
 		break;
 	case KOOPAS_STATE_SHELL_MOVING:
-		vx = KOOPAS_SHELL_SPEED;
+		vx = KOOPAS_SHELL_SPEED * nx;
 		shell_start = GetTickCount64();
 		break;
-	case KOOPAS_STATE_REBORN:
+	case KOOPAS_STATE_REBORN: case KOOPAS_STATE_REBORN_UP:
 		timeReturn = GetTickCount64();
+		break;
+	case KOOPAS_STATE_SHELL_UP:
+		y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_SHELL) / 2;
+		die_start = GetTickCount64();
+		vx = 0;
+		vy = -0.4f;
+		break;
+	case KOOPAS_STATE_SHELL_UP_MOVING:
+		vx = KOOPAS_SHELL_SPEED * nx;
+		shell_start = GetTickCount64();
 		break;
 	}
 }

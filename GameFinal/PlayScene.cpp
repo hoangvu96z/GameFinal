@@ -18,6 +18,7 @@
 #include "GoombaRed.h"
 #include "FirePlant.h"
 #include "Mushroom.h"
+#include "Tail.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -125,10 +126,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	float y = (float)atof(tokens[2].c_str());
 
 	CGameObject *obj = NULL;
+	KoopasObject* koo = NULL;
+	CTail* tail = NULL;
 
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
+	{
 		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
@@ -137,7 +141,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CMario(x, y);
 		player = (CMario*)obj;
 		CMario::SetInstance((CMario*)obj);
+
+		tail = new CTail(x, y);
+		objects.push_back(tail);
+		CMario* ma = dynamic_cast<CMario*>(obj);
+		ma->tail = tail;
 		DebugOut(L"[INFO] Player object has been created!\n");
+	}
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y); break;
 	case OBJECT_TYPE_KOOPAS:

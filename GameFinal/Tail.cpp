@@ -28,7 +28,7 @@ void CTail::OnCollisionWith(LPCOLLISIONEVENT e) {
 		OnCollisionWithQB(e);
 	else if (dynamic_cast<CKoopas*>(e->obj))
 		OnCollisionWithKoopas(e);
-
+	
 
 }
 
@@ -53,7 +53,7 @@ void CTail::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	CKoopas* kp = dynamic_cast<CKoopas*>(e->obj);
 	if (CMario::GetInstance()->isAttacking)
 	{
-		kp->SetState(KOOPAS_STATE_SHELL);
+		kp->SetState(KOOPAS_STATE_SHELL_UP);
 	}
 
 }
@@ -61,16 +61,14 @@ void CTail::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 void CTail::OnCollisionWithQB(LPCOLLISIONEVENT e)
 {
 	CQuestionBrick* qb = dynamic_cast<CQuestionBrick*>(e->obj);
-	if (CMario::GetInstance()->isAttacking)
-	{
-		qb->SetState(QUESTIONBRICK_STATE_COLISION);
-	}
-
+	qb->SetState(QUESTIONBRICK_STATE_COLISION);
+	
+	
 }
 
 void CTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
-
+	
 	//CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

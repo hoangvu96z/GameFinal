@@ -28,6 +28,8 @@
 
 #define MARIO_TIME_ATTACKING 240
 
+#define MARIO_TIMEOUT_KICK 300
+
 #define MARIO_MAX_POWER	6
 
 
@@ -131,8 +133,11 @@
 #define ID_ANI_MARIO_RACOON_FALLING_SLOWDOWN_RIGHT 1818
 #define ID_ANI_MARIO_RACOON_FALLING_SLOWDOWN_LEFT 1819
 
-#define ID_ANI_MARIO_RACOO_ATTACKING_RIGHT 1820
+#define ID_ANI_MARIO_RACOON_ATTACKING_RIGHT 1820
 #define ID_ANI_MARIO_RACOON_ATTACKING_LEFT 1821
+
+#define ID_ANI_MARIO_RACOON_KICK_RIGHT 1822
+#define ID_ANI_MARIO_RACOON_KICK_LEFT 1823
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -179,7 +184,7 @@ class CMario : public CGameObject
 	ULONGLONG timeFlying;
 	ULONGLONG timeAttacking;
 	
-	int coin; 
+	
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -196,11 +201,12 @@ class CMario : public CGameObject
 	int GetAniIDRacoon();
 
 public:
+	int coin;
 	bool isFlying;
 	bool isAttacking;
 	int powerStack;
-	BOOLEAN isOnPlatform;
 	CTail* tail;
+	BOOLEAN isOnPlatform;
 	static CMario* GetInstance();
 	static void SetInstance(CMario* p);
 	CMario(float x, float y) : CGameObject(x, y)
@@ -214,10 +220,10 @@ public:
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
-		tail = new CTail(x, y);
 		coin = 0;
 		type = 0;
 		timeStack = timeAttacking = timeFlying = timeFalling = powerStack = 0;
+		tail = NULL;
 		
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
