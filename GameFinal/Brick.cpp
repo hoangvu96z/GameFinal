@@ -22,6 +22,8 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		b1->SetState(BROKEN_EFFECT_STATE_APPEAR);
 		b2->SetState(BROKEN_EFFECT_STATE_APPEAR);
+		b3->SetState(BROKEN_EFFECT_STATE_APPEAR_BOTTOM);
+		b4->SetState(BROKEN_EFFECT_STATE_APPEAR_BOTTOM);
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

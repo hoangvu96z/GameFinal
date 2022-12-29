@@ -28,14 +28,14 @@ void BrokenEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//vy += ay * dt;
 
-	DebugOut(L"state: %d\n", state);
-	if (state == BROKEN_EFFECT_STATE_APPEAR)
+	//DebugOut(L"state: %d\n", state);
+	if (state == BROKEN_EFFECT_STATE_APPEAR )
 	{
 		
-		if (first_y - y > 30)
+		if (first_y - y > BROKEN_EFFECT_Y)
 		{
-			vx = 0.1f * nx;
-			if (first_y - y > 70)
+			vx = BROKEN_EFFECT_SPEED_X * nx;
+			if (first_y - y > BROKEN_EFFECT_MAX_Y)
 			{
 				vy += ay * dt;
 				if (GetTickCount64() - timeEffect > TIME_BROKEN_EFFECT)
@@ -45,6 +45,7 @@ void BrokenEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 	}
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -57,8 +58,11 @@ void BrokenEffect::SetState(int state)
 	case BROKEN_EFFECT_STATE_HIDDEN:
 		break;
 	case BROKEN_EFFECT_STATE_APPEAR:
-		DebugOut(L"HHELLO");
-		vy = -0.2f;
+		vy = -BROKEN_EFFECT_SPEED_Y;
+		break;
+	case BROKEN_EFFECT_STATE_APPEAR_BOTTOM:
+		vy = BROKEN_EFFECT_SPEED_Y;
+		vx = BROKEN_EFFECT_SPEED_X * nx;
 		break;
 	case BROKEN_EFFECT_STATE_DELETE:
 		timeEffect = GetTickCount64();

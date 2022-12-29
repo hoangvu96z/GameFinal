@@ -170,6 +170,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		br2->SetPosition(x, y);
 		objects.push_back(br2);
 		cb->b2 = br2;
+		BrokenEffect* br3 = new BrokenEffect(x, y, -1);
+		br3->SetPosition(x, y);
+		objects.push_back(br3);
+		cb->b3 = br3;
+		BrokenEffect* br4 = new BrokenEffect(x, y, 1);
+		br4->SetPosition(x, y);
+		objects.push_back(br4);
+		cb->b4 = br4;
 		break;
 	}
 	case OBJECT_TYPE_FIREPLANT: obj = new CFirePlant(x, y); break;

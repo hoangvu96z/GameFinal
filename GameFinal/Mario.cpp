@@ -63,7 +63,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 	}
-	//DebugOut(L"state: %d\n", state);
+	DebugOut(L"vy: %d\n", vy);
 	//if (isFlying == true)
 	//{
 	//	DebugOut(L"true\n");
@@ -187,7 +187,14 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithB(LPCOLLISIONEVENT e)
 {
 	CBrick* cb = dynamic_cast<CBrick*>(e->obj);
-	if (isAttacking && e->nx != 0)
+	if (e->ny > 0)
+	{
+		if (cb->GetState() != BRICK_STATE_BROKEN)
+		{
+			cb->SetState(BRICK_STATE_BROKEN);
+		}
+	}
+	else if (isAttacking && e->nx != 0)
 	{
 		if (cb->GetState() != BRICK_STATE_BROKEN)
 		{
@@ -637,7 +644,7 @@ int CMario::GetAniIDRacoon() {
 			}
 			else if (abs(ax) == MARIO_ACCEL_RUN_X)
 			{
-				if (vy > 0)
+				if (vy >= 0)
 				{
 					if (nx >= 0)
 						aniId = ID_ANI_MARIO_RACOON_JUMP_RUN_FALLING_RIGHT;
@@ -652,7 +659,7 @@ int CMario::GetAniIDRacoon() {
 						aniId = ID_ANI_MARIO_RACOON_JUMP_RUN_LEFT;
 				}
 			}
-			else if (vy > 0)
+			else if (vy >= 0)
 			{
 				if (isFalling == true) {
 					if (nx >= 0)

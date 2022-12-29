@@ -45,38 +45,40 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	CGoomba* gb = dynamic_cast<CGoomba*>(e->obj);
 
-	if (state != KOOPAS_STATE_SHELL_MOVING && state != KOOPAS_STATE_SHELL_UP_MOVING)
+	if (!isHold)
 	{
-		if (!e->obj->IsBlocking()) return;
-		if (dynamic_cast<CKoopas*>(e->obj)) return;
-		if (e->ny != 0)
+		if (state != KOOPAS_STATE_SHELL_MOVING && state != KOOPAS_STATE_SHELL_UP_MOVING)
 		{
-			vy = 0;
+			if (!e->obj->IsBlocking()) return;
+			if (dynamic_cast<CKoopas*>(e->obj)) return;
+			if (e->ny != 0)
+			{
+				vy = 0;
+			}
+			else if (e->nx != 0 && e->obj->IsBlocking())
+			{
+				vx = -vx;
+			}
 		}
-		else if (e->nx != 0 && e->obj->IsBlocking())
-		{
-			vx = -vx;
+
+		if (state == KOOPAS_STATE_SHELL_MOVING || state == KOOPAS_STATE_SHELL_UP_MOVING) {
+
+			if (dynamic_cast<CGoomba*>(e->obj))
+				OnCollisionWithGoomba(e);
+			else if (dynamic_cast<CGoombaRed*>(e->obj))
+				OnCollisionWithRedGoomba(e);
+			else if (dynamic_cast<CQuestionBrick*>(e->obj))
+				OnCollisionWithQB(e);
+			if (e->ny != 0)
+			{
+				vy = 0;
+			}
+			else if (e->nx != 0 && isCollision == false)
+			{
+				vx = -vx;
+			}
 		}
 	}
-	
-	if (state == KOOPAS_STATE_SHELL_MOVING || state == KOOPAS_STATE_SHELL_UP_MOVING) {
-		
-		if (dynamic_cast<CGoomba*>(e->obj))
-			OnCollisionWithGoomba(e);
-		else if (dynamic_cast<CGoombaRed*>(e->obj))
-			OnCollisionWithRedGoomba(e);
-		else if (dynamic_cast<CQuestionBrick*>(e->obj))
-			OnCollisionWithQB(e);
-		if (e->ny != 0)
-		{
-			vy = 0;
-		}
-		else if (e->nx != 0 && isCollision==false)
-		{
-			vx = -vx;
-		}
-	}
-	
 	
 }
 
@@ -126,14 +128,18 @@ void CKoopas::OnCollisionWithRedGoomba(LPCOLLISIONEVENT e) {
 
 void CKoopas::OnCollisionWithQB(LPCOLLISIONEVENT e) {
 	CQuestionBrick* qb = dynamic_cast<CQuestionBrick*>(e->obj);
-	if (e->nx != 0) {
-		qb->SetState(QUESTIONBRICK_STATE_COLISION);
+	if (!isHold)
+	{
+		if (e->nx != 0) {
+			qb->SetState(QUESTIONBRICK_STATE_COLISION);
+		}
 	}
 }
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//DebugOut(L"state: %d \n", state);
+	
 	if (!isHold)
 	{
 		vy += ay * dt;
