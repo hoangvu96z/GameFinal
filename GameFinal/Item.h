@@ -1,11 +1,12 @@
 #pragma once
 #include "GameObject.h"
 
-enum ItemType
+enum ItemType 
 {
 	Undefined = -1,
 	Coin,
 	Mushroom,
+	pbutton,
 };
 
 class Item : public CGameObject
@@ -25,4 +26,6 @@ public:
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 0; };
 	virtual void setDirectItem(int nx) {};
+
+
 };

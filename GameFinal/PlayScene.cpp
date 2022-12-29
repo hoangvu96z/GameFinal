@@ -20,6 +20,8 @@
 #include "Mushroom.h"
 #include "Tail.h"
 #include "BrokenEffect.h"
+#include "Pbutton.h"
+
 
 #include "SampleKeyEventHandler.h"
 
@@ -199,6 +201,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		case ItemType::Mushroom:
 			obj = new CMushroom(x, y);
 			break;
+		case ItemType::pbutton:
+			obj = new Pbutton(x, y);
+			break;
+			
 		default: 
 			break;
 		}

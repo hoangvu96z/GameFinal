@@ -207,6 +207,7 @@ class CMario : public CGameObject
 	void OnCollisionWithColorBox(LPCOLLISIONEVENT e);
 	void OnCollisionWithQB(LPCOLLISIONEVENT e);
 	void OnCollisionWithB(LPCOLLISIONEVENT e);
+	void OnCollisionWithPbutton(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopasFly(LPCOLLISIONEVENT e);

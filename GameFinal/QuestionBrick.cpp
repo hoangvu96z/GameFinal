@@ -37,22 +37,46 @@ void CQuestionBrick::Render()
 
 void CQuestionBrick::SetState(int state) {
 	CGameObject::SetState(state);
-	if (CheckBrickCollision == false)
+	if (typeQB != 1)
 	{
-		switch (state)
+		if (CheckBrickCollision == false)
 		{
-		case QUESTIONBRICK_STATE_COLISION:
-			vy -= BRICK_GODOWN;
-			break;
-		case QUESTIONBRICK_STATE_EMP:
-			vy = 0;
-			y = First_y;
-			CheckBrickCollision = true;		
-			if (item->GetItemType() == ItemType::Mushroom) {
-				item->setDirectItem(nx);
-			}
-			break;
+			switch (state)
+			{
+			case QUESTIONBRICK_STATE_COLISION:
+				vy -= BRICK_GODOWN;
+				break;
+			case QUESTIONBRICK_STATE_EMP:
+				vy = 0;
+				y = First_y;
+				CheckBrickCollision = true;
+				if (item->GetItemType() == ItemType::Mushroom) {
+					item->setDirectItem(nx);
+				}
+				break;
 
+			}
+		}
+	}
+	else
+	{
+		if (CheckBrickCollision == false)
+		{
+			switch (state)
+			{
+			case QUESTIONBRICK_STATE_COLISION:
+				vy = 0;
+				break;
+			case QUESTIONBRICK_STATE_EMP:
+				vy = 0;
+				y = First_y;
+				CheckBrickCollision = true;
+				if (item->GetItemType() == ItemType::Mushroom) {
+					item->setDirectItem(nx);
+				}
+				break;
+
+			}
 		}
 	}
 }
@@ -60,28 +84,51 @@ void CQuestionBrick::SetState(int state) {
 void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	
 	y += vy * dt;
-	if (CheckBrickCollision == false)
+	if (typeQB != 1)
 	{
-		if (state == QUESTIONBRICK_STATE_COLISION) {
-			switch (item->GetItemType())
-			{
-			case ItemType::Coin:
-			{
-				item->setDirectItem(0);
-				if (y < First_y - MAX_HEIGHT) {
-					vy = BRICK_GODOWN;
+		if (CheckBrickCollision == false)
+		{
+			if (state == QUESTIONBRICK_STATE_COLISION) {
+				switch (item->GetItemType())
+				{
+				case ItemType::Coin:
+				{
+					item->setDirectItem(0);
+					if (y < First_y - MAX_HEIGHT) {
+						vy = BRICK_GODOWN;
+						SetState(QUESTIONBRICK_STATE_EMP);
+					}
+					break;
+				}
+				case ItemType::Mushroom:
+				{
+					if (y < First_y - MAX_HEIGHT) {
+						vy = BRICK_GODOWN;
+						SetState(QUESTIONBRICK_STATE_EMP);
+					}
+					break;
+				}
+				}
+			}
+		}
+	}
+	else
+	{
+		if (CheckBrickCollision == false)
+		{
+			if (state == QUESTIONBRICK_STATE_COLISION) {
+				switch (item->GetItemType())
+				{
+				case ItemType::Mushroom:
+				{
 					SetState(QUESTIONBRICK_STATE_EMP);
 				}
-				break;
-			}
-			case ItemType::Mushroom:
-			{
-				if (y < First_y - MAX_HEIGHT) {
-					vy = BRICK_GODOWN;
+					break;
+				case ItemType::pbutton:
 					SetState(QUESTIONBRICK_STATE_EMP);
+					item->setDirectItem(0);
+					break;
 				}
-				break;
-			}
 			}
 		}
 	}

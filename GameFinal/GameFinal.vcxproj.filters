@@ -100,7 +100,12 @@
     <ClCompile Include="Tail.cpp">
       <Filter>Objects\Static Object</Filter>
     </ClCompile>
-    <ClCompile Include="BrokenEffect.cpp" />
+    <ClCompile Include="PButton.cpp">
+      <Filter>Objects\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="BrokenEffect.cpp">
+      <Filter>Objects\Effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -217,7 +222,12 @@
     <ClInclude Include="Tail.h">
       <Filter>Objects\Static Object</Filter>
     </ClInclude>
-    <ClInclude Include="BrokenEffect.h" />
+    <ClInclude Include="PButton.h">
+      <Filter>Objects\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="BrokenEffect.h">
+      <Filter>Objects\Effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">

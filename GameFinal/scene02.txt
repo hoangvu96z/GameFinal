@@ -12,6 +12,7 @@ koopasFly.txt
 goombaRed.txt
 fireplant.txt
 pipe.txt
+pbutton.txt
 #
 [MAP]
 30	map1.txt	27	176	11	11	0
@@ -36,6 +37,8 @@ pipe.txt
 6	704	336	0
 
 6	1440	112	1
+
+6	1984	352	2
 #QuestionBrick
 200	176	336	0
 200	192	336	0
@@ -50,6 +53,8 @@ pipe.txt
 
 200	704	336	0
 200	1440	112	1
+
+200	1984	352	1
 #Warpipe
 10	360	330
 
@@ -57,7 +62,7 @@ pipe.txt
 #Brick
 1	1952	384
 1	1968	384
-1	1984	352	
+
 
 
 # PIPE
