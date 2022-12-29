@@ -1,18 +1,17 @@
 # list of object assets to load in this scene
 [ASSETS]
 mario.txt
-coin.txt
 cloud.txt
-questionBrick.txt
 brick.txt
-mushroom.txt
+questionBrick.txt
 goomba.txt
 koopas.txt
 koopasFly.txt
 goombaRed.txt
 fireplant.txt
 pipe.txt
-pbutton.txt
+hud.txt
+item.txt
 #
 [MAP]
 30	map1.txt	27	176	11	11	0

@@ -12,6 +12,7 @@
 #include "Mushroom.h"
 #include "QuestionBrick.h"
 #include "Item.h"
+#include "HUD.h"
 
 
 //#include "Koopas.h"
@@ -19,12 +20,13 @@
 #define SCREEN_WIDTH_SCENE	2450
 
 #define ScreenH 16
-class CPlayScene: public CScene
+class CPlayScene : public CScene
 {
-protected: 
+protected:
 	// A play scene has to have player, right? 
-	LPGAMEOBJECT player;					
+	LPGAMEOBJECT player;
 	Map* map;
+	HUD* hud = HUD::GetInstance();
 	vector<Item*> items;
 	vector<CQuestionBrick*> qb;
 	vector<LPGAMEOBJECT> objects;
@@ -38,8 +40,8 @@ protected:
 	void _ParseSection_MAP(string line);
 
 	void LoadAssets(LPCWSTR assetFile);
-	
-public: 
+
+public:
 	CPlayScene(int id, LPCWSTR filePath);
 
 	virtual void Load();
