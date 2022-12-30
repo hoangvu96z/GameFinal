@@ -109,6 +109,9 @@
     <ClCompile Include="HUD.cpp">
       <Filter>Objects\Static Object</Filter>
     </ClCompile>
+    <ClCompile Include="Leaf.cpp">
+      <Filter>Objects\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -233,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>Objects\Static Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Leaf.h">
+      <Filter>Objects\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

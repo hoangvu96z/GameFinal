@@ -108,6 +108,16 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 					}
 					break;
 				}
+				case ItemType::leaf:
+				{
+					if (y < First_y - MAX_HEIGHT) {
+						vy = BRICK_GODOWN;
+						SetState(QUESTIONBRICK_STATE_EMP);
+					}
+					item->setDirectItem(nx);
+					break;
+				}
+
 				}
 			}
 		}

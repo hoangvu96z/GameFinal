@@ -7,6 +7,7 @@ enum ItemType
 	Coin,
 	Mushroom,
 	pbutton,
+	leaf,
 };
 
 class Item : public CGameObject

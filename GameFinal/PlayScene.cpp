@@ -21,7 +21,7 @@
 #include "Tail.h"
 #include "BrokenEffect.h"
 #include "Pbutton.h"
-
+#include "Leaf.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -208,6 +208,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			break;
 		case ItemType::pbutton:
 			obj = new Pbutton(x, y);
+			break;
+		case ItemType::leaf:
+			obj = new Leaf(x, y);
 			break;
 			
 		default: 
