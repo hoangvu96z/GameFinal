@@ -65,6 +65,51 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				SetState(FirePlant_STATE_STOP_INPIPE);
 			}
 		}
+
+		if (state == FirePlant_STATE_STOP_ONPIPE)
+		{
+			if (GetTickCount64() - timeWarpAppear > FirePlant_TIME_APPEAR)
+			{
+				SetState(FirePlant_STATE_INPIPE);
+			}
+		}
+		else if (state == FirePlant_STATE_STOP_INPIPE)
+		{
+			if (GetTickCount64() - timeWarp > FirePlant_TIME_INPIPE)
+			{
+				SetState(FirePlant_STATE_APPEAR);
+			}
+		}
+	}
+	else if(typePlant == 1)
+	{
+		if (state == FirePlant_STATE_APPEAR)
+		{
+			if (y > first_y + Fire_GreenPlant_HEIGHT_OFFSET) {
+				SetState(FirePlant_STATE_STOP_ONPIPE);
+			}
+		}
+		else if (state == FirePlant_STATE_INPIPE)
+		{
+			if (y < first_y) {
+				SetState(FirePlant_STATE_STOP_INPIPE);
+			}
+		}
+
+		if (state == FirePlant_STATE_STOP_ONPIPE)
+		{
+			if (GetTickCount64() - timeWarpAppear > Fire_GreenPlant_TIME_APPEAR)
+			{
+				SetState(FirePlant_STATE_INPIPE);
+			}
+		}
+		else if (state == FirePlant_STATE_STOP_INPIPE)
+		{
+			if (GetTickCount64() - timeWarp > Fire_GreenPlant_TIME_INPIPE)
+			{
+				SetState(FirePlant_STATE_APPEAR);
+			}
+		}
 	}
 	else
 	{
@@ -80,23 +125,22 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				SetState(FirePlant_STATE_STOP_INPIPE);
 			}
 		}
-	}
 
-	if (state == FirePlant_STATE_STOP_ONPIPE)
-	{
-		if (GetTickCount64() - timeWarpAppear > FirePlant_TIME_APPEAR)
+		if (state == FirePlant_STATE_STOP_ONPIPE)
 		{
-			SetState(FirePlant_STATE_INPIPE);
+			if (GetTickCount64() - timeWarpAppear > GreenPlant_TIME_APPEAR)
+			{
+				SetState(FirePlant_STATE_INPIPE);
+			}
+		}
+		else if (state == FirePlant_STATE_STOP_INPIPE)
+		{
+			if (GetTickCount64() - timeWarp > GreenPlant_TIME_INPIPE)
+			{
+				SetState(FirePlant_STATE_APPEAR);
+			}
 		}
 	}
-	else if (state == FirePlant_STATE_STOP_INPIPE)
-	{
-		if (GetTickCount64() - timeWarp > FirePlant_TIME_INPIPE)
-		{
-			SetState(FirePlant_STATE_APPEAR);
-		}
-	}
-	//DebugOut(L"state: %d\n", state);
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

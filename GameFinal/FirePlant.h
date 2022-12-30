@@ -31,9 +31,16 @@
 #define FirePlant_TIME 1000
 #define FirePlant_TIME_APPEAR 3000
 #define FirePlant_TIME_INPIPE	2000
+
+#define Fire_GreenPlant_TIME_APPEAR 5000
+#define Fire_GreenPlant_TIME_INPIPE	2000
+
+#define	GreenPlant_TIME_APPEAR 3500
+#define GreenPlant_TIME_INPIPE	2500
+
 #define FirePlant_HEIGHT_OFFSET	46
 
-#define Fire_GreenPlant_HEIGHT_OFFSET	28
+#define Fire_GreenPlant_HEIGHT_OFFSET	30
 #define FirePlant_MOVING_SPEED_Y	0.01;
 class CFirePlant : public CGameObject
 {
