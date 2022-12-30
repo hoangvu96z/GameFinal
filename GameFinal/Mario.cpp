@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "debug.h"
-
+#include "AssetIDs.h"
 #include "Mario.h"
 #include "Game.h"
 
@@ -37,11 +37,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
+	
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 	if (abs(ax) == MARIO_ACCEL_RUN_X)
-	{
+	{ 
 		IncreasePower();
 	}
 	else
@@ -64,13 +64,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 	}
-	DebugOut(L"vy: %d\n", vy);
-	//if (isFlying == true)
-	//{
-	//	DebugOut(L"true\n");
-	//}
-	//else
-	//	DebugOut(L"false\n");
+	//DebugOut(L"vy: %d\n", vy);
+	/*if (isPressed == true)
+	{
+		DebugOut(L"true\n");
+	}
+	else
+		DebugOut(L"false\n");*/
 	if (powerStack == MARIO_MAX_POWER)
 	{
 		//SetState(MARIO_STATE_FLYING);
@@ -97,11 +97,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (nx >= 0)
 		{
-			koopas->SetPosition(x + MARIO_RACOON_BBOX_WIDTH / 2 + KOOPAS_BBOX_WIDTH / 2 + 2, y);
+			koopas->SetPosition(x + MARIO_RACOON_BBOX_WIDTH /2 + KOOPAS_BBOX_WIDTH/2 + 2 , y);
 		}
 		else
-			koopas->SetPosition(x - MARIO_RACOON_BBOX_WIDTH / 2 - KOOPAS_BBOX_WIDTH / 2 - 2, y);
-
+			koopas->SetPosition(x - MARIO_RACOON_BBOX_WIDTH /2 - KOOPAS_BBOX_WIDTH/2 - 2, y);
+		
 		if (koopas->GetState() == KOOPAS_STATE_WALKING)
 		{
 			SetState(MARIO_STATE_RELEASE_HOLDING_A);
@@ -121,10 +121,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isAttacking)
 	{
-		tail->SetPosition((nx < 0) ? (x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2) : (x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2), y + 6);
+		tail->SetPosition((nx < 0) ? (x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2) : (x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2) , y + 6);
 		if (GetTickCount64() - timeAttacking > MARIO_TIME_ATTACKING)
 		{
 			isAttacking = false;
+		}
+	}
+
+	if (isPressed)
+	{
+		isPressed = false;
+		for (UINT i = 0; i < coObjects->size(); i++)
+		{
+			if (coObjects->at(i)->type == OBJECT_TYPE_BRICK)
+			{
+				CBrick* cb = dynamic_cast<CBrick*>(coObjects->at(i));
+				cb->SetState(BRICK_STATE_CHANGE_COIN);
+			}
 		}
 	}
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -149,7 +162,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (e->nx != 0 && e->obj->IsBlocking())
 	{
-
+		
 		if (abs(ax) == MARIO_ACCEL_RUN_X) { // when mario run if mario collision block, mario can't reach max power stack
 			if (nx > 0)
 			{
@@ -190,10 +203,12 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPbutton(LPCOLLISIONEVENT e)
 {
 	Pbutton* pb = dynamic_cast<Pbutton*>(e->obj);
+
 	if (e->ny < 0)
 	{
-		if (pb->GetState() != PBUTTON_STATE_COLLISION)
-		{
+		if (pb->GetState() == PBUTTON_STATE_NORMAL)
+		{	
+			isPressed = true;
 			pb->SetState(PBUTTON_STATE_COLLISION);
 		}
 	}
@@ -217,16 +232,23 @@ void CMario::OnCollisionWithB(LPCOLLISIONEVENT e)
 			cb->SetState(BRICK_STATE_BROKEN);
 		}
 	}
+	
+	
+	if (cb->GetState() == BRICK_STATE_CHANGE_COIN)
+	{
+		e->obj->Delete();
+		coin++;
+	}
 }
 
-void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e )
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 
 	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
-		if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState() != GOOMBA_STATE_DIE_BY_ATTACKING)
+		if (goomba->GetState() != GOOMBA_STATE_DIE && goomba->GetState()!= GOOMBA_STATE_DIE_BY_ATTACKING)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -270,9 +292,9 @@ void CMario::OnCollisionWithQB(LPCOLLISIONEVENT e) {
 		{
 			brick->SetState(QUESTIONBRICK_STATE_COLISION);
 		}
-
+		
 	}
-	else if (isAttacking && e->nx != 0)
+	else if (isAttacking && e->nx !=0 )
 	{
 		if (brick->GetState() != QUESTIONBRICK_STATE_EMP)
 		{
@@ -285,15 +307,12 @@ void CMario::OnCollisionWithQB(LPCOLLISIONEVENT e) {
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	CCoin* coins = dynamic_cast<CCoin*>(e->obj);
-	//coins->SetState(COIN_STATE_APPEAR);
+		//coins->SetState(COIN_STATE_APPEAR);
 	if (coins->GetState() == COIN_STATE_APPEAR)
 	{
 		coin++;
 		e->obj->Delete();
 	}
-
-
-
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -322,7 +341,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 		{
 			kp->SetState(KOOPAS_STATE_SHELL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
-
+			
 		}
 		else if (kp->GetState() == KOOPAS_STATE_SHELL_MOVING)
 		{
@@ -345,7 +364,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 				{
 					level--;
 					StartUntouchable();
-
+					
 				}
 				else
 				{
@@ -384,12 +403,12 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 				koopas = dynamic_cast<CKoopas*>(e->obj);
 				SetState(MARIO_STATE_HOLDING);
 				break;
-
+			
 			}
 		}
 	}
 
-
+	
 
 
 }
@@ -442,7 +461,7 @@ void CMario::OnCollisionWithKoopasFly(LPCOLLISIONEVENT e) {
 
 	if (e->nx != 0)
 	{
-		if (kpF->GetState() == KOOPASFLY_STATE_SHELL) {
+		if(kpF->GetState() == KOOPASFLY_STATE_SHELL){
 			kpF->SetState(KOOPASFLY_STATE_SHELL_MOVING);
 			if (vx != 0)
 			{
@@ -470,7 +489,7 @@ void CMario::OnCollisionWithRedGoomba(LPCOLLISIONEVENT e) {
 			{
 				rgb->SetState(REDGOOMBA_STATE_DIE);
 			}
-
+			
 		}
 	}
 	else // hit by Goomba
@@ -499,16 +518,16 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 	CFirePlant* plant = dynamic_cast<CFirePlant*>(e->obj);
 	if (untouchable == 0)
 	{
-		if (level > MARIO_LEVEL_SMALL)
-		{
-			level--;
-			StartUntouchable();
-		}
-		else
-		{
-			DebugOut(L">>> Mario DIE >>> \n");
-			SetState(MARIO_STATE_DIE);
-		}
+			if (level > MARIO_LEVEL_SMALL)
+			{
+				level--;
+				StartUntouchable();
+			}
+			else
+			{
+				DebugOut(L">>> Mario DIE >>> \n");
+				SetState(MARIO_STATE_DIE);
+			}
 	}
 }
 //
@@ -794,7 +813,7 @@ int CMario::GetAniIDRacoon() {
 			aniId = ID_ANI_MARIO_RACOON_KICK_LEFT;
 	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_RACOON_IDLE_RIGHT;
-
+	
 	return aniId;
 }
 
@@ -865,8 +884,8 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_RELEASE_JUMP:
-		if (vy < 0) vy = 0;
-		ay = MARIO_GRAVITY;
+			if (vy < 0) vy = 0;
+			ay = MARIO_GRAVITY;
 		break;
 
 	case MARIO_STATE_SIT:
@@ -998,9 +1017,9 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		{
 			left = x - (MARIO_RACOON_BBOX_WIDTH / 2);
 			top = y - MARIO_RACOON_BBOX_HEIGHT / 2;
-			right = left + MARIO_RACOON_BBOX_WIDTH;
+			right = left + MARIO_RACOON_BBOX_WIDTH ;
 			bottom = top + MARIO_RACOON_BBOX_HEIGHT;
-
+		
 
 		}
 	}
@@ -1063,5 +1082,5 @@ void CMario::SetPower()
 
 void CMario::SetKoopas()
 {
-
+	
 }

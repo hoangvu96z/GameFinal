@@ -1,5 +1,5 @@
 #include "Pbutton.h"
-
+#include "debug.h"
 void Pbutton::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -22,11 +22,12 @@ void Pbutton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	y += vy * dt;
 	if (state == PBUTTON_STATE_NORMAL)
 	{
-		if (first_y - y > 14)
+		if (first_y - y >= 13)
 		{
 			vy = 0;
 		}
 	}
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -56,7 +57,7 @@ void Pbutton::SetState(int state)
 		vy -= 0.2f;
 		break;
 	case PBUTTON_STATE_COLLISION:
-		y += (PBUTTON_BBOX_HEIGHT_BIG - PBUTTON_BBOX_HEIGHT_SMALL) / 2;
+		y += POSITION_Y;
 		break;
 	default:
 		break;

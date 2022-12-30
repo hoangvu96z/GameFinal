@@ -7,6 +7,8 @@
 #define PBUTTON_BBOX_WIDTH	16
 #define PBUTTON_BBOX_HEIGHT_SMALL	7
 
+#define POSITION_Y ((PBUTTON_BBOX_HEIGHT_BIG - PBUTTON_BBOX_HEIGHT_SMALL) / 2) + 3
+
 #define ID_ANI_PBUTTON_NORMAL	13000
 #define ID_ANI_PBUTTON_ISPRESSED	13001
 
@@ -21,7 +23,7 @@ public:
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	int IsBlocking() {
+	int IsBlocking() { 
 		if (state != PBUTTON_STATE_COLLISION)
 		{
 			return 1;
@@ -30,7 +32,6 @@ public:
 			return 0;
 	}
 	void SetState(int state);
-
 	void setDirectItem(int nx);
-
+	
 };

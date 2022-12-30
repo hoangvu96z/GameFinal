@@ -61,7 +61,7 @@ void BrokenEffect::SetState(int state)
 		vy = -BROKEN_EFFECT_SPEED_Y;
 		break;
 	case BROKEN_EFFECT_STATE_APPEAR_BOTTOM:
-		vy = BROKEN_EFFECT_SPEED_Y;
+		vy = BROKEN_EFFECT_SPEED_Y_BOTTOM;
 		vx = BROKEN_EFFECT_SPEED_X * nx;
 		break;
 	case BROKEN_EFFECT_STATE_DELETE:

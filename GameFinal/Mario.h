@@ -223,6 +223,7 @@ public:
 	bool isFlying;
 	bool isAttacking;
 	int powerStack;
+	bool isPressed;
 	CTail* tail;
 	BOOLEAN isOnPlatform;
 	bool isHoldKoopas;
@@ -231,7 +232,7 @@ public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;
-		isKicking = isAttacking = isFlying = isHoldKoopas = false;
+		isKicking =  isPressed = isAttacking = isFlying = isHoldKoopas = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 

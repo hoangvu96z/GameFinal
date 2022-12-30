@@ -3,13 +3,14 @@
 #include "GameObject.h"
 #include "Animation.h"
 #include "Animations.h"
-#define BROKEN_EFFECT_GRAVITY 0.002f
+#define BROKEN_EFFECT_GRAVITY 0.001f
 
 #define BROKEN_BBOX_WIDTH	8
 #define BROKEN_BBOX_HEIGHT	8
 
 #define BROKEN_EFFECT_SPEED_Y 0.2f
-#define BROKEN_EFFECT_SPEED_X 0.1f
+#define BROKEN_EFFECT_SPEED_Y_BOTTOM 0.1f
+#define BROKEN_EFFECT_SPEED_X 0.06f
 
 #define BROKEN_EFFECT_Y	30
 
