@@ -5,7 +5,14 @@
 #include "Item.h"
 #define LEAF_BBOX_WIDTH	16
 #define LEAF_BBOX_HEIGHT	14
-#define LEAF_GRAVITY 0.001f;
+#define LEAF_GRAVITY 0.001f
+
+#define MAX_Y	70
+#define LEAF_UP_SPEED_Y 0.1f
+#define LEAF_FALLING_SPEED_Y	0.01f
+#define LEAF_VX	0.01f
+
+#define LEAF_TIME_SWITCH_SIDE	700
 #define ID_ANI_LEAF_FALL_RIGHT	14000
 #define ID_ANI_LEAF_FALL_LEFT	14001
 

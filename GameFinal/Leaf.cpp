@@ -7,7 +7,6 @@ Leaf::Leaf(float x, float y) :Item(x, y, 0)
 	SetState(LEAF_STATE_APPEAR);
 	ay = LEAF_GRAVITY;
 	first_y = y;
-	ax = 0;
 }
 
 
@@ -32,7 +31,7 @@ void Leaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	OnNoCollision(dt);
 	if (state == LEAF_STATE_NORMAL)
 	{
-		if (first_y - y > 100)
+		if (first_y - y > MAX_Y)
 		{
 			SetState(LEAF_STATE_FALLING);
 		}
@@ -41,7 +40,7 @@ void Leaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	if (state == LEAF_STATE_FALLING)
 	{
 		
-		if (GetTickCount64() - timeFalling >= 700)
+		if (GetTickCount64() - timeFalling >= LEAF_TIME_SWITCH_SIDE)
 		{
 			vx = -vx;
 			timeFalling = GetTickCount64();
@@ -62,12 +61,11 @@ void Leaf::SetState(int state) {
 	switch (state)
 	{
 	case LEAF_STATE_NORMAL:
-		vy = -0.1f;
-		ax = 0;
+		vy = -LEAF_UP_SPEED_Y;
 		break;
 	case LEAF_STATE_FALLING:
-		vx = 0.01f;
-		vy = 0.01f;
+		vx = LEAF_VX;
+		vy = LEAF_FALLING_SPEED_Y;
 		timeFalling = GetTickCount64();
 		break;
 	default:
