@@ -88,7 +88,12 @@ void Map::DrawMap()
 		{
 			float x, y;
 			x = FrameHeight * j;
-			y = FrameWidth * i - 16;
+			if (id != 30)
+			{
+				y = FrameWidth * i;
+			}
+			else
+				y = FrameWidth * i - 16;
 			CSprites::GetInstance()->Get(TileMapID[i][j])->Draw(x, y);
 		}
 }

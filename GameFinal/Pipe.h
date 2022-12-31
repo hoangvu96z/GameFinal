@@ -28,5 +28,5 @@ public:
 	virtual int IsCollidable() { return 1; };
 	//virtual int IsBlockingOnSide(){ return 0; };
 	//virtual int IsBlockingOnTop() { return 1; };
-	virtual void DirectBlocking(int& l, int& t, int& r, int& b) { l = 1; t = 1; b = 0; r = 1; }
+	virtual void DirectBlocking(int& l, int& t, int& r, int& b) { l = 1; t = 1; b = 1; r = 1; }
 };
