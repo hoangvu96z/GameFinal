@@ -31,7 +31,7 @@ void Leaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	OnNoCollision(dt);
 	if (state == LEAF_STATE_NORMAL)
 	{
-		if (first_y - y > MAX_Y)
+		if (first_y - y > LEAF_MAX_Y)
 		{
 			SetState(LEAF_STATE_FALLING);
 		}
@@ -67,6 +67,9 @@ void Leaf::SetState(int state) {
 		vx = LEAF_VX;
 		vy = LEAF_FALLING_SPEED_Y;
 		timeFalling = GetTickCount64();
+		break;
+	case LEAF_STATE_COLLISION:
+		isDeleted = true;
 		break;
 	default:
 		break;

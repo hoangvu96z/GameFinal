@@ -7,7 +7,7 @@
 #define LEAF_BBOX_HEIGHT	14
 #define LEAF_GRAVITY 0.001f
 
-#define MAX_Y	70
+#define LEAF_MAX_Y	80
 #define LEAF_UP_SPEED_Y 0.1f
 #define LEAF_FALLING_SPEED_Y	0.01f
 #define LEAF_VX	0.01f

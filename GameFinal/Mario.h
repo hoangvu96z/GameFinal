@@ -23,13 +23,17 @@
 
 #define  MARIO_FALLING_SLOWDOWN_SPEED 0.02f
 
+#define MARIO_SPEED_SWITCH_SCENE	0.01f
+
 #define MARIO_POWER_TIME_STACK 200
 
-#define MARIO_TIME_SHOWING_FLYING 3000
+#define MARIO_TIME_SHOWING_FLYING 5000
 
 #define MARIO_TIME_ATTACKING 240
 
 #define MARIO_TIMEOUT_KICK 300
+
+#define MARIO_TIME_SWITCH_SCENE 1000
 
 #define MARIO_MAX_POWER	6
 
@@ -56,6 +60,7 @@
 #define MARIO_STATE_HOLDING	1100
 #define MARIO_STATE_RELEASE_HOLDING	1200
 #define MARIO_STATE_RELEASE_HOLDING_A 1300
+#define MARIO_STATE_FALLDOWN_PIPE	1400
 
 
 #pragma region ANIMATION_ID
@@ -154,6 +159,8 @@
 
 #define ID_ANI_MARIO_RACOON_HOLDING_JUMP_RIGHT 1830
 #define ID_ANI_MARIO_RACOON_HOLDING_JUMP_LEFT 1831
+
+#define ID_ANI_MARIO_RACOON_FALLING_PIPE 1832
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -199,16 +206,19 @@ class CMario : public CGameObject
 	ULONGLONG timeFalling;
 	ULONGLONG timeFlying;
 	ULONGLONG timeAttacking;
+	ULONGLONG timeSwitch;
 	
 	
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
+	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
 	void OnCollisionWithColorBox(LPCOLLISIONEVENT e);
 	void OnCollisionWithQB(LPCOLLISIONEVENT e);
 	void OnCollisionWithB(LPCOLLISIONEVENT e);
 	void OnCollisionWithPbutton(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
+	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopasFly(LPCOLLISIONEVENT e);
 	void OnCollisionWithRedGoomba(LPCOLLISIONEVENT e);
@@ -224,6 +234,7 @@ public:
 	bool isAttacking;
 	int powerStack;
 	bool isPressed;
+	bool isChangingScene;
 	CTail* tail;
 	BOOLEAN isOnPlatform;
 	bool isHoldKoopas;
@@ -232,7 +243,7 @@ public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;
-		isKicking =  isPressed = isAttacking = isFlying = isHoldKoopas = false;
+		isKicking =  isPressed = isChangingScene = isAttacking = isFlying = isHoldKoopas = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
