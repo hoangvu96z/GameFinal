@@ -38,10 +38,13 @@ public:
 		if (!isSwitchScene)
 		{
 			t = 1;
+			b = 1;
 		}
 		else
+		{
 			t = 0;
-		b = 1; 
+			b = 0;
+		}
 		r = 1; 
 	}
 };

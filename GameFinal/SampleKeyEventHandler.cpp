@@ -62,7 +62,10 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
-		mario->SetState(MARIO_STATE_RELEASE_JUMP);
+		if (!mario->isChangingScene)
+		{
+			mario->SetState(MARIO_STATE_RELEASE_JUMP);
+		}
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT_RELEASE);

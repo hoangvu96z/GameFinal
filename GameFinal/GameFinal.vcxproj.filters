@@ -112,6 +112,7 @@
     <ClCompile Include="Leaf.cpp">
       <Filter>Objects\Items</Filter>
     </ClCompile>
+    <ClCompile Include="StackSpeed.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -240,6 +241,7 @@
     <ClInclude Include="Leaf.h">
       <Filter>Objects\Items</Filter>
     </ClInclude>
+    <ClInclude Include="StackSpeed.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">

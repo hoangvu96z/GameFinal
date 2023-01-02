@@ -353,11 +353,24 @@ void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 	CPipe* pipe = dynamic_cast<CPipe*>(e->obj);
 	if (pipe->typePipe != 0)
 	{
-		if (e->ny < 0 && isSitting)
+		float x_pipe, y_pipe;
+		pipe->GetPosition(x_pipe, y_pipe);
+		float x_max = x_pipe + 16; // x pipe max
+		float x_min = x_pipe + 6;// x pipe min
+		if (x >= x_min && x <= x_max) // if mario's standing in range between x_min and x_max, mario can switch scene
 		{
-			isChangingScene = true;
-			SetState(MARIO_STATE_FALLDOWN_PIPE);
-			pipe->isSwitchScene = true;
+			if (e->ny < 0 && isSitting)
+			{
+				isChangingScene = true;
+				SetState(MARIO_STATE_FALLDOWN_PIPE);
+				pipe->isSwitchScene = true;
+			}
+			else if (e->ny > 0)
+			{
+				isChangingScene = true;
+				SetState(MARIO_STATE_JUMPING_PIPE);
+				pipe->isSwitchScene = true;
+			}
 		}
 	}
 }
@@ -1029,6 +1042,13 @@ void CMario::SetState(int state)
 		ay = 0;
 		isOnPlatform = true;
 		vy = MARIO_SPEED_SWITCH_SCENE;
+		vx = 0.0f;
+		ax = 0.0f;
+		break;
+	case MARIO_STATE_JUMPING_PIPE:
+		ay = 0;
+		isOnPlatform = true;
+		vy = -MARIO_SPEED_SWITCH_SCENE;
 		vx = 0.0f;
 		ax = 0.0f;
 		break;

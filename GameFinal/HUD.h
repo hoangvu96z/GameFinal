@@ -3,7 +3,7 @@
 #include "Animation.h"
 #include "Animations.h"
 #include "Game.h"
-#include "Mario.h"
+#include "StackSpeed.h"
 #define ID_ANI_HUD	15000
 #define ID_ANI_ITEM	15001
 
@@ -12,16 +12,21 @@
 #define SCREEN_W_PLUS	10
 #define SCREEN_PLUS	12
 
-class HUD : public CGameObject
+#define Range	0.1f
+#define Range1	0.15f
+#define Range2	0.16f
+
+class HUD: public CGameObject
 {
 public:
 	static HUD* __instance;
-	CMario* mario = CMario::GetInstance();
+	StackSpeed* stackspeed = new StackSpeed();
 public:
+	int stack;
 	int time;
-	//string p = (string)(Point);
 	HUD() {
 		time = 300;
+		stack = 0;
 	};
 	void Update(DWORD dt);
 	void Render();
