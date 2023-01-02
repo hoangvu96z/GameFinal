@@ -27,7 +27,7 @@
 
 #define MARIO_POWER_TIME_STACK 200
 
-#define MARIO_TIME_SHOWING_FLYING 5000
+#define MARIO_TIME_SHOWING_FLYING 3500
 
 #define MARIO_TIME_ATTACKING 240
 
@@ -291,5 +291,7 @@ public:
 	void SetKoopas();
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
+	
 	
 };

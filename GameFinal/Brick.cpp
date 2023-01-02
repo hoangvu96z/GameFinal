@@ -38,10 +38,7 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	y += vy * dt;
 	if (state == BRICK_STATE_BROKEN)
 	{
-		b1->SetState(BROKEN_EFFECT_STATE_APPEAR);
-		b2->SetState(BROKEN_EFFECT_STATE_APPEAR);
-		b3->SetState(BROKEN_EFFECT_STATE_APPEAR_BOTTOM);
-		b4->SetState(BROKEN_EFFECT_STATE_APPEAR_BOTTOM);
+		
 	}
 
 	if (state == BRICK_STATE_CHANGE_COIN)
@@ -64,6 +61,10 @@ void CBrick::SetState(int state)
 		isPbuttonPressed = false;
 		break;
 	case BRICK_STATE_BROKEN:
+		b1->SetState(BROKEN_EFFECT_STATE_APPEAR);
+		b2->SetState(BROKEN_EFFECT_STATE_APPEAR);
+		b3->SetState(BROKEN_EFFECT_STATE_APPEAR_BOTTOM);
+		b4->SetState(BROKEN_EFFECT_STATE_APPEAR_BOTTOM);
 		isDeleted = true;
 		break;
 	case BRICK_STATE_CHANGE_COIN:

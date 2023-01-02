@@ -40,7 +40,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-	
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 	if (abs(ax) == MARIO_ACCEL_RUN_X)
@@ -321,7 +320,7 @@ void CMario::OnCollisionWithQB(LPCOLLISIONEVENT e) {
 		}
 		
 	}
-	else if (isAttacking && e->nx !=0 )
+	else if (isAttacking)
 	{
 		if (brick->GetState() != QUESTIONBRICK_STATE_EMP)
 		{
@@ -335,7 +334,7 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	CCoin* coins = dynamic_cast<CCoin*>(e->obj);
 		//coins->SetState(COIN_STATE_APPEAR);
-	if (coins->GetState() == COIN_STATE_APPEAR)
+	if (coins->insideQB != 1)
 	{
 		coin++;
 		e->obj->Delete();
@@ -403,8 +402,8 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 		}
 		else
 		{
-			kp->SetState(KOOPAS_STATE_SHELL_MOVING);
 			kp->nx = nx;
+			kp->SetState(KOOPAS_STATE_SHELL_MOVING);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
@@ -461,8 +460,6 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 			}
 		}
 	}
-
-	
 
 
 }

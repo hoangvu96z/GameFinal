@@ -19,8 +19,9 @@
 #define MAX_Y	45
 class CCoin : public Item {
 public:
+	int insideQB;
 	ULONGLONG timeAppear = GetTickCount64();
-	CCoin(float x, float y) : Item(x, y, 0) { item = ItemType::Coin; first_y = y; SetState(COIN_STATE_COLLISION); }
+	CCoin(float x, float y, int type) : Item(x, y, 0) { item = ItemType::Coin; first_y = y; SetState(COIN_STATE_COLLISION); insideQB = type; }
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);

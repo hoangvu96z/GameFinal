@@ -25,5 +25,5 @@ height	240
 40	textures\misc1.png
 50	textures\pipe.png
 51	textures\pipe1.png
-60	textures\Hub.png
+64	textures\itemHud.png
 65	textures\HUD.png

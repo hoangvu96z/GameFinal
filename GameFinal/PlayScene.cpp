@@ -201,7 +201,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		switch (typeitem)
 		{
 		case ItemType::Coin:
-			obj = new CCoin(x, y);
+		{
+			int typeCoin = (int)atoi(tokens[4].c_str());
+			obj = new CCoin(x, y, typeCoin);
+		}
 			break;
 		case ItemType::Mushroom:
 			obj = new CMushroom(x, y);
@@ -364,19 +367,17 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
+	for (size_t i = 2; i < objects.size(); i++)
 	{
-		if (i >= 2)
-		{
-			coObjects.push_back(objects[i]);
-		}
+		coObjects.push_back(objects[i]);
+		
 	}
-
+	
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
-
+	hud->Update(dt);
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 
