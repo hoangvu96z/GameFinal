@@ -71,6 +71,13 @@ void CBrick::SetState(int state)
 		isPbuttonPressed = true;
 		timeChange = GetTickCount64();
 		break;
+	case BRICK_STATE_COLLISION:
+		b1->Delete();
+		b2->Delete();
+		b3->Delete();
+		b4->Delete();
+		isDeleted = true;
+		break;
 	default:
 		break;
 	}

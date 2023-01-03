@@ -4,9 +4,9 @@
 #define KOOPAS_WALKING_SPEED 0.05f
 #define KOOPAS_SHELL_SPEED 0.2f
 
-#define KOOPAS_BBOX_WIDTH 16
+#define KOOPAS_BBOX_WIDTH 14
 #define KOOPAS_BBOX_HEIGHT 28
-#define KOOPAS_BBOX_HEIGHT_SHELL 16
+#define KOOPAS_BBOX_HEIGHT_SHELL 14
 
 #define KOOPAS_DIE_TIMEOUT	8000
 #define KOOPAS_RETURN_LIFE 2000
@@ -50,6 +50,7 @@ protected:
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithRedGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithQB(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 	virtual int IsCollidable() { return 1; };
 
 	virtual int IsBlocking() { return 0; }

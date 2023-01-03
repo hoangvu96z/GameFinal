@@ -40,7 +40,7 @@ void BrokenEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				vy += ay * dt;
 				if (GetTickCount64() - timeEffect > TIME_BROKEN_EFFECT)
 				{
-					//isDeleted = true;
+					isDeleted = true;
 				}
 			}
 		}

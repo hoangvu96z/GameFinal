@@ -246,7 +246,7 @@ void CMario::OnCollisionWithB(LPCOLLISIONEVENT e)
 	CBrick* cb = dynamic_cast<CBrick*>(e->obj);
 	if (e->ny > 0)
 	{
-		if (cb->GetState() != BRICK_STATE_BROKEN)
+		if (cb->GetState() != BRICK_STATE_BROKEN && cb->GetState() != BRICK_STATE_CHANGE_COIN)
 		{
 			cb->SetState(BRICK_STATE_BROKEN);
 		}
@@ -263,6 +263,7 @@ void CMario::OnCollisionWithB(LPCOLLISIONEVENT e)
 	if (cb->GetState() == BRICK_STATE_CHANGE_COIN)
 	{
 		e->obj->Delete();
+		cb->SetState(BRICK_STATE_COLLISION);
 		coin++;
 	}
 }

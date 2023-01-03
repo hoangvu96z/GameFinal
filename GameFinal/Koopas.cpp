@@ -5,7 +5,7 @@
 #include "debug.h"
 #include "Collision.h"
 #include "QuestionBrick.h"
-
+#include "Brick.h"
 
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
@@ -69,6 +69,8 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 				OnCollisionWithRedGoomba(e);
 			else if (dynamic_cast<CQuestionBrick*>(e->obj))
 				OnCollisionWithQB(e);
+			else if (dynamic_cast<CBrick*>(e->obj))
+				OnCollisionWithBrick(e);
 			if (e->ny != 0)
 			{
 				vy = 0;
@@ -132,6 +134,22 @@ void CKoopas::OnCollisionWithQB(LPCOLLISIONEVENT e) {
 	{
 		if (e->nx != 0) {
 			qb->SetState(QUESTIONBRICK_STATE_COLISION);
+		}
+	}
+}
+
+void CKoopas::OnCollisionWithBrick(LPCOLLISIONEVENT e) {
+	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+	if (!isHold)
+	{
+		if (e->nx != 0) {
+			if (state == KOOPAS_STATE_SHELL_MOVING || state == KOOPAS_STATE_SHELL_UP_MOVING)
+			{
+				if (brick->GetState() != BRICK_STATE_BROKEN)
+				{
+					brick->SetState(BRICK_STATE_BROKEN);
+				}
+			}
 		}
 	}
 }
