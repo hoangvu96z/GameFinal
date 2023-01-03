@@ -1,7 +1,5 @@
 #include "HUD.h"
 
-#include "Mario.h"
-CMario* mario = CMario::GetInstance();
 HUD* HUD::__instance = NULL;
 HUD* HUD::GetInstance()
 {
@@ -17,18 +15,13 @@ void HUD::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(ID_ANI_HUD)->Render(x , y + SCREEN_PLUS);
 	animations->Get(ID_ANI_ITEM)->Render(x + SCREEN_W , y + SCREEN_PLUS);
-	stackspeed->RenderStack(CGame::GetInstance()->GetCamX() + 66 , y + 7, stack);
+	for (int i = 0; i < stack; i++)
+	{
+		stackspeed->RenderStack(CGame::GetInstance()->GetCamX() + 66, y + 7, stack);
+	}
 }
 
 void HUD::Update(DWORD dt)
 {
-
-	//if (Range < abs(mario->GetAX()) < Range1)
-	//{
-	//	stack = 1;
-	//}
-	//else if (Range1 < abs(mario->GetAX()) < Range2)
-	//{
-	//	stack = 2;
-	//}
+	
 }

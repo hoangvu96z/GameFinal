@@ -6,13 +6,10 @@ class StackSpeed: public CGameObject
 {
 public:
 	StackSpeed() {};	
-	int id;
-	void RenderStack(int x, int y, int s);
+	void RenderStack(int x, int y, int stack);
 	virtual void Render() {  };
-	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {
-		return;
-	};
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {};
 
 	~StackSpeed();
-
+		
 };

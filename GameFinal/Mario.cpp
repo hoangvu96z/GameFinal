@@ -18,6 +18,7 @@
 #include "Brick.h"
 #include "Pbutton.h"
 #include "Leaf.h"
+#include "HUD.h"
 
 
 
@@ -73,10 +74,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 		DebugOut(L"false\n");*/
-	if (powerStack == MARIO_MAX_POWER)
-	{
-		//SetState(MARIO_STATE_FLYING);
-	}
+	HUD::GetInstance()->stack = powerStack;
+
 	if (isFlying)
 	{
 		if (GetTickCount64() - timeFlying > MARIO_TIME_SHOWING_FLYING)

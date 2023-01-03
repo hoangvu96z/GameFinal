@@ -12,9 +12,6 @@
 #define SCREEN_W_PLUS	10
 #define SCREEN_PLUS	12
 
-#define Range	0.1f
-#define Range1	0.15f
-#define Range2	0.16f
 
 class HUD: public CGameObject
 {
