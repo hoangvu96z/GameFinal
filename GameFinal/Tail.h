@@ -9,6 +9,7 @@
 
 class CTail : public CGameObject {
 public:
+	int nx;
 	CTail(float x, float y) {};
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -17,9 +18,9 @@ public:
 	virtual int IsBlocking() { return 0; }
 	virtual int IsCollidable() { return 1; };
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
-	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
-	void OnCollisionWithQB(LPCOLLISIONEVENT e);
-	void OnCollisionWithB(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoomba(LPGAMEOBJECT& e);
+	void OnCollisionWithKoopas(LPGAMEOBJECT& e);
+	void OnCollisionWithQB(LPGAMEOBJECT& e);
+	void OnCollisionWithB(LPGAMEOBJECT& e);
 	void SetDirect(int n) { this->nx = n; }
 };

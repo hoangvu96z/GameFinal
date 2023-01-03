@@ -114,6 +114,16 @@ void CCollision::SweptAABB(
 
 }
 
+bool CCollision::CheckAABB(LPGAMEOBJECT objSrc, LPGAMEOBJECT objDest)
+{
+	float nl, nt, nr, nb; // objects
+	float cl, ct, cr, cb; // colliable objects
+	objSrc->GetBoundingBox(nl, nt, nr, nb);
+	objDest->GetBoundingBox(cl, ct, cr, cb); 
+
+	return (!(nl > cr || nt > cb || nr < cl || nb < ct));
+}
+
 /*
 	Extension of original SweptAABB to deal with two moving objects
 */
@@ -196,18 +206,18 @@ void CCollision::Filter( LPGAMEOBJECT objSrc,
 		if (c->obj->IsDeleted()) continue; 
 
 		// ignore collision event with object having IsBlocking = 0 (like coin, mushroom, etc)
-		if (filterBlock == 1) 
+		if (filterBlock == 1 && !c->obj->IsBlocking())
 		{
-			if (!c->obj->IsBlocking()) continue;
-			int l, t, r, b;
-			c->obj->DirectBlocking(l, t, r, b);
-
-			// If only block with specific direction
-			if (c->nx < 0 && !l) continue;
-			if (c->nx > 0 && !r) continue;
-			if (c->ny < 0 && !t) continue;
-			if (c->ny > 0 && !b) continue;
+			continue;
 		}
+		int l, t, r, b;
+		c->obj->DirectBlocking(l, t, r, b);
+
+		// If only block with specific direction
+		if (c->nx < 0 && !l) continue;
+		if (c->nx > 0 && !r) continue;
+		if (c->ny < 0 && !t) continue;
+		if (c->ny > 0 && !b) continue;
 
 	
 
