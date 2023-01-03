@@ -1,5 +1,5 @@
 [SETTINGS]
-start	1
+start	2
 width	320
 height	240
 
@@ -9,6 +9,7 @@ height	240
 0	intro.txt
 1	scene02.txt
 2	HiddenWorld.txt
+3	scene-mario.txt
 
 # id	file 
 [TEXTURES]
