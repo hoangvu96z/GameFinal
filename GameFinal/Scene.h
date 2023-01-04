@@ -10,6 +10,7 @@ class CScene
 protected:
 	LPKEYEVENTHANDLER key_handler;
 	int id;
+	int next_id;
 	LPCWSTR sceneFilePath;
 
 public: 

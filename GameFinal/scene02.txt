@@ -12,6 +12,7 @@ fireplant.txt
 pipe.txt
 hud.txt
 item.txt
+firebullet.txt
 #
 [MAP]
 30	map1.txt	27	176	11	11	0
@@ -22,7 +23,7 @@ item.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	500	10
+0	200	10
 
 #item
 6	176	336	0	1
@@ -157,7 +158,7 @@ item.txt
 100	2176	256	16	144	3
 
 #Portal 
-50	2266	148	300	300	2
+50	352	384	300	300	2	2264	128
 
 #Koopas
 3	500	336

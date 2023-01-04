@@ -60,6 +60,7 @@ class CGame
 	void _ParseSection_SCENES(string line);
 
 public:
+	int nextX = 0, nextY = 0;
 	// Init DirectX, Sprite Handler
 	void Init(HWND hWnd, HINSTANCE hInstance);
 
