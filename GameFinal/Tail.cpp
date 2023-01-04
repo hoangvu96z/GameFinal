@@ -43,6 +43,24 @@ void CTail::OnCollisionWithGoomba(LPGAMEOBJECT& e)
 
 }
 
+void CTail::OnCollisionWithGoombaRed(LPGAMEOBJECT& e)
+{
+	CGoombaRed* rg = dynamic_cast<CGoombaRed*>(e);
+	if (CMario::GetInstance()->isAttacking)
+	{
+		if(rg->GetState() != REDGOOMBA_STATE_DIE_T)
+		{
+			rg->SetState(REDGOOMBA_STATE_DIE_T);
+			if (CMario::GetInstance()->Direct() == 1)
+			{
+				rg->SetSpeed(GOOMBA_REFLECT_BY_ATTACKING_SPEED, 0);
+			}
+			else
+				rg->SetSpeed(-GOOMBA_REFLECT_BY_ATTACKING_SPEED, 0);
+		}
+	}
+}
+
 void CTail::OnCollisionWithKoopas(LPGAMEOBJECT& e)
 {
 	CKoopas* kp = dynamic_cast<CKoopas*>(e);
@@ -77,6 +95,8 @@ void CTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		{
 			if (dynamic_cast<CGoomba*>(coObjects->at(i)))
 				OnCollisionWithGoomba(coObjects->at(i));
+			else if (dynamic_cast<CGoombaRed*>(coObjects->at(i)))
+				OnCollisionWithGoombaRed(coObjects->at(i));
 			else if (dynamic_cast<CQuestionBrick*>(coObjects->at(i)))
 				OnCollisionWithQB(coObjects->at(i));
 			else if (dynamic_cast<CKoopas*>(coObjects->at(i)))
@@ -91,5 +111,5 @@ void CTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 void CTail::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }

@@ -100,9 +100,6 @@
     <ClCompile Include="Tail.cpp">
       <Filter>Objects\Static Object</Filter>
     </ClCompile>
-    <ClCompile Include="PButton.cpp">
-      <Filter>Objects\Effects</Filter>
-    </ClCompile>
     <ClCompile Include="BrokenEffect.cpp">
       <Filter>Objects\Effects</Filter>
     </ClCompile>
@@ -112,7 +109,12 @@
     <ClCompile Include="Leaf.cpp">
       <Filter>Objects\Items</Filter>
     </ClCompile>
-    <ClCompile Include="StackSpeed.cpp" />
+    <ClCompile Include="PButton.cpp">
+      <Filter>Objects\Static Object</Filter>
+    </ClCompile>
+    <ClCompile Include="StackSpeed.cpp">
+      <Filter>Objects\Static Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -229,9 +231,6 @@
     <ClInclude Include="Tail.h">
       <Filter>Objects\Static Object</Filter>
     </ClInclude>
-    <ClInclude Include="PButton.h">
-      <Filter>Objects\Effects</Filter>
-    </ClInclude>
     <ClInclude Include="BrokenEffect.h">
       <Filter>Objects\Effects</Filter>
     </ClInclude>
@@ -241,7 +240,12 @@
     <ClInclude Include="Leaf.h">
       <Filter>Objects\Items</Filter>
     </ClInclude>
-    <ClInclude Include="StackSpeed.h" />
+    <ClInclude Include="PButton.h">
+      <Filter>Objects\Static Object</Filter>
+    </ClInclude>
+    <ClInclude Include="StackSpeed.h">
+      <Filter>Objects\Static Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">
@@ -272,6 +276,8 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <Filter>Objects\Static Object</Filter>
+    </None>
   </ItemGroup>
 </Project>

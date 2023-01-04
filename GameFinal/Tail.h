@@ -19,6 +19,7 @@ public:
 	virtual int IsCollidable() { return 1; };
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPGAMEOBJECT& e);
+	void OnCollisionWithGoombaRed(LPGAMEOBJECT& e);
 	void OnCollisionWithKoopas(LPGAMEOBJECT& e);
 	void OnCollisionWithQB(LPGAMEOBJECT& e);
 	void OnCollisionWithB(LPGAMEOBJECT& e);

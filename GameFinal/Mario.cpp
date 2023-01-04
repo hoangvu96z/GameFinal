@@ -391,7 +391,9 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e) {
 		e->obj->Delete();
 		if (level < MARIO_LEVEL_RACOON)
 		{
+			SetLevel(level);
 			level++;
+			
 		}
 
 	}
@@ -436,6 +438,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e) {
 			{
 				if (kp->GetState() != KOOPAS_STATE_SHELL && kp->GetState() != KOOPAS_STATE_SHELL_UP)
 				{
+
 					if (level > MARIO_LEVEL_SMALL)
 					{
 						level--;
@@ -581,7 +584,14 @@ void CMario::OnCollisionWithRedGoomba(LPCOLLISIONEVENT e) {
 		{
 			if (rgb->GetState() != GOOMBA_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				if (level > MARIO_LEVEL_SMALL && isHoldKoopas)
+				{
+					level--;
+					StartUntouchable();
+					SetState(MARIO_STATE_DROP_KOOPAS_SHELL);
+
+				}
+				else if (level > MARIO_LEVEL_SMALL)
 				{
 					level--;
 					StartUntouchable();
@@ -964,11 +974,11 @@ void CMario::Render()
 	animations->Get(aniId)->Render(x, y);
 	if (level == MARIO_LEVEL_RACOON)
 	{
-		tail->Render();
+		//tail->Render();
 	}
-	RenderBoundingBox();
+	//RenderBoundingBox();
 
-	DebugOutTitle(L"Coins: %d", coin);
+	//DebugOutTitle(L"Coins: %d", coin);
 }
 
 void CMario::SetState(int state)
@@ -1202,7 +1212,7 @@ void CMario::SetLevel(int l)
 {
 
 	// Adjust position to avoid falling off platform
-	if (this->level == MARIO_LEVEL_SMALL)
+	if (level == MARIO_LEVEL_SMALL)
 	{
 		if (nx == 1)
 		{

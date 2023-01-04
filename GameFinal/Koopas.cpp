@@ -117,12 +117,19 @@ void CKoopas::OnCollisionWithRedGoomba(LPCOLLISIONEVENT e) {
 	{
 		if (e->nx != 0)
 		{
-			if (rgb->GetState() != REDGOOMBA_STATE_DIE_T)
+			if (rgb->GetState() != REDGOOMBA_STATE_WALKING)
+			{
+				rgb->SetState(REDGOOMBA_STATE_WALKING);
+				isCollision = true;
+				TimeCollision = GetTickCount64();
+
+			}
+			else
 			{
 				rgb->SetState(REDGOOMBA_STATE_DIE_T);
 				isCollision = true;
 				TimeCollision = GetTickCount64();
-
+				rgb->SetSpeed(vx, 0);
 			}
 		}
 	}
@@ -264,7 +271,7 @@ void CKoopas::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CKoopas::SetState(int state)

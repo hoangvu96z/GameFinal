@@ -4,7 +4,7 @@
 #define REDGOOMBA_GRAVITY 0.001f
 #define REDGOOMBA_WALKING_SPEED 0.05f
 #define REDGOOMBA_DEFLECT_SPEED_JUMP 0.1f
-#define REDGOOMBA_DEFLECT_SPEED_FLY	0.4f
+#define REDGOOMBA_DEFLECT_SPEED_FLY	0.2f
 
 
 #define REDGOOMBA_WING_BBOX_WIDTH 20
@@ -49,7 +49,7 @@ protected:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() { return (state != REDGOOMBA_STATE_DIE_T ); };
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 
