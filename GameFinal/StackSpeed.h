@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #define ID_ANI_STACKSPEED	15002
 #define ID_ANI_P	15003
+
+#define RANGE 8
 class StackSpeed: public CGameObject
 {
 public:

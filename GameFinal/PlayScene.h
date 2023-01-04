@@ -13,6 +13,7 @@
 #include "QuestionBrick.h"
 #include "Item.h"
 #include "HUD.h"
+#include "Camera.h"
 
 
 //#include "Koopas.h"
@@ -26,6 +27,7 @@ protected:
 	// A play scene has to have player, right? 
 	CMario* player = CMario::GetInstance();					
 	Map* map;
+	Camera* camera;
 	HUD* hud = HUD::GetInstance();
 	vector<Item*> items;
 	vector<CQuestionBrick*> qb;

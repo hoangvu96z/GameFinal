@@ -9,7 +9,8 @@
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
-#define MARIO_RUNNING_MAXSPEED	0.5f
+
+#define MARIO_FLYING_SPEED	0.15f
 
 #define RANGE_BETWEEN_OBJECT	5
 
@@ -29,7 +30,7 @@
 
 #define MARIO_POWER_TIME_STACK 200
 
-#define MARIO_TIME_SHOWING_FLYING 3500
+#define MARIO_TIME_SHOWING_FLYING 3000
 
 #define MARIO_TIME_ATTACKING 240
 
@@ -37,7 +38,7 @@
 
 #define MARIO_TIME_SWITCH_SCENE 1000
 
-#define MARIO_MAX_POWER	6
+#define MARIO_MAX_POWER	7
 
 
 #define MARIO_WIDTH_COLLISION 2 // define variable to scale range between small and big width

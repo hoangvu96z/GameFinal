@@ -169,6 +169,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		
 		if (abs(ax) == MARIO_ACCEL_RUN_X) { // when mario run if mario collision block, mario can't reach max power stack
+			SetPower();
 			if (nx > 0)
 			{
 				SetState(MARIO_STATE_WALKING_RIGHT);
@@ -1065,7 +1066,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_FLYING:
 		if (level == MARIO_LEVEL_RACOON) {
 			ay = 0;
-			vy = -0.1f;
+			vy = -MARIO_FLYING_SPEED;
 			if (!isFlying)
 			{
 				timeFlying = GetTickCount64();
@@ -1120,7 +1121,7 @@ void CMario::SetState(int state)
 		koopas->nx = nx;
 		koopas->ay = KOOPAS_GRAVITY;
 		koopas->isHold = false;
-		koopas->SetPosition(x + KOOPAS_BBOX_WIDTH / 2, y - 5);
+		koopas->SetPosition(x + KOOPAS_BBOX_WIDTH / 2, y - RANGE_BETWEEN_OBJECT);
 		level--;
 		StartUntouchable();
 		koopas->SetState(KOOPAS_STATE_WALKING);
@@ -1241,7 +1242,7 @@ void CMario::SetPower()
 {
 	if (powerStack > 0)
 	{
-		powerStack = 3;
+		powerStack = 0;
 	}
 }
 

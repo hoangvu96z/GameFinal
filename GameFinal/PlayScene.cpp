@@ -10,7 +10,6 @@
 #include "Coin.h"
 #include "Platform.h"
 #include "ColorBox.h"
-#include "Camera.h"
 #include "QuestionBrick.h"
 #include "Koopas.h"
 #include "Pipe.h"
@@ -31,6 +30,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
 	player = NULL;
+	camera = NULL;
+	map = NULL;
 	key_handler = new CSampleKeyHandler(this);
 }
 
@@ -136,6 +137,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 	case OBJECT_TYPE_MARIO:
 	{
+	
 		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
@@ -356,7 +358,7 @@ void CPlayScene::Load()
 	}
 	qb = vector<CQuestionBrick*>();
 	items = vector<Item*>();
-
+	camera = new Camera(map->GetMapWidth(), map->GetMapHeight());
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
@@ -384,22 +386,10 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
+	camera->SetPosition(cx, cy);
 
 	CGame *game = CGame::GetInstance();
-	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
-
-	if (cx < 0) cx = 0;
-	if (cy < 0) cy = -1;
-	if (cx > map->GetMapWidth() - game->GetBackBufferWidth() - ScreenH) {
-		cx = float(map->GetMapWidth() - game->GetBackBufferWidth()- ScreenH);
-	}
-	if (cy > map->GetMapHeight() - game->GetBackBufferHeight())
-	{
-		cy = float(map->GetMapHeight() - game->GetBackBufferHeight());
-	}
-
-	CGame::GetInstance()->SetCamPos(cx, cy + ScreenH);
+	game->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
 }
