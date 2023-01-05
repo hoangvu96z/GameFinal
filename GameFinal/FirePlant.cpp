@@ -1,12 +1,14 @@
 #include "FirePlant.h"
 #include "Mario.h"
 #include "debug.h"
+
 CFirePlant::CFirePlant(float x, float y, int typeF) :CGameObject(x, y)
 {
 	first_y = y;
 	second_y = y;
 	SetState(FirePlant_STATE_APPEAR);
 	typePlant = typeF;
+	fb = new FireBullet(x - 13, y);
 }
 
 void CFirePlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -51,10 +53,14 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		nx = -1;
 	}
 
+
+	
 	if (typePlant == 0)
 	{
+	
 		if (state == FirePlant_STATE_APPEAR)
 		{
+			
 			if (y > first_y + FirePlant_HEIGHT_OFFSET) {
 				SetState(FirePlant_STATE_STOP_ONPIPE);
 			}
@@ -66,8 +72,11 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 
+		DebugOut(L"state: %d\n", state);
+
 		if (state == FirePlant_STATE_STOP_ONPIPE)
 		{
+
 			if (GetTickCount64() - timeWarpAppear > FirePlant_TIME_APPEAR)
 			{
 				SetState(FirePlant_STATE_INPIPE);
@@ -75,6 +84,13 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else if (state == FirePlant_STATE_STOP_INPIPE)
 		{
+			if (abs(x - Mario_x) <= 150)
+			{
+				isAttack = true;
+				fb->SetSpeed(-0.1f, 0.05f);
+				fb->Update(dt, coObjects);
+			}
+
 			if (GetTickCount64() - timeWarp > FirePlant_TIME_INPIPE)
 			{
 				SetState(FirePlant_STATE_APPEAR);
@@ -141,6 +157,10 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 	}
+
+	
+
+	//DebugOut(L"state: %d\n", state);
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -193,8 +213,13 @@ void CFirePlant::Render()
 	{
 		aniId = ID_ANI_GreenPlant_MOUTH;
 	}
+
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	if (isAttack)
+	{
+		fb->Render();
+	}
+	//RenderBoundingBox();
 }
 
 void CFirePlant::SetState(int state)
@@ -214,6 +239,8 @@ void CFirePlant::SetState(int state)
 	case FirePlant_STATE_STOP_INPIPE:
 		vy = 0;
 		timeWarp = GetTickCount64();
+		break;
+	case FirePlant_STATE_FIRE:
 		break;
 	}
 }

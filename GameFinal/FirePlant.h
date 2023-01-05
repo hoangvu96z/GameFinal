@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-
+#include "FireBullet.h"
 //---------------------------FIRE PLANT
 #define ID_ANI_FirePlant_LEFT 10001
 #define ID_ANI_FirePlant_RIGHT	10002
@@ -27,6 +27,7 @@
 #define FirePlant_STATE_INPIPE	200
 #define FirePlant_STATE_STOP_INPIPE	300
 #define FirePlant_STATE_STOP_ONPIPE	400
+#define FirePlant_STATE_FIRE	500
 
 #define FirePlant_TIME 1000
 #define FirePlant_TIME_APPEAR 3000
@@ -54,6 +55,9 @@ protected:
 	int typePlant;
 	ULONGLONG timeWarp;
 	ULONGLONG timeWarpAppear;
+	ULONGLONG timeAttack;
+	bool isPlantAttack = false;
+	bool isAttack = false;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
@@ -64,7 +68,17 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
+	void AttackZone()
+	{
+		if (isAttack)
+		{
+				isPlantAttack = true;
+				fb->SetSpeed(-0.1f, 0.05f);
+		}
+	}
+
 public:
+	FireBullet* fb;
 	CFirePlant(float x, float y, int typeF);
 	virtual void SetState(int state);
 };

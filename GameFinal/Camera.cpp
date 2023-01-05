@@ -23,10 +23,13 @@ void Camera::SetPosition(float& cam_x, float& cam_y)
 {
 	Cam_x = cam_x;
 	Cam_y = cam_y;
-
-	
-	Cam_x -= game->GetBackBufferWidth() / 2;
 	Cam_y -= game->GetBackBufferHeight() / 2;
+	float ScreenY = mapheight - Height + ScreenH;
+	if (cam_y > ScreenY) {
+		Cam_y = cam_y;
+	}
+
+	Cam_x -= game->GetBackBufferWidth() / 2;
 	if (Cam_x < 0)
 	{
 		Cam_x = 0;
@@ -37,7 +40,7 @@ void Camera::SetPosition(float& cam_x, float& cam_y)
 
 	if (Cam_x >= mapwidth - Width - ScreenH)
 		Cam_x = mapwidth - Width - ScreenH;
-	if (Cam_y > mapheight - Height + ScreenH)
+	if (Cam_y > ScreenY)
 	{
 		Cam_y = float(mapheight - Height + ScreenH);
 	}
