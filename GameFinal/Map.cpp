@@ -79,12 +79,13 @@ void Map::DrawMap()
 
 	float camX, camY;
 	CGame::GetInstance()->GetCamPos(camX, camY);
-	int widthScr = CGame::GetInstance()->GetBackBufferWidth() / 16 + 3;
-	int heightScr = CGame::GetInstance()->GetBackBufferHeight() / 16 + 3;
 	int firstX = (int)(camX / GetMapWidth() * columns);
 	int firstY = (int)(camY / GetMapHeight() * rows );
-	for (UINT i = firstY; i < firstY + heightScr ; i++)
-		for (UINT j = firstX; j < firstX + widthScr; j++)
+	int lastY = firstY + 22 > rows ? rows : firstY + 22;
+	int lastX = firstX + 22 > columns ? columns : firstX + 22;
+
+	for (UINT i = firstY; i < lastY ; i++)
+		for (UINT j = firstX; j < lastX; j++)
 		{
 			float x, y;
 			x = FrameHeight * j;

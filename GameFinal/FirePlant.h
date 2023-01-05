@@ -22,6 +22,11 @@
 #define GreenPlant_BBOX_WIDTH 16
 #define GreenPlant_BBOX_HEIGHT 26
 
+#define ATTACK_ZONE 150
+
+#define CONST_X 6
+#define CONST_Y 8
+
 
 #define FirePlant_STATE_APPEAR	100
 #define FirePlant_STATE_INPIPE	200
@@ -67,16 +72,57 @@ protected:
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-
 	void AttackZone()
 	{
-		if (isAttack)
+		if (abs(x - Mario_x <= ATTACK_ZONE))
 		{
-				isPlantAttack = true;
-				fb->SetSpeed(-0.1f, 0.05f);
+			calAttack();
 		}
 	}
 
+	void CreateBullet()
+	{
+		float BulletX, BulletY;
+		if (!fb->isFire)
+		{
+			if (nx > 0)
+			{
+				fb->SetPosition(x + FirePlant_BBOX_WIDTH / 2 + CONST_X, y - CONST_Y);
+			}
+			else
+				fb->SetPosition(x - FirePlant_BBOX_WIDTH / 2 - CONST_X, y - CONST_Y);
+		}
+	}
+
+	void calAttack()
+	{
+		float vxBullet = 0, vyBullet = 0;
+
+		CreateBullet();
+
+		if (Mario_y < y)
+			vyBullet = -VYBULLET;
+		else
+			vyBullet = VYBULLET;
+
+		if (Mario_x > x)
+		{
+			vxBullet = VXBULLET;
+			nx = 1;
+		}
+		else
+		{
+			vxBullet = -VXBULLET;
+			nx = -1;
+		}
+
+		if (!fb->isFire)
+		{
+			fb->isFire = true;
+			fb->SetSpeed(vxBullet, vyBullet);
+			fb->SetState(BULLET_STATE_OUT_RANGE);
+		}
+	}
 public:
 	FireBullet* fb;
 	CFirePlant(float x, float y, int typeF);

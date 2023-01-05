@@ -115,7 +115,9 @@
     <ClCompile Include="StackSpeed.cpp">
       <Filter>Objects\Static Object</Filter>
     </ClCompile>
-    <ClCompile Include="FireBullet.cpp" />
+    <ClCompile Include="FireBullet.cpp">
+      <Filter>Objects\Enermies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -247,7 +249,9 @@
     <ClInclude Include="StackSpeed.h">
       <Filter>Objects\Static Object</Filter>
     </ClInclude>
-    <ClInclude Include="FireBullet.h" />
+    <ClInclude Include="FireBullet.h">
+      <Filter>Objects\Enermies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Frameworks">

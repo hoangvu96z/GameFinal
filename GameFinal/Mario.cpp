@@ -22,14 +22,18 @@
 
 
 
+
 #include "Collision.h"
 
 CMario* CMario::__instance = NULL;
 CKoopas* koopas;
 
 
+
+
 CMario* CMario::GetInstance()
 {
+	if (__instance == NULL) __instance = new CMario(0, 0);
 	return __instance;
 }
 void CMario::SetInstance(CMario* p)
@@ -41,6 +45,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
+	
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 	if (abs(ax) == MARIO_ACCEL_RUN_X)
@@ -354,6 +359,8 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
+	CGame::GetInstance()->nextX = p->next_x;
+	CGame::GetInstance()->nextY = p->next_y;
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
 
@@ -814,44 +821,47 @@ int CMario::GetAniIDRacoon() {
 					else
 						aniId = ID_ANI_MARIO_RACOON_FLYING_LEFT;
 				}
-				else if (abs(ax) == MARIO_ACCEL_RUN_X)
-				{
-					if (vy >= 0)
-					{
-						if (nx >= 0)
-							aniId = ID_ANI_MARIO_RACOON_JUMP_RUN_FALLING_RIGHT;
-						else
-							aniId = ID_ANI_MARIO_RACOON_JUMP_RUN_FALLING_LEFT;
-					}
-					else
-					{
-						if (nx >= 0)
-							aniId = ID_ANI_MARIO_RACOON_JUMP_RUN_RIGHT;
-						else
-							aniId = ID_ANI_MARIO_RACOON_JUMP_RUN_LEFT;
-					}
-				}
-				else if (vy >= 0)
-				{
-					if (isFalling == true) {
-						if (nx >= 0)
-							aniId = ID_ANI_MARIO_RACOON_FALLING_SLOWDOWN_RIGHT;
-						else
-							aniId = ID_ANI_MARIO_RACOON_FALLING_SLOWDOWN_LEFT;
-					}
-					else {
-						if (nx >= 0)
-							aniId = ID_ANI_MARIO_RACOON_FALLING_RIGHT;
-						else
-							aniId = ID_ANI_MARIO_RACOON_FALLING_LEFT;
-					}
-				}
 				else
 				{
-					if (nx >= 0)
-						aniId = ID_ANI_MARIO_RACOON_JUMP_WALK_RIGHT;
+					if (abs(ax) == MARIO_ACCEL_RUN_X)
+					{
+						if (vy >= 0)
+						{
+							if (nx >= 0)
+								aniId = ID_ANI_MARIO_RACOON_JUMP_RUN_FALLING_RIGHT;
+							else
+								aniId = ID_ANI_MARIO_RACOON_JUMP_RUN_FALLING_LEFT;
+						}
+						else
+						{
+							if (nx >= 0)
+								aniId = ID_ANI_MARIO_RACOON_JUMP_RUN_RIGHT;
+							else
+								aniId = ID_ANI_MARIO_RACOON_JUMP_RUN_LEFT;
+						}
+					}
+					else if (vy >= 0)
+					{
+						if (isFalling == true) {
+							if (nx >= 0)
+								aniId = ID_ANI_MARIO_RACOON_FALLING_SLOWDOWN_RIGHT;
+							else
+								aniId = ID_ANI_MARIO_RACOON_FALLING_SLOWDOWN_LEFT;
+						}
+						else {
+							if (nx >= 0)
+								aniId = ID_ANI_MARIO_RACOON_FALLING_RIGHT;
+							else
+								aniId = ID_ANI_MARIO_RACOON_FALLING_LEFT;
+						}
+					}
 					else
-						aniId = ID_ANI_MARIO_RACOON_JUMP_WALK_LEFT;
+					{
+						if (nx >= 0)
+							aniId = ID_ANI_MARIO_RACOON_JUMP_WALK_RIGHT;
+						else
+							aniId = ID_ANI_MARIO_RACOON_JUMP_WALK_LEFT;
+					}
 				}
 			}
 			else
@@ -977,6 +987,8 @@ void CMario::Render()
 		//tail->Render();
 	}
 	//RenderBoundingBox();
+
+
 
 	//DebugOutTitle(L"Coins: %d", coin);
 }

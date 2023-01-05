@@ -8,7 +8,7 @@ CFirePlant::CFirePlant(float x, float y, int typeF) :CGameObject(x, y)
 	second_y = y;
 	SetState(FirePlant_STATE_APPEAR);
 	typePlant = typeF;
-	fb = new FireBullet(x - 13, y);
+	fb = new FireBullet(x, y);
 }
 
 void CFirePlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -72,11 +72,16 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 
-		DebugOut(L"state: %d\n", state);
+		//DebugOut(L"state: %d\n", state);
+		/*if (fb->isFire)
+		{
+			DebugOut(L"true\n");
+		}
+		else
+			DebugOut(L"false\n");*/
 
 		if (state == FirePlant_STATE_STOP_ONPIPE)
 		{
-
 			if (GetTickCount64() - timeWarpAppear > FirePlant_TIME_APPEAR)
 			{
 				SetState(FirePlant_STATE_INPIPE);
@@ -84,13 +89,7 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else if (state == FirePlant_STATE_STOP_INPIPE)
 		{
-			if (abs(x - Mario_x) <= 150)
-			{
-				isAttack = true;
-				fb->SetSpeed(-0.1f, 0.05f);
-				fb->Update(dt, coObjects);
-			}
-
+			AttackZone();
 			if (GetTickCount64() - timeWarp > FirePlant_TIME_INPIPE)
 			{
 				SetState(FirePlant_STATE_APPEAR);
@@ -160,6 +159,12 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	
 
+	if (fb->isFire)
+	{
+		fb->Update(dt, coObjects);
+	}
+	
+
 	//DebugOut(L"state: %d\n", state);
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -215,7 +220,7 @@ void CFirePlant::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	if (isAttack)
+	if (fb->isFire)
 	{
 		fb->Render();
 	}

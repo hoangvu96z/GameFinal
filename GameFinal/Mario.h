@@ -5,6 +5,7 @@
 #include "Animations.h"
 #include "Tail.h"
 #include "debug.h"
+#include "FireBullet.h"
 
 
 #define MARIO_WALKING_SPEED		0.1f
@@ -252,8 +253,10 @@ public:
 	bool isPressed;
 	bool isChangingScene;
 	CTail* tail;
+	FireBullet* fire;
 	BOOLEAN isOnPlatform;
 	bool isHoldKoopas;
+	static CMario* _instance;
 	static CMario* GetInstance();
 	static void SetInstance(CMario* p);
 	CMario(float x, float y) : CGameObject(x, y)
@@ -271,7 +274,7 @@ public:
 		type = 0;
 		timeStack = timeAttacking = timeFlying = timeFalling = powerStack = 0;
 		tail = NULL;
-		
+		fire = new FireBullet(x + 30, y);
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -307,6 +310,4 @@ public:
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
-	
-	
 };
